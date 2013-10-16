@@ -11,9 +11,11 @@ private:
 public:
   int inline get_index() {return index;}
   string inline get_information() {return information;}
-  Node* get_parent() {return parent;}
+  Node* inline get_parent() {return parent;}
+  
+  Node();
+  Node(string info, int ind, Node* parent);
   
   
-
 
 };
