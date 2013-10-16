@@ -6,28 +6,29 @@
 class Edge{
 	private:
 	  int index;
-	  Node* nodeA;
-	  Node* nodeB;
+	  int nodeA, nodeB;
 	  string relation;
 	  
 	public:
 	  Edge();
-	  Edge(Node* n1, Node* n2, string rel, int ind);
+	  Edge(int edgeIndex, string rel, int n1, int n2);
 	  
 	  inline string getRelation() {return relation;}
+	  inline int getNodeA() {return nodeA;}
+	  inline int getNodeB() {return nodeB;}
   
 };
 
 Edge::Edge()
 {
 	index = -1;
-	nodeA = NULL;
-	nodeB = NULL;
+	nodeA = -1;
+	nodeB = -1;
 	relation = "";
 }
-Edge::Edge(Node* n1, Node* n2, string rel, int ind)
+Edge::Edge(int edgeIndex, string rel, int n1, int n2)
 {
-	index = ind;
+	index = edgeIndex;
 	nodeA = n1;
 	nodeB = n2;
 	relation = rel;
