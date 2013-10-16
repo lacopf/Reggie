@@ -3,6 +3,7 @@
 #define _node_h_
 
 #include <iostream>
+#include <map>
 #include <string>
 #include <vector>
 using namespace std;
@@ -15,7 +16,7 @@ class Node{
 	  vector<string> tags;
 	  int index;
 	  Node* parent;
-	  //vector<Edge*> edges;
+	  vector<Edge*> edges;
 	  
 	public:
 	  inline int getIndex() {return index;}
@@ -24,7 +25,7 @@ class Node{
 	  Node();
 	  Node(string info, int ind, Node* par);
 
-	  //void inline add_edge(Edge* edg) {edges.push_back(edg);}
+	  void inline add_edge(Edge* edg) {edges.push_back(edg);}
 	  inline void addTag(string tag) {tags.push_back(tag);}
 
 	  bool hasTag(string tag);
@@ -34,10 +35,10 @@ class Node{
 Node::Node()
 {
 	vector<string> tempt;
-	//vector<Edge*> tempe;
+	vector<Edge*> tempe;
 
 	tags = tempt;
-	//edges = tempe;
+	edges = tempe;
 	information = "";
 	index = -1;
 	parent = NULL;
@@ -45,15 +46,15 @@ Node::Node()
 Node::Node(string info, int ind, Node* par)
 {
 	vector<string> tempt;
-	//vector<Edge*> tempe;
+	vector<Edge*> tempe;
 
 	tags = tempt;
-	//edges = tempe;
+	edges = tempe;
 	information = info;
 	index = ind;
 	parent = par;
 }
-bool Node::has_tag(string tag)
+bool Node::hasTag(string tag)
 {
 	for (int i = 0; i < tags.size(); i++)
 		if (tags[i].compare(tag) == 0)
