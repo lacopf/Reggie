@@ -15,30 +15,29 @@ class Node{
 	  vector<string> tags;
 	  int index;
 	  Node* parent;
-	  vector<Edge*> edges;
+	  //vector<Edge*> edges;
 	  
 	public:
-	  int inline get_index() {return index;}
-	  string inline get_information() {return information;}
-	  Node* inline get_parent() {return parent;}
+	  inline int getIndex() {return index;}
+	  inline string getInformation() {return information;}
 	  
 	  Node();
 	  Node(string info, int ind, Node* par);
 
-	  void inline add_edge(Edge* edg) {edges.push_back(edg);}
-	  void inline add_tag(string tag) {tags.push_back(tag);}
+	  //void inline add_edge(Edge* edg) {edges.push_back(edg);}
+	  inline void addTag(string tag) {tags.push_back(tag);}
 
-	  bool has_tag(string tag);
+	  bool hasTag(string tag);
   
 };
 
 Node::Node()
 {
 	vector<string> tempt;
-	vector<Edge*> tempe;
+	//vector<Edge*> tempe;
 
 	tags = tempt;
-	edges = tempe;
+	//edges = tempe;
 	information = "";
 	index = -1;
 	parent = NULL;
@@ -46,10 +45,10 @@ Node::Node()
 Node::Node(string info, int ind, Node* par)
 {
 	vector<string> tempt;
-	vector<Edge*> tempe;
+	//vector<Edge*> tempe;
 
 	tags = tempt;
-	edges = tempe;
+	//edges = tempe;
 	information = info;
 	index = ind;
 	parent = par;
