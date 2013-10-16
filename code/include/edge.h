@@ -4,25 +4,30 @@
 
 class Edge{
 	private:
-	  Node* node1;
-	  Node* node2;
+	  Node* nodeA;
+	  Node* nodeB;
 	  string relation;
 	  
 	public:
 	  Edge();
-	  Edge(Node* n1, Node* n2, string relation);
+	  Edge(Node* n1, Node* n2, string rel);
 	  
-	  string get_relation() {return relation;}
+	  string inline get_relation() {return relation;}
   
 };
 
 Edge::Edge()
 {
-	node1 = NULL;
-	node2 = NULL;
+	nodeA = NULL;
+	nodeB = NULL;
 	relation = "";
 }
-
+Edge::Edge(Node* n1, Node* n2, string rel)
+{
+	nodeA = n1;
+	nodeB = n2;
+	relation = rel;
+}
 
 
 

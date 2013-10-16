@@ -54,7 +54,7 @@ Node::Node(string info, int ind, Node* par)
 	index = ind;
 	parent = par;
 }
-Node::has_tag(string tag)
+bool Node::has_tag(string tag)
 {
 	for (int i = 0; i < tags.size(); i++)
 		if (tags[i].compare(tag) == 0)
