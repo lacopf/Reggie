@@ -12,21 +12,28 @@ using namespace std;
 
 class Node{
 	private:
+      Node* parent;
 	  string information;
 	  vector<string> tags;
 	  int index;
-	  Node* parent;
-	  vector<Edge*> edges;
+      vector<Edge*> in_edges;
+      vector<Edge*> out_edges;
 	  
 	public:
 	  inline int getIndex() {return index;}
 	  inline string getInformation() {return information;}
+      inline vector<Edge*> getInEdges(){return in_edges;}
+      inline vector<Edge*> getOutEdges(){return out_edges;}
 	  
 	  Node();
-	  Node(string info, int ind, Node* par);
+	  Node(string info, int ind, vector<string> new_tags, Node* par);
 
-	  void inline add_edge(Edge* edg) {edges.push_back(edg);}
+	  void inline addInEdge(Edge* edg) {in_edges.push_back(edg);}
+	  void inline addOutEdge(Edge* edg) {out_edges.push_back(edg);}
+      void removeInEdge(Edge* edg);
+      void removeOutEdge(Edge* edg);
 	  inline void addTag(string tag) {tags.push_back(tag);}
+      inline void setIndex(int ind){index = ind;}
 
 	  bool hasTag(string tag);
   
@@ -38,18 +45,19 @@ Node::Node()
 	vector<Edge*> tempe;
 
 	tags = tempt;
-	edges = tempe;
+	in_edges = tempe;
+    out_edges = tempe;
 	information = "";
 	index = -1;
 	parent = NULL;
 }
-Node::Node(string info, int ind, Node* par)
+Node::Node(string info, int ind, vector<string> new_tags, Node* par)
 {
-	vector<string> tempt;
 	vector<Edge*> tempe;
 
-	tags = tempt;
-	edges = tempe;
+	tags = new_tags;
+	in_edges = tempe;
+    out_edges = tempe;
 	information = info;
 	index = ind;
 	parent = par;
@@ -61,6 +69,20 @@ bool Node::hasTag(string tag)
 			return true;
 
 	return false;
+}
+
+void Node::removeInEdge(Edge* edg){
+    int i=0;
+    while(i!=in_edges.size() && in_edges[i]!=edg){i++;}
+    if(i == in_edges.size()){cout << "node does not contain this edge" << endl;}
+    else{in_edges[i] = in_edges.back(); in_edges.pop_back();}
+}
+
+void Node::removeOutEdge(Edge* edg){
+    int i=0;
+    while(i!=out_edges.size() && out_edges[i]!=edg){i++;}
+    if(i == out_edges.size()){cout << "node does not contain this edge" << endl;}
+    else{out_edges[i] = out_edges.back(); out_edges.pop_back();}
 }
 
 #endif

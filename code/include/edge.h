@@ -16,6 +16,8 @@ class Edge{
 	  inline string getRelation() {return relation;}
 	  inline int getNodeA() {return nodeA;}
 	  inline int getNodeB() {return nodeB;}
+      inline int getIndex() {return index;}
+      inline void setIndex(int ind){index = ind;}
   
 };
 
