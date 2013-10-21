@@ -95,20 +95,20 @@ void Graph::removeNode(int index){
 
 //prints all in and out edges for each node in the graph
 void Graph::printGraph(){
-    for(int i=0; i<nodes.size(); i++){
-        cout << i << ": " << endl;
-        cout << "    in edges: ";
-        const vector<Edge*>& in_edges = nodes[i].getInEdges();
-        for(int j=0; j<in_edges.size(); j++){
-            cout << (in_edges[j]->getNodeA)()<< " ";  
-        }
-        cout << endl;
-        cout << "    out edges: ";
-        const vector<Edge*>& out_edges = nodes[i].getOutEdges();
-        for(int j=0; j<out_edges.size(); j++){
-            cout << (out_edges[j]->getNodeB)()<< " ";  
-        }
-        cout << endl;
-    }
+	for(int i=0; i<nodes.size(); i++){
+		cout << i << ": " << endl;
+		cout << "    in edges: ";
+		const vector<Edge*>& in_edges = nodes[i].getInEdges();
+		for(int j=0; j<in_edges.size(); j++){
+			cout << (in_edges[j]->getNodeA)()<< " ";  
+		}
+		cout << endl;
+		cout << "    out edges: ";
+		const vector<Edge*>& out_edges = nodes[i].getOutEdges();
+		for(int j=0; j<out_edges.size(); j++){
+			cout << (out_edges[j]->getNodeB)()<< " ";  
+		}
+		cout << endl;
+	}
 }
 #endif
