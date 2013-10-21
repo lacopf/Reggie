@@ -21,9 +21,11 @@ int main(int argc, char *argv[])
 	Graph graph;
 	
 	cout << "Welcome to OpenTextReggieTextBabelGraphTextReggieOpenGraph!May I take your order?\n1. Create Root Node\n: ";
-	while(cin.get() != 1)
+	cin >> input;
+	while(input != "1")
 	{
 		cout << "I'm sorry.\nThat is not a valid menu option.\nPlease, select again.\n1. Create Root Node\n: ";
+		cin >> input;
 	}
 	cout << "Thank you for selecting \"Create Root Node\".\nPlease input a single piece of information to identify your root node.\n: ";
 	cin >> info;
@@ -38,51 +40,54 @@ int main(int argc, char *argv[])
 	while(true)
 	{
 		cout << "\n\nPlease, select your next task from the menu.\n1. Display Graph\n2. Add Node\n3. Remove Node\n4. Add Edge\n5. Remove Edge\n: ";
-		
-		switch(cin.get())
+		cin >> input;
+		if(input == "1")
 		{
-			case 1:
-				graph.printGraph();
-				break;
-			case 2:
-				cout << "Input info: ";
-				cin >> info;
-				cout << "Input tags: ";
-				cin >> input;
-				graph.printNodes();
-				cout << "Choose a parent node: ";
-				cin >> index1;
-				graph.addNode(info, parse(input), index1);
-				break;
-			case 3:
-				graph.printNodes();
-				cout << "Choose a node to remove: ";
-				cin >> index1;
-				graph.removeNode(index1);
-				break;
-			case 4:
-				graph.printNodes();
-				cout << "Choose a the first node: ";
-				cin >> index1;
-				cout << "Choose a the second node: ";
-				cin >> index2;
-				cout << "Input the relation: ";
-				cin >> input;
-				graph.addEdge(index1, index2, input);
-				break;
-			case 5:
-				graph.printNodes();
-				cout << "Choose a the first node: ";
-				cin >> index1;
-				cout << "Choose a the second node: ";
-				cin >> index2;
-				cout << "Input the relation: ";
-				cin >> input;
-				graph.addEdge(index1, index2, input);
-				break;
-			default:
-				cout << "BAD BAD BAD BAD BAD\n\n";
-				break;
+			graph.printGraph();
+		}
+		else if(input == "2")
+		{
+			cout << "Input info: ";
+			cin >> info;
+			cout << "Input tags: ";
+			cin >> input;
+			graph.printNodes();
+			cout << "Choose a parent node: ";
+			cin >> index1;
+			graph.addNode(info, parse(input), index1);
+		}
+		else if(input == "3")
+		{
+			graph.printNodes();
+			cout << "Choose a node to remove: ";
+			cin >> index1;
+			graph.removeNode(index1);
+		}
+		else if(input == "4")
+		{
+			graph.printNodes();
+			cout << "Choose a the first node: ";
+			cin >> index1;
+			cout << "Choose a the second node: ";
+			cin >> index2;
+			cout << "Input the relation: ";
+			cin >> input;
+			graph.addEdge(index1, index2, input);
+		}
+		else if(input == "5")
+		{
+			graph.printNodes();
+			cout << "Choose a the first node: ";
+			cin >> index1;
+			cout << "Choose a the second node: ";
+			cin >> index2;
+			cout << "Input the relation: ";
+			cin >> input;
+			graph.addEdge(index1, index2, input);
+		}
+		else
+		{
+			cout << "BAD BAD BAD BAD BAD\n\n";
 		}
 	}
 
