@@ -15,7 +15,8 @@ class Graph
 
 		inline void addNode(Node node){ nodes.push_back(node); }
         void addNode(string info, vector<string> tags, int index);
-		inline void addEdge(Edge edge){ edges.push_back(edge); }
+		inline void addEdge(int n1, int n2, string rel){ edges.push_back(Edge(edges.size(), rel, n1, n2)); }
+        void printNodes();
         void removeEdge(int index);
         void removeNode(int index);
         void printGraph();
@@ -30,6 +31,12 @@ class Graph
 void Graph::addNode(string info, vector<string> tags, int index){
     Node n1(info, index, tags, NULL);
     nodes.push_back(n1);
+}
+
+void Graph::printNodes(){
+    for(int i=0; i<nodes.size(); i++){
+        cout << i << ": " << nodes[i].getInformation() << endl;
+    }
 }
 
 //Removes an edge at index position in edges
