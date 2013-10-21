@@ -13,9 +13,9 @@ class Graph
 		vector<Node> getNodes(){ return nodes; }
 		vector<Edge> getEdges(){ return edges; }
 
-		inline void addNode(Node node){ nodes.push_back(node); }
+	inline void addNode(Node node){ nodes.push_back(node); }
         void addNode(string info, vector<string> tags, int index);
-		void addEdge(int n1, int n2, string rel);
+	void addEdge(int n1, int n2, string rel);
         void printNodes();
         void removeEdge(int index);
         void removeNode(int index);
@@ -29,39 +29,44 @@ class Graph
 
 
 void Graph::addNode(string info, vector<string> tags, int index){
-    Node n1(info, index, tags, NULL);
-    nodes.push_back(n1);
+	Node n1(info, index, tags, NULL);
+	nodes.push_back(n1);
+    
+	//parent edge
+	if(index != -1)
+	{
+		addEdge(index, nodes.size() - 1, "tree_edge");
+	}
 }
 
 void Graph::addEdge(int n1, int n2, string rel){
-    Edge e(edges.size(), rel, n1, n2);
-    edges.push_back(e);
-    Edge* p = &(edges.back());
-    nodes[n2].addInEdge(p);
-    nodes[n1].addOutEdge(p);    
+	Edge e(edges.size(), rel, n1, n2);
+	edges.push_back(e);
+	Edge* p = &(edges.back());
+	nodes[n2].addInEdge(p);
+	nodes[n1].addOutEdge(p);    
 }
 
 void Graph::printNodes(){
-    for(int i=0; i<nodes.size(); i++){
-        cout << i << ": " << nodes[i].getInformation() << endl;
-    }
+	for(int i=0; i<nodes.size(); i++){
+		cout << i << ": " << nodes[i].getInformation() << endl;
+	}
 }
 
 //Removes an edge at index position in edges
 void Graph::removeEdge(int index){
+	//removes edge from source node
+	Node& n1 = nodes[(edges[index]).getNodeA()];
+	n1.removeOutEdge(&edges[index]);
 
-    //removes edge from source node
-    Node& n1 = nodes[(edges[index]).getNodeA()];
-    n1.removeOutEdge(&edges[index]);
-
-    //removes edge from target node    
-    Node& n2 = nodes[(edges[index]).getNodeB()];
-    n2.removeInEdge(&edges[index]);
+	//removes edge from target node    
+	Node& n2 = nodes[(edges[index]).getNodeB()];
+	n2.removeInEdge(&edges[index]);
     
-    //moves back of edges to index position and pops back
-    edges[index] = edges.back();
-    edges[index].setIndex(index);
-    edges.pop_back();
+	//moves back of edges to index position and pops back
+	edges[index] = edges.back();
+	edges[index].setIndex(index);
+	edges.pop_back();
 }
 
 
