@@ -15,7 +15,7 @@ class Graph
 
 		inline void addNode(Node node){ nodes.push_back(node); }
         void addNode(string info, vector<string> tags, int index);
-		inline void addEdge(int n1, int n2, string rel){ edges.push_back(Edge(edges.size(), rel, n1, n2)); }
+		void addEdge(int n1, int n2, string rel);
         void printNodes();
         void removeEdge(int index);
         void removeNode(int index);
@@ -31,6 +31,14 @@ class Graph
 void Graph::addNode(string info, vector<string> tags, int index){
     Node n1(info, index, tags, NULL);
     nodes.push_back(n1);
+}
+
+void Graph::addEdge(int n1, int n2, string rel){
+    Edge e(edges.size(), rel, n1, n2);
+    edges.push_back(e);
+    Edge* p = &(edges.back());
+    nodes[n2].addInEdge(p);
+    nodes[n1].addOutEdge(p);    
 }
 
 void Graph::printNodes(){
@@ -84,16 +92,16 @@ void Graph::removeNode(int index){
 void Graph::printGraph(){
     for(int i=0; i<nodes.size(); i++){
         cout << i << ": " << endl;
-        cout << "in edges: ";
+        cout << "    in edges: ";
         const vector<Edge*>& in_edges = nodes[i].getInEdges();
         for(int j=0; j<in_edges.size(); j++){
-            cout << in_edges[i]->getNodeA() << " ";  
+            cout << (in_edges[j]->getNodeA)()<< " ";  
         }
         cout << endl;
-        cout << "out edges: ";
+        cout << "    out edges: ";
         const vector<Edge*>& out_edges = nodes[i].getOutEdges();
         for(int j=0; j<out_edges.size(); j++){
-            cout << out_edges[i]->getNodeB() << " ";  
+            cout << (out_edges[j]->getNodeB)()<< " ";  
         }
         cout << endl;
     }
