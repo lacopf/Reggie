@@ -46,7 +46,7 @@ Node::Node()
 
 	tags = tempt;
 	in_edges = tempe;
-    out_edges = tempe;
+    	out_edges = tempe;
 	information = "";
 	index = -1;
 	parent = NULL;
@@ -58,7 +58,7 @@ Node::Node(string info, int ind, vector<string> new_tags, Node* par)
 
 	tags = new_tags;
 	in_edges = tempe;
-    out_edges = tempe;
+ 	out_edges = tempe;
 	information = info;
 	index = ind;
 	parent = par;

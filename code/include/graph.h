@@ -69,24 +69,28 @@ void Graph::removeEdge(int index){
 }
 
 void Graph::removeNode(int index){
-	Node& n = nodes[index];
+	if(index != 0){
+		Node& n = nodes[index];
+		//removes all ingoing edges from graph
+		const vector<Edge*>& inedges = n.getInEdges();
+		for(int i=0; i<inedges.size(); i++){
+			removeEdge(inedges[i] -> getIndex());
+		}
 
-	//removes all ingoing edges from graph
-	const vector<Edge*>& inedges = n.getInEdges();
-	for(int i=0; i<inedges.size(); i++){
-		removeEdge(inedges[i] -> getIndex());
+		//removes all outgoing edges from graph
+		const vector<Edge*>& outedges = n.getOutEdges();
+		for(int i=0; i<outedges.size(); i++){
+			removeEdge(outedges[i] -> getIndex());
+		}
+
+		//removes node from nodes vector    
+		nodes[index] = nodes.back();
+		nodes[index].setIndex(index);
+		nodes.pop_back();    
 	}
-
-	//removes all outgoing edges from graph
-	const vector<Edge*>& outedges = n.getOutEdges();
-	for(int i=0; i<outedges.size(); i++){
-		removeEdge(outedges[i] -> getIndex());
+	else{
+		cout << "You cannot delete the root node" << endl;
 	}
-
-	//removes node from nodes vector    
-	nodes[index] = nodes.back();
-	nodes[index].setIndex(index);
-	nodes.pop_back();    
 }
 
 
