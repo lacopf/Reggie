@@ -41,10 +41,13 @@ int main(int argc, char *argv[])
 	{
 		cout << "\n\nPlease, select your next task from the menu.\n1. Display Graph\n2. Add Node\n3. Remove Node\n4. Add Edge\n5. Remove Edge\n: ";
 		cin >> input;
+
+		//print graph
 		if(input == "1")
 		{
 			graph.printGraph();
 		}
+		//add node
 		else if(input == "2")
 		{
 			cout << "Input info: ";
@@ -56,6 +59,7 @@ int main(int argc, char *argv[])
 			cin >> index1;
 			graph.addNode(info, parse(input), index1);
 		}
+		//remove node
 		else if(input == "3")
 		{
 			graph.printNodes();
@@ -63,6 +67,7 @@ int main(int argc, char *argv[])
 			cin >> index1;
 			graph.removeNode(index1);
 		}
+		//add edge
 		else if(input == "4")
 		{
 			graph.printNodes();
@@ -74,6 +79,7 @@ int main(int argc, char *argv[])
 			cin >> input;
 			graph.addEdge(index1, index2, input);
 		}
+		//remove edge
 		else if(input == "5")
 		{
 			graph.printNodes();
@@ -83,7 +89,7 @@ int main(int argc, char *argv[])
 			cin >> index2;
 			cout << "Input the relation: ";
 			cin >> input;
-			graph.addEdge(index1, index2, input);
+			graph.removeEdge(index1, index2, input);
 		}
 		else
 		{
