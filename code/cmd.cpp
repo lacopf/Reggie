@@ -87,9 +87,17 @@ int main(int argc, char *argv[])
 			cin >> index1;
 			cout << "Choose a the second node: ";
 			cin >> index2;
-			cout << "Input the relation: ";
-			cin >> input;
-			graph.removeEdge(index1, index2, input);
+
+			vector<Edge> edgs = graph.getEdges();
+			for (int i = 0; i < edgs.size(); i++)
+			{
+				if (edgs[i].getNodeA() == index1 && edgs[i].getNodeB() == index2)
+				{
+					graph.removeEdge(i);
+					break;
+				}
+
+			}
 		}
 		else
 		{

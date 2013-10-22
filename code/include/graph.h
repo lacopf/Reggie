@@ -53,7 +53,6 @@ void Graph::printNodes(){
 	}
 }
 
-//Removes an edge at index position in edges
 void Graph::removeEdge(int index){
 	//removes edge from source node
 	Node& n1 = nodes[(edges[index]).getNodeA()];
@@ -69,8 +68,6 @@ void Graph::removeEdge(int index){
 	edges.pop_back();
 }
 
-
-//removes a node a given index from nodes vector
 void Graph::removeNode(int index){
 	Node& n = nodes[index];
 
