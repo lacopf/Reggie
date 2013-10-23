@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
 	string info;
 	Graph graph;
 	
-	cout << "Welcome to OpenTextReggieTextBabelGraphTextReggieOpenGraph!May I take your order?\n1. Create Root Node\n: ";
+	cout << "Welcome to Reggie's Body!May I bake you a cake?\n1. Create Root Node\n: ";
 	cin >> input;
 	while(input != "1")
 	{
@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
 			cin >> index1;
 			
 			//checks if the parent exists
-			if (index1 >= graph.getNodes().size()  || index1 < 0)
+			if (index1 >= graph.getNodes().size()  || index1 < 0 || cin.fail())
 				cout << "Not a valid parent node\n";
 			else	
 				graph.addNode(info, parse(input), index1);
@@ -81,9 +81,9 @@ int main(int argc, char *argv[])
 		else if(input == "4")
 		{
 			graph.printNodes();
-			cout << "Choose a the first node: ";
+			cout << "Choose the first node: ";
 			cin >> index1;
-			cout << "Choose a the second node: ";
+			cout << "Choose the second node: ";
 			cin >> index2;
 			cout << "Input the relation: ";
 			cin >> input;
@@ -99,9 +99,9 @@ int main(int argc, char *argv[])
 		else if(input == "5")
 		{
 			graph.printNodes();
-			cout << "Choose a the first node: ";
+			cout << "Choose the first node: ";
 			cin >> index1;
-			cout << "Choose a the second node: ";
+			cout << "Choose the second node: ";
 			cin >> index2;
 
 			vector<Edge> edgs = graph.getEdges();
