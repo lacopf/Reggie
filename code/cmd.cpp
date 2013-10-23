@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
 	string info;
 	Graph graph;
 	
-	cout << "Welcome to OpenTextReggieTextBabelGraphTextReggieOpenGraph!May I take your order?\n1. Create Root Node\n: ";
+	cout << "Welcome to Reggie's Body!May I bake you a cake?\n1. Create Root Node\n: ";
 	cin >> input;
 	while(input != "1")
 	{
@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
 	
 	while(true)
 	{
-		cout << "\n\nPlease, select your next task from the menu.\n1. Display Graph\n2. Add Node\n3. Remove Node\n4. Add Edge\n5. Remove Edge\n: ";
+		cout << "\n\nPlease, select your next task from the menu.\n1. Display Graph\n2. Add Node\n3. Remove Node\n4. Add Edge\n5. Remove Edge\n6. Save Graph\n: ";
 		cin >> input;
 
 		//print graph
@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
 			cin >> index1;
 			
 			//checks if the parent exists
-			if (index1 >= graph.getNodes().size()  || index1 < 0)
+			if (index1 >= graph.getNodes().size()  || index1 < 0 || cin.fail())
 				cout << "Not a valid parent node\n";
 			else	
 				graph.addNode(info, parse(input), index1);
@@ -81,15 +81,15 @@ int main(int argc, char *argv[])
 		else if(input == "4")
 		{
 			graph.printNodes();
-			cout << "Choose a the first node: ";
+			cout << "Choose the first node: ";
 			cin >> index1;
-			cout << "Choose a the second node: ";
+			cout << "Choose the second node: ";
 			cin >> index2;
 			cout << "Input the relation: ";
 			cin >> input;
 			int bound = graph.getNodes().size();
 			
-			//makes sure both nodes exists
+			//makes sure both nodes exist
 			if ( index1 >= bound || index1 < 0 || index2 >= bound || index2 < 0)
 				cout << "Not a valid node assignment\n";
 			else
@@ -99,9 +99,9 @@ int main(int argc, char *argv[])
 		else if(input == "5")
 		{
 			graph.printNodes();
-			cout << "Choose a the first node: ";
+			cout << "Choose the first node: ";
 			cin >> index1;
-			cout << "Choose a the second node: ";
+			cout << "Choose the second node: ";
 			cin >> index2;
 
 			vector<Edge> edgs = graph.getEdges();
@@ -117,6 +117,13 @@ int main(int argc, char *argv[])
 			}
 			if (i == edgs.size() )
 				cout << "Edge wasn't removed/doesn't exist\n";
+		}
+		else if(input == "6")
+		{
+			string filen;
+			cout << "Enter a filename: ";
+			cin >> filen;
+			graph.save(filen);			
 		}
 		else
 		{
