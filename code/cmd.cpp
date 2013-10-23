@@ -57,7 +57,12 @@ int main(int argc, char *argv[])
 			graph.printNodes();
 			cout << "Choose a parent node: ";
 			cin >> index1;
-			graph.addNode(info, parse(input), index1);
+			
+			//checks if the parent exists
+			if (index1 >= graph.getNodes().size()  || index1 < 0)
+				cout << "Not a valid parent node\n";
+			else	
+				graph.addNode(info, parse(input), index1);
 		}
 		//remove node
 		else if(input == "3")
@@ -65,10 +70,10 @@ int main(int argc, char *argv[])
 			graph.printNodes();
 			cout << "Choose a node to remove: ";
 			cin >> index1;
-			if (index1 >= graph.getNodes().size())
+
+			//node out of bounds, function prevents root node deletion
+			if ( index1 >= graph.getNodes().size()  || index1 < 0)
 				cout << "Node does not exist\n";
-			else if (index1 == 0)
-				cout << "Can't remove the root node\n";
 			else
 				graph.removeNode(index1);
 		}
@@ -82,7 +87,13 @@ int main(int argc, char *argv[])
 			cin >> index2;
 			cout << "Input the relation: ";
 			cin >> input;
-			graph.addEdge(index1, index2, input);
+			int bound = graph.getNodes().size();
+			
+			//makes sure both nodes exists
+			if ( index1 >= bound || index1 < 0 || index2 >= bound || index2 < 0)
+				cout << "Not a valid node assignment\n";
+			else
+				graph.addEdge(index1, index2, input);
 		}
 		//remove edge
 		else if(input == "5")
@@ -111,6 +122,9 @@ int main(int argc, char *argv[])
 		{
 			cout << "BAD BAD BAD BAD BAD\n\n";
 		}
+		
+		//flush input buffer to prevent infinite looping on bad input
+		cin.clear(); cin.ignore(999999,'\n'); 
 	}
 
 	return 0;
