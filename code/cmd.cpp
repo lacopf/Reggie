@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
 	
 	while(true)
 	{
-		cout << "\n\nPlease, select your next task from the menu.\n1. Display Graph\n2. Add Node\n3. Remove Node\n4. Add Edge\n5. Remove Edge\n: ";
+		cout << "\n\nPlease, select your next task from the menu.\n1. Display Graph\n2. Add Node\n3. Remove Node\n4. Add Edge\n5. Remove Edge\n6. Save Graph\n: ";
 		cin >> input;
 
 		//print graph
@@ -117,6 +117,13 @@ int main(int argc, char *argv[])
 			}
 			if (i == edgs.size() )
 				cout << "Edge wasn't removed/doesn't exist\n";
+		}
+		else if(input == "6")
+		{
+			string filen;
+			cout << "Enter a filename: ";
+			cin >> filen;
+			graph.save(filen);			
 		}
 		else
 		{

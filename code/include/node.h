@@ -11,28 +11,30 @@ using namespace std;
 
 class Node{
         private:
-              Node* parent;
+         Node* parent;
          string information;
          vector<string> tags;
          int index;
-               vector<Edge*> in_edges;
-              vector<Edge*> out_edges;
+         vector<Edge*> in_edges;
+         vector<Edge*> out_edges;
         
         public:
          inline int getIndex() {return index;}
          inline string getInformation() {return information;}
-               inline vector<Edge*> getInEdges(){return in_edges;}
-               inline vector<Edge*> getOutEdges(){return out_edges;}
+         inline vector<Edge*> getInEdges(){return in_edges;}
+         inline vector<Edge*> getOutEdges(){return out_edges;}
+		 inline vector<string> getTags() {return tags;}
+		 inline int getParentIndex() {if (parent != NULL) return parent->index; else return -1;}
         
          Node();
          Node(string info, int ind, vector<string> new_tags, Node* par);
 
          void inline addInEdge(Edge* edg) {in_edges.push_back(edg);}
          void inline addOutEdge(Edge* edg) {out_edges.push_back(edg);}
-               void removeInEdge(Edge* edg);
-               void removeOutEdge(Edge* edg);
+         void removeInEdge(Edge* edg);
+         void removeOutEdge(Edge* edg);
          inline void addTag(string tag) {tags.push_back(tag);}
-               inline void setIndex(int ind){index = ind;}
+         inline void setIndex(int ind){index = ind;}
 
          bool hasTag(string tag);
   
