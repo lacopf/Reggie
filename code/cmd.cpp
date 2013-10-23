@@ -89,7 +89,7 @@ int main(int argc, char *argv[])
 			cin >> input;
 			int bound = graph.getNodes().size();
 			
-			//makes sure both nodes exists
+			//makes sure both nodes exist
 			if ( index1 >= bound || index1 < 0 || index2 >= bound || index2 < 0)
 				cout << "Not a valid node assignment\n";
 			else

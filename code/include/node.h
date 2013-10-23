@@ -73,17 +73,23 @@ bool Node::hasTag(string tag)
 }
 //removes an edge coming into a node
 void Node::removeInEdge(Edge* edg){
-    int i=0;
-    while(i!=in_edges.size() && in_edges[i]!=edg){i++;}
-    if(i == in_edges.size()){cout << "node does not contain this edge" << endl;}
-    else{in_edges[i] = in_edges.back(); in_edges.pop_back();}
+    if(edg->getIndex() >= in_edges.size()){
+        cout << "node does not contain this edge" << endl;
+    }
+    else{
+        in_edges[edg->getIndex()] = in_edges.back();
+        in_edges.pop_back();
+    }
 }
 //removes an edge going into a node
 void Node::removeOutEdge(Edge* edg){
-    int i=0;
-    while(i!=out_edges.size() && out_edges[i]!=edg){i++;}
-    if(i == out_edges.size()){cout << "node does not contain this edge" << endl;}
-    else{out_edges[i] = out_edges.back(); out_edges.pop_back();}
+    if(edg->getIndex() >= out_edges.size()){
+        cout << "node does not contain this edge" << endl;
+    }
+    else{
+        out_edges[edg->getIndex()] = out_edges.back();
+        out_edges.pop_back();
+    }
 }
 
 #endif
