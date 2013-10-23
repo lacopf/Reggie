@@ -1,6 +1,8 @@
 #ifndef _GRAPH
 #define _GRAPH
 
+#include <stdio.h>
+#include <fstream>
 #include "node.h"
 #include "edge.h"
 #include <vector>
@@ -10,8 +12,8 @@ using namespace std;
 class Graph
 {
         public:
-                vector<Node> getNodes(){ return nodes; }
-                vector<Edge> getEdges(){ return edges; }
+          vector<Node> getNodes(){ return nodes; }
+          vector<Edge> getEdges(){ return edges; }
 
         inline void addNode(Node node){ nodes.push_back(node); }
         void addNode(string info, vector<string> tags, int index);
@@ -20,7 +22,8 @@ class Graph
         void removeEdge(int index);
         void removeNode(int index);
         void printGraph();
-
+		void save(string filename);
+		void draw();
                 
         private:
                 vector<Node> nodes;
@@ -112,4 +115,73 @@ void Graph::printGraph(){
                 cout << endl;
         }
 }
+//saves the graph to the file
+void Graph::save(string filename)
+{
+	//open file for saving info as .xml
+	filename += ".xml";
+
+	cout << "The filename is " << filename << endl;
+
+	ofstream saveFile;
+	saveFile.open(filename.c_str());
+	
+	saveFile << "-<nodeList>\n";
+	//save all the nodes
+	for (int i = 0; i < nodes.size(); i++)
+	{
+		saveFile << " -<node>\n";
+
+		//save index and node information
+		saveFile << "   <index>" << nodes[i].getIndex() << "</index>" << endl;
+		saveFile << "   <info>" << nodes[i].getInformation() << "</info>" << endl;
+
+		//save node tags
+		vector<string> tags = nodes[i].getTags();
+		saveFile << "   <tags>" << tags[0];
+		for (int tg = 1; tg < tags.size(); tg++)
+			saveFile << "," << tags[tg];
+		saveFile << "</tags>" << endl;
+
+		//save in edges by edge index
+		vector<Edge*> inedges = nodes[i].getInEdges();
+		if ( inedges.size() != 0 )
+		{	
+			saveFile << "   <inedges>" << inedges[0]->getIndex();
+			for (int ne = 1; ne < inedges.size(); ne++)
+				saveFile << "," << inedges[ne]->getIndex();
+			saveFile << "</inedges>" << endl;
+		}
+
+		//save out edges by edge index
+		vector<Edge*> oedges = nodes[i].getOutEdges();
+		if ( oedges.size() != 0 )
+		{
+			saveFile << "   <outedges>" << oedges[0]->getIndex();
+			for (int ne = 1; ne < oedges.size(); ne++)
+				saveFile << "," << oedges[ne]->getIndex();
+			saveFile << "</outedges>" << endl;
+		}
+
+		saveFile << "  </node>" << endl;
+	}
+	
+	saveFile << "\n-<edgeList>\n";
+	//save all the edges
+	for (int i = 0; i < edges.size(); i++)
+	{
+		saveFile << " -<edge>\n";
+
+		//save index and node information
+		saveFile << "   <index>" << edges[i].getIndex() << "</index>" << endl;
+		saveFile << "   <relation>" << edges[i].getRelation() << "</relation>" << endl;
+		saveFile << "   <nodeA>" << edges[i].getNodeA() << "</nodeA>" << endl;
+		saveFile << "   <nodeB>" << edges[i].getNodeB() << "</nodeB>" << endl;		
+
+		saveFile << "  </edge>" << endl;
+	}
+	
+	saveFile.close();
+}
+
 #endif
