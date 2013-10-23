@@ -65,7 +65,12 @@ int main(int argc, char *argv[])
 			graph.printNodes();
 			cout << "Choose a node to remove: ";
 			cin >> index1;
-			graph.removeNode(index1);
+			if (index1 >= graph.getNodes().size())
+				cout << "Node does not exist\n";
+			else if (index1 == 0)
+				cout << "Can't remove the root node\n";
+			else
+				graph.removeNode(index1);
 		}
 		//add edge
 		else if(input == "4")
@@ -89,7 +94,8 @@ int main(int argc, char *argv[])
 			cin >> index2;
 
 			vector<Edge> edgs = graph.getEdges();
-			for (int i = 0; i < edgs.size(); i++)
+			int i;
+			for (i = 0; i < edgs.size(); i++)
 			{
 				if (edgs[i].getNodeA() == index1 && edgs[i].getNodeB() == index2)
 				{
@@ -98,6 +104,8 @@ int main(int argc, char *argv[])
 				}
 
 			}
+			if (i == edgs.size() )
+				cout << "Edge wasn't removed/doesn't exist\n";
 		}
 		else
 		{
