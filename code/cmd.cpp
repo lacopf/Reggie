@@ -60,9 +60,13 @@ int main(int argc, char *argv[])
 			
 			//checks if the parent exists
 			if (index1 >= graph.getNodes().size()  || index1 < 0 || cin.fail())
+			{
 				cout << "Not a valid parent node\n";
-			else	
+			}
+			else
+			{	
 				graph.addNode(info, parse(input), index1);
+			}
 		}
 		//remove node
 		else if(input == "3")
@@ -73,9 +77,13 @@ int main(int argc, char *argv[])
 
 			//node out of bounds, function prevents root node deletion
 			if ( index1 >= graph.getNodes().size()  || index1 < 0)
+			{
 				cout << "Node does not exist\n";
+			}
 			else
+			{
 				graph.removeNode(index1);
+			}
 		}
 		//add edge
 		else if(input == "4")
@@ -91,9 +99,13 @@ int main(int argc, char *argv[])
 			
 			//makes sure both nodes exist
 			if ( index1 >= bound || index1 < 0 || index2 >= bound || index2 < 0)
+			{
 				cout << "Not a valid node assignment\n";
+			}
 			else
+			{
 				graph.addEdge(index1, index2, input);
+			}
 		}
 		//remove edge
 		else if(input == "5")
@@ -116,7 +128,9 @@ int main(int argc, char *argv[])
 
 			}
 			if (i == edgs.size() )
+			{
 				cout << "Edge wasn't removed/doesn't exist\n";
+			}
 		}
 		else if(input == "6")
 		{

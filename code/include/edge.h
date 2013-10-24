@@ -1,23 +1,24 @@
-#ifndef _edge_h_
-#define _edge_h_
+#ifndef _EDGE
+#define _EDGE
 
 #include "node.h"
 
-class Edge{
+class Edge
+{
 	private:
-	  int index;
-	  int nodeA, nodeB;
-	  string relation;
+		int index;
+		int nodeA, nodeB;
+		string relation;
 	  
 	public:
-	  Edge();
-	  Edge(int edgeIndex, string rel, int n1, int n2);
+		Edge();
+		Edge(int edgeIndex, string rel, int n1, int n2);
 	  
-	  inline string getRelation() {return relation;}
-	  inline int getNodeA() {return nodeA;}
-	  inline int getNodeB() {return nodeB;}
-      inline int getIndex() {return index;}
-      inline void setIndex(int ind){index = ind;}
+		inline string getRelation() {return relation;}
+		inline int getNodeA() {return nodeA;}
+		inline int getNodeB() {return nodeB;}
+		inline int getIndex() {return index;}
+		inline void setIndex(int ind){index = ind;}
   
 };
 

@@ -1,31 +1,31 @@
-#ifndef _point_h_
-#define _point_h_
+#ifndef _POINT
+#define _POINT
 
 #include "point.h"
 
 class Point
 {
 	private:
-		int x;
-		int y;
-		bool down;
+		double x;//x coordinate of the click
+		double y;//y coordinate of the click
+		bool down;//if it was down click
 	  
 	public:
-		Point(int i, int j, bool press)
+		Point(double i, double j, bool press)//constructor
 		{
 			x = i;
 			y = j;
 			down = press;
 		}
-		int getX()
+		double getX()//get x coordinate
 		{
 			return x;
 		}
-		int getY()
+		double getY()//get y coordinate
 		{
 			return y;
 		}
-		bool getDown()
+		bool getDown()//get down and boogie
 		{
 			return down;
 		}
