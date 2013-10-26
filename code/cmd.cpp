@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
 	string info;
 	Graph graph;
 	
-	cout << "Welcome to Reggie's Body!May I bake you a cake?\n1. Create Root Node\n: ";
+	cout << "Welcome to Reggie's Ready Body! May I be your Purple Pikmin?\n1. Create Root Node\n: ";
 	cin >> input;
 	while(input != "1")
 	{
@@ -39,7 +39,8 @@ int main(int argc, char *argv[])
 	
 	while(true)
 	{
-		cout << "\n\nPlease, select your next task from the menu.\n1. Display Graph\n2. Add Node\n3. Remove Node\n4. Add Edge\n5. Remove Edge\n6. Save Graph\n: ";
+		cout << "\n\nPlease, select your next task from the menu.\n1. Display Graph\n2. Add Node\n3. Remove Node\n4. Add Edge\n5. Remove Edge\n6. Save Graph\n";
+		cout << "7. Load Graph\n8. Quit\n:";
 		cin >> input;
 
 		//print graph
@@ -138,6 +139,20 @@ int main(int argc, char *argv[])
 			cout << "Enter a filename: ";
 			cin >> filen;
 			graph.save(filen);			
+		}
+		else if(input == "7")
+		{
+			string filen;
+			cout << "Enter a filename: ";
+			cin >> filen;
+			graph.load(filen);			
+		}
+		else if(input == "8")
+		{
+			cout << "Reggie thanks you for your time!\n";
+			char c;
+			cin >> c;	
+			exit (0);
 		}
 		else
 		{

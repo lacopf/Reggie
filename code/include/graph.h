@@ -3,7 +3,9 @@
 
 #include <stdio.h>
 #include <fstream>
+#include <string.h>
 #include <vector>
+#include <sstream>
 
 using namespace std;
 
@@ -24,6 +26,7 @@ class Graph
 		void removeNode(int index);
 		void printGraph();
 		void save(string filename);
+		void load(string filename);
 		void draw();
 
 	private:
@@ -34,7 +37,7 @@ class Graph
 
 void Graph::addNode(string info, vector<string> tags, int index)
 {
-	Node n1(info, index, tags, NULL);
+	Node n1(info, index, tags);
 	nodes.push_back(n1);
 
 	//parent edge
@@ -141,6 +144,7 @@ void Graph::save(string filename)
 	ofstream saveFile;
 	saveFile.open(filename.c_str());
 
+	saveFile << "<graph>\n";
 	saveFile << "-<nodeList>\n";
 	//save all the nodes
 	for (int i = 0; i < nodes.size(); i++)
@@ -186,7 +190,7 @@ void Graph::save(string filename)
 
 		saveFile << "  </node>" << endl;
 	}
-
+	saveFile << " </nodeList>\n";
 	saveFile << "\n-<edgeList>\n";
 	//save all the edges
 	for (int i = 0; i < edges.size(); i++)
@@ -202,7 +206,187 @@ void Graph::save(string filename)
 		saveFile << "  </edge>" << endl;
 	}
 
+	saveFile << " </edgeList>\n";
+	saveFile << "</graph>\n";
 	saveFile.close();
+}
+void Graph::load(string filename)
+{
+	//assume the filename has the proper extension
+	ifstream source;
+	source.open( filename.c_str() );
+	
+	string line = "";
+	Node dummyNode;
+	Edge dummyEdge;
+	vector<Node> loadedNodes;
+	vector<Edge> loadedEdges;
+
+	if (  !source.is_open() )
+	{
+		cout << "Invalid file name\n";
+		return;
+	}
+
+	getline( source, line, '\n');
+	if ( line.find("graph") == string::npos )
+	{
+		cout << "Not a graph file\n";
+		return;
+	}
+
+	getline( source, line, '\n');
+	if ( line.find("nodeList") == string::npos )
+	{
+		cout << "Not a valid file to load from\n";
+		return;
+	}	
+	
+	getline(source, line, '\n');
+	while ( line.find("/nodeList") == string::npos )
+	{
+		//new node information
+		int node_index;
+		string info;
+		vector<string> tags;
+		vector<int> nedges;
+		vector<int> oedges;
+
+		//get the line with the index information
+		getline(source, line, '\n');
+		int parse_index = line.find("<index>");
+		
+		//not a valid file
+		if (parse_index == string::npos)
+		{
+			cout << "Invalid load file\n";
+			return;
+		}
+
+		//get to the index location in the line
+		parse_index += 7;
+
+		if (line[parse_index] == '-')
+			node_index = -1;
+		else
+		{
+			char* number = &line[parse_index];
+			node_index = atoi( number );
+		}
+
+		//get the line with the node information
+		getline(source, line, '\n');
+		parse_index = line.find("<info>");
+		int endIndex = line.find("</info>");
+
+		//not a valid file
+		if (parse_index == string::npos || endIndex == string::npos)
+		{
+			cout << "Invalid load file\n";
+			return;
+		}
+		else
+		{
+			int len = endIndex - parse_index + 6;
+			info = line.substr(parse_index + 6, len);
+		}
+
+		//get the line with the tags
+		getline(source, line, '\n');
+		parse_index = line.find("<tags>");
+		endIndex = line.find("</tags>");
+
+		//not a valid file
+		if (parse_index == string::npos || endIndex == string::npos)
+		{
+			cout << "Invalid load file\n";
+			return;
+		}
+		else 
+		{
+			string tL = line.substr(parse_index + 6, endIndex - parse_index - 6);
+			char* tagList = &tL[0];
+
+			char* singleTag;
+			singleTag = strtok(tagList, ",");
+
+			while ( singleTag != NULL)
+			{
+				tags.push_back(singleTag);
+				singleTag = strtok(NULL, ",");
+			}
+		}
+
+		//get the line with the in edges
+		getline(source, line, '\n');
+		parse_index = line.find("<inedges>");
+		endIndex = line.find("</inedges>");
+
+		if (parse_index != string::npos)
+		{
+			string neL = line.substr(parse_index + 9, endIndex - parse_index - 9);
+			char* nedgeList = &neL[0];
+
+			char* singleEdge;
+			singleEdge = strtok(nedgeList, ",");
+
+			while ( singleEdge != NULL)
+			{
+				nedges.push_back( atoi(singleEdge) );
+				singleEdge = strtok(NULL, ",");
+			}
+			
+			//get the line with the out edges
+			getline(source, line, '\n');
+		}
+	
+		parse_index = line.find("<outedges>");
+		endIndex = line.find("</outedges>");
+
+		if (parse_index != string::npos)
+		{
+			string oeL = line.substr(parse_index + 10, endIndex - parse_index - 10);
+			char* oedgeList = &oeL[0];
+
+			char* singleEdge;
+			singleEdge = strtok(oedgeList, ",");
+
+			while ( singleEdge != NULL)
+			{
+				oedges.push_back( atoi(singleEdge) );
+				singleEdge = strtok(NULL, ",");
+			}
+			//get the line with the out edges
+			getline(source, line, '\n');
+		}
+
+		//if the next line is the end of the nodeList, the loop ends
+		//else, it continues reading in nodes
+		getline(source, line, '\n');
+
+		Node tempNode(info, node_index, tags);
+		loadedNodes.push_back(tempNode);
+		
+	}
+
+
+	//read in edges
+	//while ( line.find("/edgeList") == string::npos )
+	//{
+
+	//}
+
+	//close the input file
+	source.close();
+	
+	//clear the current graph object and load in the new vector of nodes and edges
+	nodes.clear();
+	edges.clear();
+
+	for (int i = 0; i < loadedNodes.size(); i++)
+		nodes.push_back(loadedNodes[i]);
+	for (int i = 0; i < loadedEdges.size(); i++)
+		edges.push_back(loadedEdges[i]);
 }
 
 #endif

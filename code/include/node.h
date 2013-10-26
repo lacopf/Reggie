@@ -12,7 +12,6 @@ using namespace std;
 class Node
 {
 	private:
-		Node* parent;
 		string information;
 		vector<string> tags;
 		int index;
@@ -25,10 +24,9 @@ class Node
 		inline vector<Edge*> getInEdges(){return in_edges;}
 		inline vector<Edge*> getOutEdges(){return out_edges;}
 		inline vector<string> getTags() {return tags;}
-		inline int getParentIndex() {if (parent != NULL) return parent->index; else return -1;}
 
 		Node();
-		Node(string info, int ind, vector<string> new_tags, Node* par);
+		Node(string info, int ind, vector<string> new_tags);
 
 		void inline addInEdge(Edge* edg) {in_edges.push_back(edg);}
 		void inline addOutEdge(Edge* edg) {out_edges.push_back(edg);}
@@ -47,13 +45,12 @@ Node::Node()
 
 	tags = tempt;
 	in_edges = tempe;
-		out_edges = tempe;
+	out_edges = tempe;
 	information = "";
 	index = -1;
-	parent = NULL;
 }
 //constructor with information
-Node::Node(string info, int ind, vector<string> new_tags, Node* par)
+Node::Node(string info, int ind, vector<string> new_tags)
 {
 	vector<Edge*> tempe;
 
@@ -62,7 +59,6 @@ Node::Node(string info, int ind, vector<string> new_tags, Node* par)
 	out_edges = tempe;
 	information = info;
 	index = ind;
-	parent = par;
 }
 //returns whether a node has a given tag
 bool Node::hasTag(string tag)
