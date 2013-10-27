@@ -221,6 +221,8 @@ void Graph::load(string filename)
 	Edge dummyEdge;
 	vector<Node> loadedNodes;
 	vector<Edge> loadedEdges;
+	vector<vector<int> > nodeInEdges;
+	vector<vector<int> > nodeOutEdges;
 
 	if (  !source.is_open() )
 	{
@@ -366,15 +368,81 @@ void Graph::load(string filename)
 
 		Node tempNode(info, node_index, tags);
 		loadedNodes.push_back(tempNode);
+		nodeInEdges.push_back(nedges);
+		nodeOutEdges.push_back(oedges);
 		
 	}
 
+	getline(source, line, '\n');
+	getline(source, line, '\n');
 
 	//read in edges
-	//while ( line.find("/edgeList") == string::npos )
-	//{
+	while ( line.find("/edgeList") == string::npos )
+	{
+		int edgeIndex;
+		string relation;
+		int nA,nB;
 
-	//}
+		getline(source, line, '\n');
+		getline(source, line, '\n');
+		
+		int parse_index = line.find("<index>");
+		if (parse_index == string::npos)
+		{
+			cout << "INDInvalid file to load from\n";
+			return;
+		}
+
+		char* p = &line[parse_index + 7];
+		edgeIndex = atoi( p );
+
+		getline(source, line, '\n');
+		parse_index = line.find("<relation>");
+		int endIndex = line.find("</relation>");
+		if (parse_index == string::npos || endIndex == string::npos)
+		{
+			cout << "RELInvalid file to load from\n";
+			return;
+		}
+
+		relation = line.substr(parse_index + 10, endIndex - parse_index - 10);
+
+		//get the Node A
+		getline(source, line, '\n');
+		parse_index = line.find("<nodeA>");
+		
+		if (parse_index == string::npos)
+		{
+			cout << "NAInvalid file to load from\n";
+			return;
+		}
+
+		p = &line[parse_index + 7];
+		nA = atoi( p );
+
+
+		//get Node B
+		getline(source, line, '\n');
+		parse_index = line.find("<nodeB>");
+		if (parse_index == string::npos)
+		{
+			cout << "NBInvalid file to load from\n";
+			return;
+		}
+
+
+		p = &line[parse_index + 7];
+		nB = atoi( p );
+
+		//chew up remainder of lines before next line of relevant info
+		getline(source, line, '\n');
+		getline(source, line, '\n');
+
+		//add read in info to list of read in edges
+		Edge tempEdge(edgeIndex, relation, nA, nB);
+		loadedEdges.push_back(tempEdge);
+		
+	}
 
 	//close the input file
 	source.close();
@@ -387,6 +455,30 @@ void Graph::load(string filename)
 		nodes.push_back(loadedNodes[i]);
 	for (int i = 0; i < loadedEdges.size(); i++)
 		edges.push_back(loadedEdges[i]);
+
+	//reassign edges to nodes
+	for (int i = 0; i < nodes.size(); i++)
+	{
+		for (int numInEdges = 0; numInEdges < nodeInEdges[i].size(); numInEdges++)
+		{
+			for(int searchEdges = 0; searchEdges < edges.size(); searchEdges++)
+				if (edges[searchEdges].getIndex() == nodeInEdges[i][numInEdges])
+				{
+					nodes[i].addInEdge(&edges[searchEdges]);
+				}
+		}
+		for (int numOutEdges = 0; numOutEdges < nodeOutEdges[i].size(); numOutEdges++)
+		{
+			for(int searchEdges = 0; searchEdges < edges.size(); searchEdges++)
+				if (edges[searchEdges].getIndex() == nodeOutEdges[i][numOutEdges])
+				{
+					nodes[i].addOutEdge(&edges[searchEdges]);
+				}
+		}
+	}
+	
+	cout << "File was successfully loaded!\n";
+
 }
 
 #endif
