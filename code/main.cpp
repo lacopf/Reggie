@@ -18,7 +18,10 @@ using namespace std;
 //global variables
 Graph graph;
 string MODE;
-vector<point> points;
+vector<Point> points;
+int HEIGHT = 500;
+int WIDTH = 500;
+
 
 //function prototypes
 void drawScene();
@@ -51,8 +54,16 @@ int main(int argc, char *argv[])
 void drawScene()
 {
 	glClear(GL_COLOR_BUFFER_BIT);
-	glColor3f(0.0, 0.0, 0.0);
-	graph.draw();
+	glColor3f(1.0, 1.0, 1.0);
+	//filler
+	glBegin(GL_LINE_LOOP);
+		for (int i=0; i < 360; i++)
+		{
+			float degInRad = i*M_PI/180;
+			glVertex2f(cos(degInRad)*10+50,sin(degInRad)*10+50);
+		}
+	glEnd();
+	//graph.draw();
 	glutSwapBuffers();
 }
 
@@ -82,16 +93,19 @@ void keyInput(unsigned char key, int x, int y)
 
 //mouse function
 void mouseControl(int button, int state, int x, int y)
-{
+{	
 	// Store the clicked point in the currentPoint variable when left button is pressed.
 	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
 	{
-		currentPoint = Point(x, height - y); 
+		Point currentPoint = Point(x, HEIGHT - y, true);
+		points.push_back(currentPoint); 
+		cout << currentPoint.getX() << ", " << currentPoint.getY() << endl;
 	}
 
 	// Store the currentPoint in the points vector when left button is released.
 	if (button == GLUT_LEFT_BUTTON && state == GLUT_UP)
 	{
+		Point currentPoint = Point(x, HEIGHT - y, false);
 		points.push_back(currentPoint);
 	}
 
