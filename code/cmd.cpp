@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
 	string info;
 	Graph graph;
 	
-	cout << "Welcome to Reggie's Ready Body! May I be your Purple Pikmin?\n1. Create Root Node\n: ";
+	cout << "Welcome to Reggie's Ready Body! Would you like me to Fravel your Arviden?\n1. Create Root Node\n: ";
 	cin >> input;
 	while(input != "1")
 	{
