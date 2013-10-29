@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
 	glutInitDisplayMode(GLUT_SINGLE | GLUT_DOUBLE);
 	glutInitWindowSize(500, 500);
 	glutInitWindowPosition(100, 100);
-	glutCreateWindow("BabelReggieGraphBodyReady");
+	glutCreateWindow("BabelReggieGraphBodyReadySuperRobotMonkeyTeamHyperForceGo");
 	glutDisplayFunc(drawScene);
 	glutReshapeFunc(resize);
 	glutKeyboardFunc(keyInput);
