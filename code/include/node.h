@@ -6,6 +6,7 @@
 #include <map>
 #include <string>
 #include <vector>
+#include <math.h>
 
 #ifdef __APPLE__
 #  include <GLUT/glut.h>

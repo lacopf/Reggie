@@ -1,0 +1,16 @@
+#include "node.h"
+
+Node::Node()
+{
+	edges = new vector<Edges*>;
+	information = "";
+	index = -1;
+	parent = NULL;
+}
+Node::Node(string info, int ind, Node* par)
+{
+	edges = new vector<Edges*>;
+	information = info;
+	index = ind;
+	parent = par;
+}

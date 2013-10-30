@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
 	Graph graph;
 	
 	cout << "Welcome to Reggie's Ready Body! Would you like me to Calamar your Balderdash?\n1. Create Root Node\n: ";
-	cin >> input;
+	/*cin >> input;
 	while(input != "1")
 	{
 		cout << "I'm sorry.\nThat is not a valid menu option.\nPlease, select again.\n1. Create Root Node\n: ";
@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
 	cin >> input;
 		
 	graph.addNode(info, parse(input), -1);
-	
+	*/
 	int index1, index2;
 	
 	while(true)
