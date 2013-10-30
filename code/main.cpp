@@ -137,7 +137,7 @@ void mouseControl(int button, int state, int x, int y)
 			string s = "data";
 			vector<string> ss;
 			cout << points.back().getX() << ", " << points.back().getY() << endl;
-			graph.addNode(s, ss, 1, points.back().getX(), points.back().getY());
+			graph.addNode(s, ss, points.back().getX(), points.back().getY());
 			graph.printNodes();
 		}
 	}
