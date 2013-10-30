@@ -15,7 +15,6 @@
 using namespace std;
 
 #include "edge.h"
-#include "point.h"
 
 class Node
 {
@@ -64,6 +63,7 @@ Node::Node()
 	out_edges = tempe;
 	information = "";
 	index = -1;
+	point = Point(-1,-1,false);
 }
 //constructor with information
 Node::Node(string info, int ind, vector<string> new_tags, int x, int y)
