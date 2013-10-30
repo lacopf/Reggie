@@ -120,14 +120,13 @@ void Node::draw()
 {
 	glColor3f(1.0, 0.0, 0.0);
 	glBegin(GL_LINE_LOOP);
-
 		for (int i=0; i < 360; i++)
 		{
 			float degInRad = i*M_PI/180;
-			glVertex2f(cos(degInRad)*10+point.getX(),sin(degInRad)*10+point.getY());
+			glVertex2f(cos(degInRad)*2+point.getX()/5,sin(degInRad)*2+point.getY()/5);
 		}
-
-	glEnd();	
+	glEnd();
+	
 }
 
 #endif
