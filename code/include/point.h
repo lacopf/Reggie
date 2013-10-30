@@ -1,8 +1,6 @@
 #ifndef _POINT
 #define _POINT
 
-#include "point.h"
-
 class Point
 {
 	private:
@@ -11,6 +9,12 @@ class Point
 		bool down;//if it was down click
 	  
 	public:
+		Point()//default constructor
+		{
+			x = -1;
+			y = -1;
+			down = false;
+		}
 		Point(double i, double j, bool press)//constructor
 		{
 			x = i;

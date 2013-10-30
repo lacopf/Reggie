@@ -1,7 +1,17 @@
 #ifndef _EDGE
 #define _EDGE
 
-#include "node.h"
+#include <vector>
+
+#ifdef __APPLE__
+#  include <GLUT/glut.h>
+#else
+#  include <GL/glut.h>
+#endif
+
+using namespace std;
+
+#include "point.h"
 
 class Edge
 {
@@ -19,8 +29,6 @@ class Edge
 		inline int getNodeB() {return nodeB;}
 		inline int getIndex() {return index;}
 		inline void setIndex(int ind){index = ind;}
-
-		void draw();
 };
 
 Edge::Edge()
@@ -36,10 +44,6 @@ Edge::Edge(int edgeIndex, string rel, int n1, int n2)
 	nodeA = n1;
 	nodeB = n2;
 	relation = rel;
-}
-void Edge::draw()
-{
-	
 }
 
 #endif
