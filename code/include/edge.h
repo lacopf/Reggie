@@ -1,7 +1,16 @@
 #ifndef _EDGE
 #define _EDGE
 
+#ifdef __APPLE__
+#  include <GLUT/glut.h>
+#else
+#  include <GL/glut.h>
+#endif
+
+using namespace std;
+
 #include "node.h"
+#include "point.h"
 
 class Edge
 {
@@ -39,7 +48,12 @@ Edge::Edge(int edgeIndex, string rel, int n1, int n2)
 }
 void Edge::draw()
 {
-	
+	glLineWidth(2.5); 
+	glColor3f(1.0, 0.0, 0.0);
+	glBegin(GL_LINES);
+	glVertex2f(nodeA.whatsYourPoint().getX(), nodeA.whatsYourPoint().getY());
+	glVertex2f(nodeB.whatsYourPoint().getX(), nodeB.whatsYourPoint().getY());
+	glEnd();
 }
 
 #endif

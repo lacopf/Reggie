@@ -10,6 +10,8 @@
 #  include <GL/glut.h>
 #endif
 
+using namespace std;
+
 #include "include/graph.h"
 #include "include/point.h"
 

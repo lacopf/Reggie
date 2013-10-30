@@ -5,9 +5,17 @@
 #include <map>
 #include <string>
 #include <vector>
+
+#ifdef __APPLE__
+#  include <GLUT/glut.h>
+#else
+#  include <GL/glut.h>
+#endif
+
 using namespace std;
 
 #include "edge.h"
+#include "point.h"
 
 class Node
 {
@@ -17,16 +25,18 @@ class Node
 		int index;
 		vector<Edge*> in_edges;
 		vector<Edge*> out_edges;
+		Point point;
+		
 
 	public:
+		Node();
+		Node(string info, int ind, vector<string> new_tags);
+		
 		inline int getIndex() {return index;}
 		inline string getInformation() {return information;}
 		inline vector<Edge*> getInEdges(){return in_edges;}
 		inline vector<Edge*> getOutEdges(){return out_edges;}
 		inline vector<string> getTags() {return tags;}
-
-		Node();
-		Node(string info, int ind, vector<string> new_tags);
 
 		void inline addInEdge(Edge* edg) {in_edges.push_back(edg);}
 		void inline addOutEdge(Edge* edg) {out_edges.push_back(edg);}
@@ -38,6 +48,10 @@ class Node
 		bool hasTag(string tag);
 		
 		void draw();
+		Point whatsYourPoint()
+		{
+			return point;
+		}
 };
 //default constructor
 Node::Node()
@@ -103,7 +117,16 @@ void Node::removeOutEdge(Edge* edg)
 }
 void Node::draw()
 {
-	
+	glColor3f(1.0, 0.0, 0.0);
+	glBegin(GL_LINE_LOOP);
+
+		for (int i=0; i < 360; i++)
+		{
+			float degInRad = i*M_PI/180;
+			glVertex2f(cos(degInRad)*10+point.getX(),sin(degInRad)*10+point.getY());
+		}
+
+	glEnd();	
 }
 
 #endif

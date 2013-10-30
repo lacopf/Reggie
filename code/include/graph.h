@@ -496,13 +496,13 @@ void Graph::load(string filename)
 }
 void Graph::draw()
 {
-	for(int i = 0; i < nodes.size(); i++)
-	{
-		nodes[i].draw();
-	}
 	for(int i = 0; i < edges.size(); i++)
 	{
 		edges[i].draw();
+	}
+	for(int i = 0; i < nodes.size(); i++)
+	{
+		nodes[i].draw();
 	}
 }
 
