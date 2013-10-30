@@ -502,8 +502,8 @@ void Graph::draw()
 		glLineWidth(2.5); 
 		glColor3f(1.0, 0.0, 0.0);
 		glBegin(GL_LINES);
-		glVertex2f(nodes[edges[i].getNodeA()].getPoint().getX()/5, nodes[edges[i].getNodeA()].getPoint().getY()/5);
-		glVertex2f(nodes[edges[i].getNodeB()].getPoint().getX()/5, nodes[edges[i].getNodeB()].getPoint().getY()/5);
+		glVertex2f(nodes[edges[i].getNodeA()].getPoint().getX()/5.0, nodes[edges[i].getNodeA()].getPoint().getY()/5.0);
+		glVertex2f(nodes[edges[i].getNodeB()].getPoint().getX()/5.0, nodes[edges[i].getNodeB()].getPoint().getY()/5.0);
 		glEnd();
 	}
 	for(int i = 0; i < nodes.size(); i++)
