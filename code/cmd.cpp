@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
 	string info;
 	Graph graph;
 	
-	cout << "Welcome to Reggie's Ready Body! Would you like me to Fravel your Arviden?\n1. Create Root Node\n: ";
+	cout << "Welcome to Reggie's Ready Body! Would you like me to Calamar your Balderdash?\n1. Create Root Node\n: ";
 	cin >> input;
 	while(input != "1")
 	{
@@ -55,19 +55,8 @@ int main(int argc, char *argv[])
 			cin >> info;
 			cout << "Input tags: ";
 			cin >> input;
-			graph.printNodes();
-			cout << "Choose a parent node: ";
-			cin >> index1;
+			graph.addNode(info, parse(input), index1);
 			
-			//checks if the parent exists
-			if (index1 >= graph.getNodes().size()  || index1 < 0 || cin.fail())
-			{
-				cout << "Not a valid parent node\n";
-			}
-			else
-			{	
-				graph.addNode(info, parse(input), index1);
-			}
 		}
 		//remove node
 		else if(input == "3")

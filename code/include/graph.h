@@ -45,12 +45,6 @@ void Graph::addNode(string info, vector<string> tags, int index)
 {
 	Node n1(info, index, tags);
 	nodes.push_back(n1);
-
-	//parent edge
-	if(index != -1)
-	{
-		addEdge(index, nodes.size() - 1, "tree_edge");
-	}
 }
 
 void Graph::addEdge(int n1, int n2, string rel)
@@ -120,9 +114,16 @@ void Graph::removeNode(int index)
 //prints all in and out edges for each node in the graph
 void Graph::printGraph()
 {
-        for(int i=0; i<nodes.size(); i++)
+        for(int i=0; i < nodes.size(); i++)
         {
-                cout << i << ": " << endl;
+				//print index, info and tags
+                cout << i << ": " << nodes[i].getInformation() << endl;
+				vector<string> temptags =  nodes[i].getTags();
+				cout << "tags: " << temptags[0];
+				for (int tgs = 1; tgs < temptags.size(); tgs++)
+					cout << ", " << temptags[tgs];
+				cout << endl;
+
                 cout << " in edges: ";
                 const vector<Edge*>& in_edges = nodes[i].getInEdges();
                 for(int j=0; j<in_edges.size(); j++)
@@ -136,14 +137,16 @@ void Graph::printGraph()
                 {
                         cout << (out_edges[j]->getNodeB)()<< " ";
                 }
-                cout << endl;
+                cout << endl << endl;
         }
 }
 //saves the graph to the file
 void Graph::save(string filename)
 {
-	//open file for saving info as .xml
-	filename += ".xml";
+	int p = filename.find(".xml");
+	cout << filename.substr(filename.size() - 4, 4) << endl;
+	if (p == string::npos || filename.length() < 4 || filename.substr(filename.size() - 4, 4).compare(".xml") != 0 )
+		filename += ".xml";
 
 	cout << "The filename is " << filename << endl;
 
@@ -221,7 +224,17 @@ void Graph::load(string filename)
 	//assume the filename has the proper extension
 	ifstream source;
 	source.open( filename.c_str() );
-	
+	if ( !source.is_open() )
+	{
+		filename += ".xml";
+		source.open( filename.c_str() );
+		if ( !source.is_open() )
+		{
+			cout << "Invalid file name\n";
+			return;
+		}
+	}
+
 	string line = "";
 	Node dummyNode;
 	Edge dummyEdge;
@@ -230,11 +243,6 @@ void Graph::load(string filename)
 	vector<vector<int> > nodeInEdges;
 	vector<vector<int> > nodeOutEdges;
 
-	if (  !source.is_open() )
-	{
-		cout << "Invalid file name\n";
-		return;
-	}
 
 	getline( source, line, '\n');
 	if ( line.find("graph") == string::npos )
@@ -295,7 +303,7 @@ void Graph::load(string filename)
 		}
 		else
 		{
-			int len = endIndex - parse_index + 6;
+			int len = endIndex - parse_index - 6;
 			info = line.substr(parse_index + 6, len);
 		}
 
