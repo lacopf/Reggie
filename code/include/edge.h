@@ -51,8 +51,8 @@ void Edge::draw()
 	glLineWidth(2.5); 
 	glColor3f(1.0, 0.0, 0.0);
 	glBegin(GL_LINES);
-	glVertex2f(nodeA.whatsYourPoint().getX(), nodeA.whatsYourPoint().getY());
-	glVertex2f(nodeB.whatsYourPoint().getX(), nodeB.whatsYourPoint().getY());
+	glVertex2f(nodeA.getPoint().getX(), nodeA.getPoint().getY());
+	glVertex2f(nodeB.getPoint().getX(), nodeB.getPoint().getY());
 	glEnd();
 }
 

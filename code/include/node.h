@@ -30,7 +30,7 @@ class Node
 
 	public:
 		Node();
-		Node(string info, int ind, vector<string> new_tags);
+		Node(string info, int ind, vector<string> new_tags, int x, int y);
 		
 		inline int getIndex() {return index;}
 		inline string getInformation() {return information;}
@@ -48,7 +48,7 @@ class Node
 		bool hasTag(string tag);
 		
 		void draw();
-		Point whatsYourPoint()
+		Point getPoint()
 		{
 			return point;
 		}
@@ -66,7 +66,7 @@ Node::Node()
 	index = -1;
 }
 //constructor with information
-Node::Node(string info, int ind, vector<string> new_tags)
+Node::Node(string info, int ind, vector<string> new_tags, int x, int y)
 {
 	vector<Edge*> tempe;
 
@@ -75,6 +75,7 @@ Node::Node(string info, int ind, vector<string> new_tags)
 	out_edges = tempe;
 	information = info;
 	index = ind;
+	point = Point(x,y,true);
 }
 //returns whether a node has a given tag
 bool Node::hasTag(string tag)
