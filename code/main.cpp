@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
 	glutMouseFunc(mouseControl);
 	
 	MODE = "SETUP";
-
+	vector<string>test;
 	glutMainLoop();
 
 	return 0;
@@ -52,10 +52,10 @@ int main(int argc, char *argv[])
 //display function
 void drawScene()
 {
-	glColor3f(1.0, 1.0, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT);
+	glColor3f(1.0, 1.0, 1.0);
 
-	//graph.draw();
+	graph.draw();
 	
 	glutSwapBuffers();
 }
