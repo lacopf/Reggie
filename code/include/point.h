@@ -6,8 +6,8 @@
 class Point
 {
 	private:
-		double x;//x coordinate of the click
-		double y;//y coordinate of the click
+		int x;//x coordinate of the click
+		int y;//y coordinate of the click
 		bool down;//if it was down click
 	  
 	public:
@@ -17,11 +17,11 @@ class Point
 			y = j;
 			down = press;
 		}
-		double getX()//get x coordinate
+		int getX()//get x coordinate
 		{
 			return x;
 		}
-		double getY()//get y coordinate
+		int getY()//get y coordinate
 		{
 			return y;
 		}
