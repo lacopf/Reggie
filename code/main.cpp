@@ -53,11 +53,6 @@ int pickNode(int x, int y)
 	return -1;
 }
 
-int pickEdge(int x, int y)
-{
-	
-}
-
 // main function
 int main(int argc, char *argv[])
 {
@@ -123,15 +118,10 @@ void mouseControl(int button, int state, int x, int y)
 		
 		int pn = pickNode(currentPoint.getX(), currentPoint.getY());
 		cout << pn << endl;
-		//int pe = pickEdge(currentPoint.getX(), currentPoint.getY());
 		if(pn != -1)
 		{
 			
 		}
-		//else if(pe != -1)
-		//{
-			
-		//}
 		else
 		{
 			string s = "data";
