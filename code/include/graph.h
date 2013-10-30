@@ -25,7 +25,7 @@ class Graph
 		vector<Edge> getEdges(){ return edges; }
 
 		inline void addNode(Node node){ nodes.push_back(node); }
-		void addNode(string info, vector<string> tags, int index, int x, int y);
+		void addNode(string info, vector<string> tags, int x, int y);
 		void addEdge(int n1, int n2, string rel);
 		void printNodes();
 		void removeEdge(int index);
@@ -41,9 +41,9 @@ class Graph
 };
 
 
-void Graph::addNode(string info, vector<string> tags, int index, int x, int y)
+void Graph::addNode(string info, vector<string> tags, int x, int y)
 {
-	Node n1(info, index, tags, x, y);
+	Node n1(info, nodes.size(), tags, x, y);
 	nodes.push_back(n1);
 }
 
@@ -531,8 +531,8 @@ void Graph::draw()
 		glLineWidth(2.5); 
 		glColor3f(1.0, 0.0, 0.0);
 		glBegin(GL_LINES);
-		glVertex2f(nodes[edges[i].getNodeA()].getPoint().getX()/5, nodes[edges[i].getNodeA()].getPoint().getY()/5);
-		glVertex2f(nodes[edges[i].getNodeB()].getPoint().getX()/5, nodes[edges[i].getNodeB()].getPoint().getY()/5);
+		glVertex2f(nodes[edges[i].getNodeA()].getPoint().getX()/5.0, nodes[edges[i].getNodeA()].getPoint().getY()/5.0);
+		glVertex2f(nodes[edges[i].getNodeB()].getPoint().getX()/5.0, nodes[edges[i].getNodeB()].getPoint().getY()/5.0);
 		glEnd();
 	}
 	for(int i = 0; i < nodes.size(); i++)

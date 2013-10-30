@@ -65,6 +65,7 @@ int main(int argc, char *argv[])
 	glutInitDisplayMode(GLUT_SINGLE | GLUT_DOUBLE);
 	glutInitWindowSize(500, 500);
 	glutInitWindowPosition(100, 100);
+	gluOrtho2D(0, 500, 0, 500);
 	glutCreateWindow("JungleReggie");
 	glutDisplayFunc(drawScene);
 	glutReshapeFunc(resize);
@@ -137,7 +138,7 @@ void mouseControl(int button, int state, int x, int y)
 			string s = "data";
 			vector<string> ss;
 			cout << points.back().getX() << ", " << points.back().getY() << endl;
-			graph.addNode(s, ss, 1, points.back().getX(), points.back().getY());
+			graph.addNode(s, ss, points.back().getX(), points.back().getY());
 			graph.printNodes();
 		}
 	}

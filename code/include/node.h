@@ -1,6 +1,7 @@
 #ifndef _NODE
 #define _NODE
 
+#include <cmath>
 #include <iostream>
 #include <map>
 #include <string>
@@ -124,7 +125,7 @@ void Node::draw()
 		for (int i=0; i < 360; i++)
 		{
 			float degInRad = i*M_PI/180;
-			glVertex2f(cos(degInRad)*2+point.getX()/5,sin(degInRad)*2+point.getY()/5);
+			glVertex2f(cos(degInRad)*2.0+point.getX()/5.0,sin(degInRad)*2.0+point.getY()/5.0);
 		}
 	glEnd();
 	
