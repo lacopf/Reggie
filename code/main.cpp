@@ -35,15 +35,27 @@ int pickEdge(int x, int y);
 float dist(Point p1, Point p2);
 void mousePassiveMotion(int x, int y);
 
-float dist(Point p1, Point p2){
-	
+float dist(Point p1, int x, int y)
+{
+	return sqrt(pow(p1.getX() - x, 2) + pow(p1.getY() - y, 2));
 }
 
-int pickNode(int x, int y){
+int pickNode(int x, int y)
+{
 	vector<Node> nodes = graph.getNodes();
-	for(int i = 0; i<nodes.size(); i++){
-		//if(node.getPoint() 
+	for(int i = 0; i<nodes.size(); i++)
+	{
+		if(dist(nodes[i].getPoint(), x, y) <= 10)
+		{
+			return i;
+		}
 	}
+	return -1;
+}
+
+int pickEdge(int x, int y)
+{
+	
 }
 
 // main function
@@ -72,7 +84,7 @@ void drawScene()
 	glColor3f(1.0, 1.0, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	//graph.draw();
+	graph.draw();
 	
 	glutSwapBuffers();
 }
@@ -104,19 +116,31 @@ void keyInput(unsigned char key, int x, int y)
 //mouse function
 void mouseControl(int button, int state, int x, int y)
 {	
-	// Store the clicked point in the currentPoint variable when left button is pressed.
-	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
-	{
-		Point currentPoint = Point(mouse_x, HEIGHT - mouse_y, true);
-		points.push_back(currentPoint); 
-	}
-
 	// Store the currentPoint in the points vector when left button is released.
 	if (button == GLUT_LEFT_BUTTON && state == GLUT_UP)
 	{
-		string s = "";
-		cout << points.back().getX() << ", " << points.back().getY() << endl;
-		graph.addNode(s, s, 1, points.back().getX(), points.back().getY());
+		Point currentPoint = Point(x, HEIGHT - y, true);
+		points.push_back(currentPoint);
+		
+		int pn = pickNode(currentPoint.getX(), currentPoint.getY());
+		cout << pn << endl;
+		//int pe = pickEdge(currentPoint.getX(), currentPoint.getY());
+		if(pn != -1)
+		{
+			
+		}
+		//else if(pe != -1)
+		//{
+			
+		//}
+		else
+		{
+			string s = "data";
+			vector<string> ss;
+			cout << points.back().getX() << ", " << points.back().getY() << endl;
+			graph.addNode(s, ss, 1, points.back().getX(), points.back().getY());
+			graph.printNodes();
+		}
 	}
 	
 	glutPostRedisplay();
