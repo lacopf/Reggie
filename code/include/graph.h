@@ -138,7 +138,6 @@ void Graph::printGraph()
 void Graph::save(string filename)
 {
 	int p = filename.find(".xml");
-	cout << filename.substr(filename.size() - 4, 4) << endl;
 	if (p == string::npos || filename.length() < 4 || filename.substr(filename.size() - 4, 4).compare(".xml") != 0 )
 		filename += ".xml";
 
