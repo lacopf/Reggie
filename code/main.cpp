@@ -17,6 +17,7 @@ using namespace std;
 //global variables
 Graph graph;
 string MODE;
+string FILENAME;
 vector<Point> points;
 int HEIGHT = 500;
 int WIDTH = 500;
@@ -71,7 +72,7 @@ int main(int argc, char *argv[])
 	glutReshapeFunc(resize);
 	glutKeyboardFunc(keyInput);
 	glutMouseFunc(mouseControl);
-	MODE = "SETUP";
+	MODE = "NORMAL";
 	vector<string>test;
 	glutMainLoop();
 
@@ -103,13 +104,58 @@ void resize(int w, int h)
 //keyboard function
 void keyInput(unsigned char key, int x, int y)
 {
-	switch(key) 
+	if(MODE == "TYPING")
 	{
-		case 27:
-			exit(0);
-			break;
-		default:
-			break;
+		if(key == 32 && FILENAME != "")
+		{
+			graph.save(FILENAME);
+			MODE = "NORMAL";
+		}
+		else
+		{
+			string lower = "abcdefghijklmnopqrstuvwxyz";
+			string upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+			
+			for(int i = 0; i < lower.length(); i++)
+			{
+				if(key == lower[i])
+				{
+					if(glutGetModifiers() == GLUT_ACTIVE_SHIFT)
+					{
+						FILENAME += upper[i];
+					}
+					else
+					{
+						FILENAME += lower[i];
+					}
+				}
+			}
+		}
+	}
+	else
+	{
+		switch(key) 
+		{
+			case 27:
+				exit(0);
+				break;
+			case 's':
+				cout << "SAVING";
+				if(glutGetModifiers() == GLUT_ACTIVE_CTRL)
+				{
+					if(FILENAME == "")
+					{
+						MODE = "TYPING";
+					}
+					else
+					{
+						graph.save(FILENAME);
+					}
+				}
+				break;
+			default:
+				break;
+		}
 	}
 }
 
