@@ -32,23 +32,29 @@ Work Breakdown Structure
 Create backend graph structure
 - Allow creation of directed & undirected nodes
 - Give a simple text-based interface
+
 Implement Saving & loading
 - Save as XML file
 - Keep position & format of nodes in addition to connections
+
 Create  graphics (OpenGL & GLUT GUI)
 - GLUT GUI handles the program window
 - OpenGL displays the nodes & connections
+
 Write algorithm to topologically sort directed graphs
 - States whether such a sort is possible
 - Allows graph to be output as hierarchically indented text file
+
 Enable addition of attachments for various data types:
 - Audio (.wav, .mp3)
 - Video (.mp4, .mov)
 - Image (.jpg, .png)
+
 Enable exporting graph data into outside software/data types:
 - Calendars (.ics)
 - PDF
 - Images (.jpg, .png)
+
 Create default templates and custom template builder
 - Allows user to insert pre-made graph templates (Calendar, Timeline etc.)
 - Allows user to create custom templates for future use
