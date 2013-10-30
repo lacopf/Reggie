@@ -19,7 +19,8 @@ class Edge
 		inline int getNodeB() {return nodeB;}
 		inline int getIndex() {return index;}
 		inline void setIndex(int ind){index = ind;}
-  
+
+		void draw();
 };
 
 Edge::Edge()
@@ -35,6 +36,10 @@ Edge::Edge(int edgeIndex, string rel, int n1, int n2)
 	nodeA = n1;
 	nodeB = n2;
 	relation = rel;
+}
+void Edge::draw()
+{
+	
 }
 
 #endif

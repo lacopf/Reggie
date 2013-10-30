@@ -7,6 +7,12 @@
 #include <vector>
 #include <sstream>
 
+#ifdef __APPLE__
+#  include <GLUT/glut.h>
+#else
+#  include <GL/glut.h>
+#endif
+
 using namespace std;
 
 #include "node.h"
@@ -479,6 +485,17 @@ void Graph::load(string filename)
 	
 	cout << "File was successfully loaded!\n";
 
+}
+void Graph::draw()
+{
+	for(int i = 0; i < nodes.size(); i++)
+	{
+		nodes[i].draw();
+	}
+	for(int i = 0; i < edges.size(); i++)
+	{
+		edges[i].draw();
+	}
 }
 
 #endif

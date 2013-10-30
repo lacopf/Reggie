@@ -53,17 +53,11 @@ int main(int argc, char *argv[])
 //display function
 void drawScene()
 {
-	glClear(GL_COLOR_BUFFER_BIT);
 	glColor3f(1.0, 1.0, 1.0);
-	//filler
-	glBegin(GL_LINE_LOOP);
-		for (int i=0; i < 360; i++)
-		{
-			float degInRad = i*M_PI/180;
-			glVertex2f(cos(degInRad)*10+50,sin(degInRad)*10+50);
-		}
-	glEnd();
+	glClear(GL_COLOR_BUFFER_BIT);
+
 	//graph.draw();
+	
 	glutSwapBuffers();
 }
 

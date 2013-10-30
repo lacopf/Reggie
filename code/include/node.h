@@ -36,6 +36,8 @@ class Node
 		inline void setIndex(int ind){index = ind;}
 
 		bool hasTag(string tag);
+		
+		void draw();
 };
 //default constructor
 Node::Node()
@@ -98,6 +100,10 @@ void Node::removeOutEdge(Edge* edg)
 		out_edges[edg->getIndex()] = out_edges.back();
 		out_edges.pop_back();
 	}
+}
+void Node::draw()
+{
+	
 }
 
 #endif
