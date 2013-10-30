@@ -120,7 +120,7 @@ void Node::removeOutEdge(Edge* edg)
 void Node::draw()
 {
 	glColor3f(1.0, 0.0, 0.0);
-	glBegin(GL_LINE_LOOP);
+	glBegin(GL_TRIANGLE_FAN);
 		for (int i=0; i < 360; i++)
 		{
 			float degInRad = i*M_PI/180;
