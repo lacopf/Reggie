@@ -75,8 +75,8 @@ int main(int argc, char *argv[])
 //display function
 void drawScene()
 {
+	glClearColor(1.0, 1.0, 1.0, 0.0);
 	glClear(GL_COLOR_BUFFER_BIT);
-	glColor3f(1.0, 1.0, 1.0);
 
 	graph.draw();
 	
