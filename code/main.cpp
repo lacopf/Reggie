@@ -11,7 +11,6 @@
 #endif
 
 #include "include/graph.h"
-#include "include/point.h"
 
 using namespace std;
 
@@ -21,14 +20,43 @@ string MODE;
 vector<Point> points;
 int HEIGHT = 500;
 int WIDTH = 500;
-
+int mouse_x = 0;
+int mouse_y = 0;
 
 //function prototypes
 void drawScene();
 void resize(int w, int h);
 void keyInput(unsigned char key, int x, int y);
 void mouseControl(int button, int state, int x, int y);
+void mainMenu(int id);
+void makeMenu(void);
+int pickNode(int x, int y);
+int pickEdge(int x, int y);
+float dist(Point p1, Point p2);
+void mousePassiveMotion(int x, int y);
 
+float dist(Point p1, int x, int y)
+{
+	return sqrt(pow(p1.getX() - x, 2) + pow(p1.getY() - y, 2));
+}
+
+int pickNode(int x, int y)
+{
+	vector<Node> nodes = graph.getNodes();
+	for(int i = 0; i<nodes.size(); i++)
+	{
+		if(dist(nodes[i].getPoint(), x, y) <= 10)
+		{
+			return i;
+		}
+	}
+	return -1;
+}
+
+int pickEdge(int x, int y)
+{
+	
+}
 
 // main function
 int main(int argc, char *argv[])
@@ -37,14 +65,13 @@ int main(int argc, char *argv[])
 	glutInitDisplayMode(GLUT_SINGLE | GLUT_DOUBLE);
 	glutInitWindowSize(500, 500);
 	glutInitWindowPosition(100, 100);
-	glutCreateWindow("BabelReggieGraphBodyReadySuperRobotMonkeyTeamHyperForceGo");
+	glutCreateWindow("JungleReggie");
 	glutDisplayFunc(drawScene);
 	glutReshapeFunc(resize);
 	glutKeyboardFunc(keyInput);
 	glutMouseFunc(mouseControl);
-	
 	MODE = "SETUP";
-
+	vector<string>test;
 	glutMainLoop();
 
 	return 0;
@@ -53,17 +80,11 @@ int main(int argc, char *argv[])
 //display function
 void drawScene()
 {
+	glClearColor(1.0, 1.0, 1.0, 0.0);
 	glClear(GL_COLOR_BUFFER_BIT);
-	glColor3f(1.0, 1.0, 1.0);
-	//filler
-	glBegin(GL_LINE_LOOP);
-		for (int i=0; i < 360; i++)
-		{
-			float degInRad = i*M_PI/180;
-			glVertex2f(cos(degInRad)*10+50,sin(degInRad)*10+50);
-		}
-	glEnd();
-	//graph.draw();
+
+	graph.draw();
+	
 	glutSwapBuffers();
 }
 
@@ -94,25 +115,32 @@ void keyInput(unsigned char key, int x, int y)
 //mouse function
 void mouseControl(int button, int state, int x, int y)
 {	
-	// Store the clicked point in the currentPoint variable when left button is pressed.
-	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
-	{
-		Point currentPoint = Point(x, HEIGHT - y, true);
-		points.push_back(currentPoint); 
-		cout << currentPoint.getX() << ", " << currentPoint.getY() << endl;
-	}
-
 	// Store the currentPoint in the points vector when left button is released.
 	if (button == GLUT_LEFT_BUTTON && state == GLUT_UP)
 	{
-		Point currentPoint = Point(x, HEIGHT - y, false);
+		Point currentPoint = Point(x, HEIGHT - y, true);
 		points.push_back(currentPoint);
+		
+		int pn = pickNode(currentPoint.getX(), currentPoint.getY());
+		cout << pn << endl;
+		//int pe = pickEdge(currentPoint.getX(), currentPoint.getY());
+		if(pn != -1)
+		{
+			
+		}
+		//else if(pe != -1)
+		//{
+			
+		//}
+		else
+		{
+			string s = "data";
+			vector<string> ss;
+			cout << points.back().getX() << ", " << points.back().getY() << endl;
+			graph.addNode(s, ss, 1, points.back().getX(), points.back().getY());
+			graph.printNodes();
+		}
 	}
-
-	if (button == GLUT_RIGHT_BUTTON && state == GLUT_DOWN)
-	{
-		exit(0);
-	}
-
+	
 	glutPostRedisplay();
 }

@@ -7,6 +7,12 @@
 #include <vector>
 #include <sstream>
 
+#ifdef __APPLE__
+#  include <GLUT/glut.h>
+#else
+#  include <GL/glut.h>
+#endif
+
 using namespace std;
 
 #include "node.h"
@@ -19,7 +25,7 @@ class Graph
 		vector<Edge> getEdges(){ return edges; }
 
 		inline void addNode(Node node){ nodes.push_back(node); }
-		void addNode(string info, vector<string> tags, int index);
+		void addNode(string info, vector<string> tags, int index, int x, int y);
 		void addEdge(int n1, int n2, string rel);
 		void printNodes();
 		void removeEdge(int index);
@@ -35,9 +41,9 @@ class Graph
 };
 
 
-void Graph::addNode(string info, vector<string> tags, int index)
+void Graph::addNode(string info, vector<string> tags, int index, int x, int y)
 {
-	Node n1(info, index, tags);
+	Node n1(info, index, tags, x, y);
 	nodes.push_back(n1);
 }
 
@@ -373,7 +379,7 @@ void Graph::load(string filename)
 		//else, it continues reading in nodes
 		getline(source, line, '\n');
 
-		Node tempNode(info, node_index, tags);
+		Node tempNode(info, node_index, tags, -1, -1);
 		loadedNodes.push_back(tempNode);
 		nodeInEdges.push_back(nedges);
 		nodeOutEdges.push_back(oedges);
@@ -486,6 +492,23 @@ void Graph::load(string filename)
 	
 	cout << "File was successfully loaded!\n";
 
+}
+void Graph::draw()
+{
+	for(int i = 0; i < edges.size(); i++)
+	{
+		
+		glLineWidth(2.5); 
+		glColor3f(1.0, 0.0, 0.0);
+		glBegin(GL_LINES);
+		glVertex2f(nodes[edges[i].getNodeA()].getPoint().getX()/5, nodes[edges[i].getNodeA()].getPoint().getY()/5);
+		glVertex2f(nodes[edges[i].getNodeB()].getPoint().getX()/5, nodes[edges[i].getNodeB()].getPoint().getY()/5);
+		glEnd();
+	}
+	for(int i = 0; i < nodes.size(); i++)
+	{
+		nodes[i].draw();
+	}
 }
 
 #endif

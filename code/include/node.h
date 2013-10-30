@@ -5,6 +5,13 @@
 #include <map>
 #include <string>
 #include <vector>
+
+#ifdef __APPLE__
+#  include <GLUT/glut.h>
+#else
+#  include <GL/glut.h>
+#endif
+
 using namespace std;
 
 #include "edge.h"
@@ -17,16 +24,18 @@ class Node
 		int index;
 		vector<Edge*> in_edges;
 		vector<Edge*> out_edges;
+		Point point;
+		
 
 	public:
+		Node();
+		Node(string info, int ind, vector<string> new_tags, int x, int y);
+		
 		inline int getIndex() {return index;}
 		inline string getInformation() {return information;}
 		inline vector<Edge*> getInEdges(){return in_edges;}
 		inline vector<Edge*> getOutEdges(){return out_edges;}
 		inline vector<string> getTags() {return tags;}
-
-		Node();
-		Node(string info, int ind, vector<string> new_tags);
 
 		void inline addInEdge(Edge* edg) {in_edges.push_back(edg);}
 		void inline addOutEdge(Edge* edg) {out_edges.push_back(edg);}
@@ -36,6 +45,12 @@ class Node
 		inline void setIndex(int ind){index = ind;}
 
 		bool hasTag(string tag);
+		
+		void draw();
+		Point getPoint()
+		{
+			return point;
+		}
 };
 //default constructor
 Node::Node()
@@ -48,9 +63,10 @@ Node::Node()
 	out_edges = tempe;
 	information = "";
 	index = -1;
+	point = Point(-1,-1,false);
 }
 //constructor with information
-Node::Node(string info, int ind, vector<string> new_tags)
+Node::Node(string info, int ind, vector<string> new_tags, int x, int y)
 {
 	vector<Edge*> tempe;
 
@@ -59,6 +75,7 @@ Node::Node(string info, int ind, vector<string> new_tags)
 	out_edges = tempe;
 	information = info;
 	index = ind;
+	point = Point(x,y,true);
 }
 //returns whether a node has a given tag
 bool Node::hasTag(string tag)
@@ -98,6 +115,18 @@ void Node::removeOutEdge(Edge* edg)
 		out_edges[edg->getIndex()] = out_edges.back();
 		out_edges.pop_back();
 	}
+}
+void Node::draw()
+{
+	glColor3f(1.0, 0.0, 0.0);
+	glBegin(GL_LINE_LOOP);
+		for (int i=0; i < 360; i++)
+		{
+			float degInRad = i*M_PI/180;
+			glVertex2f(cos(degInRad)*2+point.getX()/5,sin(degInRad)*2+point.getY()/5);
+		}
+	glEnd();
+	
 }
 
 #endif

@@ -1,7 +1,17 @@
 #ifndef _EDGE
 #define _EDGE
 
-#include "node.h"
+#include <vector>
+
+#ifdef __APPLE__
+#  include <GLUT/glut.h>
+#else
+#  include <GL/glut.h>
+#endif
+
+using namespace std;
+
+#include "point.h"
 
 class Edge
 {
@@ -19,7 +29,6 @@ class Edge
 		inline int getNodeB() {return nodeB;}
 		inline int getIndex() {return index;}
 		inline void setIndex(int ind){index = ind;}
-  
 };
 
 Edge::Edge()
