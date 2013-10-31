@@ -20,6 +20,7 @@ using namespace std;
 Graph graph;
 string MODE;
 string FILENAME;
+int cursorBlinkFrame = 0;
 bool ACTIVE_CTRL = false;
 string input = "";
 vector<Point> points;
@@ -146,6 +147,19 @@ void drawScene()
 
 	writeString(10, 10, GLUT_BITMAP_9_BY_15, input.c_str());
 	graph.draw();
+	
+	if(MODE == "SAVING" || MODE == "LOADING")
+	{
+		cursorBlinkFrame++;
+		if(cursorBlinkFrame % 20 < 10)
+		{
+			input = "Enter filename: " + FILENAME + "|";
+		}
+		else
+		{
+			input = "Enter filename: " + FILENAME + "";
+		}
+	}
 
 	glutSwapBuffers();
 }
@@ -181,10 +195,22 @@ void keyInput(unsigned char key, int x, int y)
 			FILENAME = "";
 			MODE = "NORMAL";
 		}
-		else
+		else if(key == 8)
+		{
+			if(FILENAME.size() != 0)
+			{
+				FILENAME.resize(FILENAME.size() - 1);
+			}
+		}
+		else if(key == 27)
+		{
+			FILENAME = "";
+			MODE = "NORMAL";
+			input = "";
+		}
+		else if(key != 13)
 		{
 			FILENAME += key;
-			input = "Enter filename: " + FILENAME;
 		}
 	}
 	else if(MODE == "INPUT")

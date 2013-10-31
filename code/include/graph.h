@@ -214,7 +214,7 @@ void Graph::save(string filename)
 	//save all the edges
 	for (int i = 0; i < edges.size(); i++)
 	{
-		saveFile << " -<edge>\n";
+		saveFile << " -<edge>" << endl;
 
 		//save index and node information
 		saveFile << "   <index>" << edges[i].getIndex() << "</index>" << endl;
@@ -435,7 +435,8 @@ void Graph::load(string filename)
 		int nA,nB;
 
 		getline(source, line, '\n');
-		getline(source, line, '\n');
+		if (line.find("<index>") == string::npos)
+			getline(source, line, '\n');			
 		
 		int parse_index = line.find("<index>");
 		int endIndex = line.find("</index>");
