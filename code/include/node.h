@@ -1,10 +1,12 @@
 #ifndef _NODE
 #define _NODE
 
+#include <cmath>
 #include <iostream>
 #include <map>
 #include <string>
 #include <vector>
+#include <math.h>
 
 #ifdef __APPLE__
 #  include <GLUT/glut.h>
@@ -119,11 +121,11 @@ void Node::removeOutEdge(Edge* edg)
 void Node::draw()
 {
 	glColor3f(1.0, 0.0, 0.0);
-	glBegin(GL_LINE_LOOP);
+	glBegin(GL_TRIANGLE_FAN);
 		for (int i=0; i < 360; i++)
 		{
 			float degInRad = i*M_PI/180;
-			glVertex2f(cos(degInRad)*2+point.getX()/5,sin(degInRad)*2+point.getY()/5);
+			glVertex2f(cos(degInRad)*2.0+point.getX()/5.0,sin(degInRad)*2.0+point.getY()/5.0);
 		}
 	glEnd();
 	

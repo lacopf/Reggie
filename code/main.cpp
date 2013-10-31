@@ -17,6 +17,7 @@ using namespace std;
 //global variables
 Graph graph;
 string MODE;
+string FILENAME;
 vector<Point> points;
 int HEIGHT = 500;
 int WIDTH = 500;
@@ -60,12 +61,13 @@ int main(int argc, char *argv[])
 	glutInitDisplayMode(GLUT_SINGLE | GLUT_DOUBLE);
 	glutInitWindowSize(500, 500);
 	glutInitWindowPosition(100, 100);
+	gluOrtho2D(0, 500, 0, 500);
 	glutCreateWindow("JungleReggie");
 	glutDisplayFunc(drawScene);
 	glutReshapeFunc(resize);
 	glutKeyboardFunc(keyInput);
 	glutMouseFunc(mouseControl);
-	MODE = "SETUP";
+	MODE = "NORMAL";
 	vector<string>test;
 	glutMainLoop();
 
@@ -97,13 +99,58 @@ void resize(int w, int h)
 //keyboard function
 void keyInput(unsigned char key, int x, int y)
 {
-	switch(key) 
+	if(MODE == "TYPING")
 	{
-		case 27:
-			exit(0);
-			break;
-		default:
-			break;
+		if(key == 32 && FILENAME != "")
+		{
+			graph.save(FILENAME);
+			MODE = "NORMAL";
+		}
+		else
+		{
+			string lower = "abcdefghijklmnopqrstuvwxyz";
+			string upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+			
+			for(int i = 0; i < lower.length(); i++)
+			{
+				if(key == lower[i])
+				{
+					if(glutGetModifiers() == GLUT_ACTIVE_SHIFT)
+					{
+						FILENAME += upper[i];
+					}
+					else
+					{
+						FILENAME += lower[i];
+					}
+				}
+			}
+		}
+	}
+	else
+	{
+		switch(key) 
+		{
+			case 27:
+				exit(0);
+				break;
+			case 's':
+				cout << "SAVING";
+				if(glutGetModifiers() == GLUT_ACTIVE_CTRL)
+				{
+					if(FILENAME == "")
+					{
+						MODE = "TYPING";
+					}
+					else
+					{
+						graph.save(FILENAME);
+					}
+				}
+				break;
+			default:
+				break;
+		}
 	}
 }
 
@@ -127,7 +174,7 @@ void mouseControl(int button, int state, int x, int y)
 			string s = "data";
 			vector<string> ss;
 			cout << points.back().getX() << ", " << points.back().getY() << endl;
-			graph.addNode(s, ss, 1, points.back().getX(), points.back().getY());
+			graph.addNode(s, ss, points.back().getX(), points.back().getY());
 			graph.printNodes();
 		}
 	}

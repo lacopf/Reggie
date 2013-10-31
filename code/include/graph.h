@@ -25,7 +25,7 @@ class Graph
 		vector<Edge> getEdges(){ return edges; }
 
 		inline void addNode(Node node){ nodes.push_back(node); }
-		void addNode(string info, vector<string> tags, int index, int x, int y);
+		void addNode(string info, vector<string> tags, int x, int y);
 		void addEdge(int n1, int n2, string rel);
 		void printNodes();
 		void removeEdge(int index);
@@ -41,9 +41,9 @@ class Graph
 };
 
 
-void Graph::addNode(string info, vector<string> tags, int index, int x, int y)
+void Graph::addNode(string info, vector<string> tags, int x, int y)
 {
-	Node n1(info, index, tags, x, y);
+	Node n1(info, nodes.size(), tags, x, y);
 	nodes.push_back(n1);
 }
 
@@ -144,7 +144,6 @@ void Graph::printGraph()
 void Graph::save(string filename)
 {
 	int p = filename.find(".xml");
-	cout << filename.substr(filename.size() - 4, 4) << endl;
 	if (p == string::npos || filename.length() < 4 || filename.substr(filename.size() - 4, 4).compare(".xml") != 0 )
 		filename += ".xml";
 
@@ -163,6 +162,7 @@ void Graph::save(string filename)
 		//save index and node information
 		saveFile << "   <index>" << nodes[i].getIndex() << "</index>" << endl;
 		saveFile << "   <info>" << nodes[i].getInformation() << "</info>" << endl;
+		saveFile << "   <point>" << nodes[i].getPoint().getX() << "," << nodes[i].getPoint().getY() << "</point>" << endl;
 
 		//save node tags
 		vector<string> tags = nodes[i].getTags();
@@ -235,6 +235,7 @@ void Graph::load(string filename)
 		}
 	}
 
+	//all my temporary variables
 	string line = "";
 	Node dummyNode;
 	Edge dummyEdge;
@@ -263,7 +264,9 @@ void Graph::load(string filename)
 	{
 		//new node information
 		int node_index;
+		int endIndex;
 		string info;
+		int x, y;
 		vector<string> tags;
 		vector<int> nedges;
 		vector<int> oedges;
@@ -271,7 +274,8 @@ void Graph::load(string filename)
 		//get the line with the index information
 		getline(source, line, '\n');
 		int parse_index = line.find("<index>");
-		
+		endIndex = line.find("</index>");
+
 		//not a valid file
 		if (parse_index == string::npos)
 		{
@@ -282,18 +286,18 @@ void Graph::load(string filename)
 		//get to the index location in the line
 		parse_index += 7;
 
-		if (line[parse_index] == '-')
+		if (line[parse_index + 7] == '-')
 			node_index = -1;
 		else
 		{
-			char* number = &line[parse_index];
-			node_index = atoi( number );
+			const char* buf = (line.substr(parse_index + 7, endIndex - parse_index - 7)).c_str();
+			node_index = atoi( buf );
 		}
 
 		//get the line with the node information
 		getline(source, line, '\n');
 		parse_index = line.find("<info>");
-		int endIndex = line.find("</info>");
+		endIndex = line.find("</info>");
 
 		//not a valid file
 		if (parse_index == string::npos || endIndex == string::npos)
@@ -306,6 +310,29 @@ void Graph::load(string filename)
 			int len = endIndex - parse_index - 6;
 			info = line.substr(parse_index + 6, len);
 		}
+
+
+		//get the line with the point information
+		getline(source, line, '\n');
+		parse_index = line.find("<point>");
+		endIndex = line.find("</point>");
+		
+		//not a valid file
+		if (parse_index == string::npos || endIndex == string::npos)
+		{
+			cout << "Invalid load file\n";
+			return;
+		}
+		else
+		{
+			int findComma = line.find(",");
+			const char* buf = (line.substr(parse_index + 7, findComma - parse_index - 7)).c_str();
+			x = atoi( buf );
+			buf = (line.substr(findComma + 1, endIndex - findComma - 1)).c_str();
+			y = atoi( buf );
+			
+		}
+
 
 		//get the line with the tags
 		getline(source, line, '\n');
@@ -380,7 +407,7 @@ void Graph::load(string filename)
 		//else, it continues reading in nodes
 		getline(source, line, '\n');
 
-		Node tempNode(info, node_index, tags, -1, -1);
+		Node tempNode(info, node_index, tags, x, y);
 		loadedNodes.push_back(tempNode);
 		nodeInEdges.push_back(nedges);
 		nodeOutEdges.push_back(oedges);
@@ -401,18 +428,19 @@ void Graph::load(string filename)
 		getline(source, line, '\n');
 		
 		int parse_index = line.find("<index>");
+		int endIndex = line.find("</index>");
 		if (parse_index == string::npos)
 		{
 			cout << "INDInvalid file to load from\n";
 			return;
 		}
 
-		char* p = &line[parse_index + 7];
+		const char* p = ( line.substr(parse_index + 7, endIndex - parse_index - 7) ).c_str();
 		edgeIndex = atoi( p );
 
 		getline(source, line, '\n');
 		parse_index = line.find("<relation>");
-		int endIndex = line.find("</relation>");
+		endIndex = line.find("</relation>");
 		if (parse_index == string::npos || endIndex == string::npos)
 		{
 			cout << "RELInvalid file to load from\n";
@@ -424,20 +452,21 @@ void Graph::load(string filename)
 		//get the Node A
 		getline(source, line, '\n');
 		parse_index = line.find("<nodeA>");
-		
-		if (parse_index == string::npos)
+		endIndex = line.find("</nodeA>");
+		if (parse_index == string::npos || endIndex == string::npos)
 		{
 			cout << "NAInvalid file to load from\n";
 			return;
 		}
 
-		p = &line[parse_index + 7];
-		nA = atoi( p );
+		const char* r = ( line.substr(parse_index + 7, endIndex - parse_index - 7) ).c_str();
+		nA = atoi( r );
 
 
 		//get Node B
 		getline(source, line, '\n');
 		parse_index = line.find("<nodeB>");
+		endIndex = line.find("</nodeA>");
 		if (parse_index == string::npos)
 		{
 			cout << "NBInvalid file to load from\n";
@@ -445,8 +474,8 @@ void Graph::load(string filename)
 		}
 
 
-		p = &line[parse_index + 7];
-		nB = atoi( p );
+		const char* q = ( line.substr(parse_index + 7, endIndex - parse_index - 7) ).c_str();
+		nB = atoi( q );
 
 		//chew up remainder of lines before next line of relevant info
 		getline(source, line, '\n');
@@ -502,8 +531,8 @@ void Graph::draw()
 		glLineWidth(2.5); 
 		glColor3f(1.0, 0.0, 0.0);
 		glBegin(GL_LINES);
-		glVertex2f(nodes[edges[i].getNodeA()].getPoint().getX()/5, nodes[edges[i].getNodeA()].getPoint().getY()/5);
-		glVertex2f(nodes[edges[i].getNodeB()].getPoint().getX()/5, nodes[edges[i].getNodeB()].getPoint().getY()/5);
+		glVertex2f(nodes[edges[i].getNodeA()].getPoint().getX()/5.0, nodes[edges[i].getNodeA()].getPoint().getY()/5.0);
+		glVertex2f(nodes[edges[i].getNodeB()].getPoint().getX()/5.0, nodes[edges[i].getNodeB()].getPoint().getY()/5.0);
 		glEnd();
 	}
 	for(int i = 0; i < nodes.size(); i++)
