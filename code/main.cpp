@@ -20,7 +20,8 @@ using namespace std;
 Graph graph;
 string MODE;
 string FILENAME;
-string input = "DefaultInput";
+bool ACTIVE_CTRL = false;
+string input = "";
 vector<Point> points;
 int HEIGHT = 500;
 int WIDTH = 500;
@@ -154,32 +155,25 @@ void resize(int w, int h)
 //keyboard function
 void keyInput(unsigned char key, int x, int y)
 {
-	if(MODE == "TYPING")
+	if(MODE == "SAVING" || MODE == "LOADING")
 	{
-		if(key == 32 && FILENAME != "")
+		if(key == 13 && FILENAME != "")
 		{
-			graph.save(FILENAME);
+			if(MODE == "SAVING")
+			{
+				graph.save(FILENAME);
+			}
+			else if(MODE == "LOADING")
+			{
+				graph.load(FILENAME);
+			}
+			FILENAME = "";
 			MODE = "NORMAL";
 		}
 		else
 		{
-			string lower = "abcdefghijklmnopqrstuvwxyz";
-			string upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-			
-			for(int i = 0; i < lower.length(); i++)
-			{
-				if(key == lower[i])
-				{
-					if(glutGetModifiers() == GLUT_ACTIVE_SHIFT)
-					{
-						FILENAME += upper[i];
-					}
-					else
-					{
-						FILENAME += lower[i];
-					}
-				}
-			}
+			FILENAME += key;
+			cout << FILENAME << endl;
 		}
 	}
 	else if(MODE == "INPUT")
@@ -254,18 +248,12 @@ void keyInput(unsigned char key, int x, int y)
 				exit(0);
 				break;
 			case 's':
-				cout << "SAVING";
-				if(glutGetModifiers() == GLUT_ACTIVE_CTRL)
-				{
-					if(FILENAME == "")
-					{
-						MODE = "TYPING";
-					}
-					else
-					{
-						graph.save(FILENAME);
-					}
-				}
+				FILENAME = "";
+				MODE = "SAVING";
+				break;
+			case 'l':
+				FILENAME = "";
+				MODE = "LOADING";
 				break;
 			default:
 				break;
