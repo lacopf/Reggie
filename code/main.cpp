@@ -161,10 +161,12 @@ void keyInput(unsigned char key, int x, int y)
 		{
 			if(MODE == "SAVING")
 			{
+				input = "";
 				graph.save(FILENAME);
 			}
 			else if(MODE == "LOADING")
 			{
+				input = "";
 				graph.load(FILENAME);
 			}
 			FILENAME = "";
@@ -173,7 +175,7 @@ void keyInput(unsigned char key, int x, int y)
 		else
 		{
 			FILENAME += key;
-			cout << FILENAME << endl;
+			input = "Enter filename: " + FILENAME;
 		}
 	}
 	else if(MODE == "INPUT")
@@ -250,10 +252,12 @@ void keyInput(unsigned char key, int x, int y)
 			case 's':
 				FILENAME = "";
 				MODE = "SAVING";
+				input = "Enter filename: ";
 				break;
 			case 'l':
 				FILENAME = "";
 				MODE = "LOADING";
+				input = "Enter filename: ";
 				break;
 			default:
 				break;
