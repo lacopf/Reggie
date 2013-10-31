@@ -47,12 +47,14 @@ void mousePassiveMotion(int x, int y);
 bool collisionFree(int x, int y);
 void writeString(int x, int y, void *font, const char *str);
 
+//trim helper
 static inline std::string &ltrim(std::string &s)
 {
 	s.erase(s.begin(), std::find_if(s.begin(), s.end(), std::not1(std::ptr_fun<int, int>(std::isspace))));
 	return s;
 }
 
+//string split helper
 vector<string> &split(const std::string &s, char delim, std::vector<std::string> &elems)
 {
 	std::stringstream ss(s);
@@ -63,6 +65,7 @@ vector<string> &split(const std::string &s, char delim, std::vector<std::string>
 	return elems;
 }
 
+//writes bitmap string to screen
 void writeString(int x, int y, void *font, const char *str){
 	const char *cs;
 	glRasterPos2i(x, y);
@@ -73,16 +76,19 @@ void writeString(int x, int y, void *font, const char *str){
 	glutPostRedisplay();
 }
 
+//euclidean distance
 float dist(Point p1, int x, int y)
 {
 	return sqrt(pow(p1.getX() - x, 2) + pow(p1.getY() - y, 2));
 }
 
+//check if candidate node would overlap any other nodes
 bool collisionFree(int x, int y)
 {
 	vector<Node>* nodes = graph.getNodes();
 	for(int i = 0; i<nodes->size(); i++)
 	{
+		//check the distance from each node to the mousclick position. If it is too close, don't allow node creation
 		if(dist((*nodes)[i].getPoint(), x, y) <= 20)
 		{
 			return false;
@@ -91,6 +97,7 @@ bool collisionFree(int x, int y)
 	return true;
 }
 
+//check if user clicked on a node
 int pickNode(int x, int y)
 {
 	vector<Node>* nodes = graph.getNodes();
@@ -121,9 +128,11 @@ int main(int argc, char *argv[])
 	vector<string>test;
 	cout << "Left click in empty space to create a node. Left click and drag from one node to another to create an edge between them." << endl;
 	
+	//hacky solution to opengl text rendering problem
 	string s = "data";
 	vector<string> ss;
 	graph.addNode(s, ss, -50, -50);
+
 	glutMainLoop();
 
 	return 0;
@@ -180,15 +189,18 @@ void keyInput(unsigned char key, int x, int y)
 	}
 	else if(MODE == "INPUT")
 	{
+		//Enter Key: Check what function is currently in progress and compute appropriately
 		if(key == 13)
 		{
 			vector<Node>* nodes = graph.getNodes();
+			//add node data
 			if(inputFunc == 1)
 			{
 				info = input.substr(17, string::npos);	
 				input = "Enter Node Tags Separated by Commas: ";
 				inputFunc = 2;
 			}
+			//add node tags
 			else if(inputFunc == 2)
 			{
 				input = input.substr(37, string::npos);
@@ -200,6 +212,7 @@ void keyInput(unsigned char key, int x, int y)
 				tags.clear();
 				inputFunc = 0;
 			}
+			//add edge
 			else if(inputFunc == 3)
 			{
 				input = input.substr(21, string::npos);
@@ -214,6 +227,7 @@ void keyInput(unsigned char key, int x, int y)
 				input = "";
 				inputFunc = 0;
 			}
+			//edit node data
 			else if(inputFunc == 4)
 			{
 				input = input.substr(16, string::npos);
@@ -227,6 +241,7 @@ void keyInput(unsigned char key, int x, int y)
 				inputFunc = 5;
 				input = "Add Node Tags: " + (*nodes)[pn].printTags();
 			}
+			//edit node tags
 			else if (inputFunc == 5)
 			{
 				input = input.substr(15, string::npos);
@@ -241,6 +256,7 @@ void keyInput(unsigned char key, int x, int y)
 				tags.clear();
 			}
 		}
+		//backspace removes characters from input buffer
 		else if(key == 8)
 		{
 			if(input.substr(input.size()-2, string::npos) != ": ")
@@ -248,6 +264,7 @@ void keyInput(unsigned char key, int x, int y)
 				input.resize(input.size() - 1); 
 			}
 		}
+		//escape exits INPUT mode
 		else if(key == 27)
 		{
 			MODE = "NORMAL";
@@ -257,6 +274,7 @@ void keyInput(unsigned char key, int x, int y)
 			firstNode = -1;
 			pn = -1;
 		}
+		//add other keys to input buffer
 		else
 		{
 			input += key;
@@ -299,6 +317,7 @@ void mouseControl(int button, int state, int x, int y)
 		Point currentPoint = Point(x, HEIGHT - y, false);
 		points.push_back(currentPoint);
 		
+		//check if we picked a node
 		pn = pickNode(currentPoint.getX(), currentPoint.getY());
 		if(pn != -1)
 		{
