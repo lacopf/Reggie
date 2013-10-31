@@ -38,6 +38,7 @@ class Node
 		inline vector<Edge*> getInEdges(){return in_edges;}
 		inline vector<Edge*> getOutEdges(){return out_edges;}
 		inline vector<string> getTags() {return tags;}
+		void setTags(vector<string> t) {tags = t;}
 
 	 	void setInformation(string inf) {information = inf;}
 		void inline addInEdge(Edge* edg) {in_edges.push_back(edg);}
@@ -46,7 +47,7 @@ class Node
 		void removeOutEdge(Edge* edg);
 		bool edgeExists(int edg);
 		inline void addTag(string tag) {tags.push_back(tag);}
-		void printTags();
+		string printTags();
 		inline void setIndex(int ind){index = ind;}
 
 		bool hasTag(string tag);
@@ -98,12 +99,15 @@ bool Node::hasTag(string tag)
 	return false;
 }
 
-void Node::printTags()
+string Node::printTags()
 {
+	string s = "";
 	for(int i=0; i<tags.size(); i++)
 	{
-		cout << tags[i] << " ";
+		s += tags[i] + ",";
 	}
+	s.resize(s.size() - 1);
+	return s; 
 }
 
 //removes an edge coming into a node

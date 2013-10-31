@@ -111,7 +111,7 @@ int main(int argc, char *argv[])
 	glutInitWindowSize(500, 500);
 	glutInitWindowPosition(100, 100);
 	gluOrtho2D(0, 500, 0, 500);
-	glutCreateWindow("JungleReggie");
+	glutCreateWindow("Babel Graph");
 	glutDisplayFunc(drawScene);
 	glutReshapeFunc(resize);
 	glutKeyboardFunc(keyInput);
@@ -182,6 +182,7 @@ void keyInput(unsigned char key, int x, int y)
 	{
 		if(key == 13)
 		{
+			vector<Node>* nodes = graph.getNodes();
 			if(inputFunc == 1)
 			{
 				info = input.substr(17, string::npos);	
@@ -215,17 +216,36 @@ void keyInput(unsigned char key, int x, int y)
 			}
 			else if(inputFunc == 4)
 			{
-				cout << "editing" << endl;
 				input = input.substr(16, string::npos);
-				vector<Node>* nodes = graph.getNodes();
-				(*nodes)[pn].setInformation(input);
-				graph.printGraph();
-				firstNode = -1;
-				pn = -1;
+				if(input != "")
+				{
+					(*nodes)[pn].setInformation(input);
+					graph.printGraph();
+				
+				}
+
+				inputFunc = 5;
+				input = "Add Node Tags: " + (*nodes)[pn].printTags();
+			}
+			else if (inputFunc == 5)
+			{
+				input = input.substr(15, string::npos);
+				tags = split(input, ',', tags);
+				(*nodes)[pn].setTags(tags);
 
 				MODE = "NORMAL";
 				input = "";
+				pn = -1;
 				inputFunc = 0;
+				firstNode = -1;
+				tags.clear();
+			}
+		}
+		else if(key == 8)
+		{
+			if(input.substr(input.size()-2, string::npos) != ": ")
+			{
+				input.resize(input.size() - 1); 
 			}
 		}
 		else if(key == 27)
@@ -282,9 +302,7 @@ void mouseControl(int button, int state, int x, int y)
 		pn = pickNode(currentPoint.getX(), currentPoint.getY());
 		if(pn != -1)
 		{
-			cout << "Node " << pn << ", Data: " << (*nodes)[pn].getInformation() << ", Tags: ";
-		       	(*nodes)[pn].printTags();
-		       	cout << endl;
+		        input = string("Data: ") + string((*nodes)[pn].getInformation()) + string(", Tags: ") + (*nodes)[pn].printTags();
 			firstNode = pn;
 		}
 		else if(collisionFree(x, HEIGHT - y))
