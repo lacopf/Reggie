@@ -1,7 +1,7 @@
-ReggieBabelJungleBody
-=====================
+BABEL GRAPH
+===========
 
-Mind mapping like a Purple Pikmin
+Mind mapping software
 
 Project Timeline
 ----------------
