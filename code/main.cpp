@@ -27,6 +27,7 @@ int WIDTH = 500;
 int mouse_x = 0;
 int mouse_y = 0;
 int firstNode = -1;
+int pn = -1;
 int inputFunc = 0;
 string info = "";
 vector<string> tags;
@@ -78,10 +79,10 @@ float dist(Point p1, int x, int y)
 
 bool collisionFree(int x, int y)
 {
-	vector<Node> nodes = graph.getNodes();
-	for(int i = 0; i<nodes.size(); i++)
+	vector<Node>* nodes = graph.getNodes();
+	for(int i = 0; i<nodes->size(); i++)
 	{
-		if(dist(nodes[i].getPoint(), x, y) <= 20)
+		if(dist((*nodes)[i].getPoint(), x, y) <= 20)
 		{
 			return false;
 		}
@@ -91,10 +92,10 @@ bool collisionFree(int x, int y)
 
 int pickNode(int x, int y)
 {
-	vector<Node> nodes = graph.getNodes();
-	for(int i = 0; i<nodes.size(); i++)
+	vector<Node>* nodes = graph.getNodes();
+	for(int i = 0; i<nodes->size(); i++)
 	{
-		if(dist(nodes[i].getPoint(), x, y) <= 10)
+		if(dist((*nodes)[i].getPoint(), x, y) <= 10)
 		{
 			return i;
 		}
@@ -115,13 +116,13 @@ int main(int argc, char *argv[])
 	glutKeyboardFunc(keyInput);
 	glutMouseFunc(mouseControl);
 	MODE = "NORMAL";
+	tags.clear();
 	vector<string>test;
 	cout << "Left click in empty space to create a node. Left click and drag from one node to another to create an edge between them." << endl;
 	
 	string s = "data";
 	vector<string> ss;
 	graph.addNode(s, ss, -50, -50);
-	cout << graph.getNodes().size() << endl;
 	glutMainLoop();
 
 	return 0;
@@ -196,12 +197,49 @@ void keyInput(unsigned char key, int x, int y)
 				input = input.substr(37, string::npos);
 				cout << points.back().getX() << ", " << points.back().getY() << endl;
 				graph.addNode(info, split(input, ',', tags), points.back().getX(), points.back().getY());
-				firstNode = graph.getNodes().back().getIndex();
+				firstNode = graph.getNodes()->back().getIndex();
 				MODE = "NORMAL";
 				input = "";
 				tags.clear();
 				inputFunc = 0;
 			}
+			else if(inputFunc == 3)
+			{
+				input = input.substr(21, string::npos);
+				cout << firstNode << endl;
+				cout << "Adding Edge from " << firstNode << " to " << pn << endl;
+				cout << "Relation: " << input << endl;
+				graph.addEdge(firstNode, pn, input);
+				firstNode = -1;
+				pn = -1;
+
+				MODE = "NORMAL";
+				input = "";
+				inputFunc = 0;
+			}
+			else if(inputFunc == 4)
+			{
+				cout << "editing" << endl;
+				input = input.substr(16, string::npos);
+				vector<Node>* nodes = graph.getNodes();
+				(*nodes)[pn].setInformation(input);
+				graph.printGraph();
+				firstNode = -1;
+				pn = -1;
+
+				MODE = "NORMAL";
+				input = "";
+				inputFunc = 0;
+			}
+		}
+		else if(key == 27)
+		{
+			MODE = "NORMAL";
+			input = "";
+			inputFunc = 0;
+			tags.clear();
+			firstNode = -1;
+			pn = -1;
 		}
 		else
 		{
@@ -239,7 +277,7 @@ void keyInput(unsigned char key, int x, int y)
 void mouseControl(int button, int state, int x, int y)
 {	
 
-	vector<Node> nodes = graph.getNodes();
+	vector<Node>* nodes = graph.getNodes();
 
 	// Store the currentPoint in the points vector when left button is released.
 	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
@@ -249,11 +287,12 @@ void mouseControl(int button, int state, int x, int y)
 		Point currentPoint = Point(x, HEIGHT - y, false);
 		points.push_back(currentPoint);
 		
-		int pn = pickNode(currentPoint.getX(), currentPoint.getY());
+		pn = pickNode(currentPoint.getX(), currentPoint.getY());
 		if(pn != -1)
 		{
-			cout << "Node " << pn << ", Data: " << nodes[pn].getInformation() << ", First 2 tags: "
-			       	<< nodes[pn].getTags()[0] << " " << nodes[pn].getTags()[1] << endl;
+			cout << "Node " << pn << ", Data: " << (*nodes)[pn].getInformation() << ", Tags: ";
+		       	(*nodes)[pn].printTags();
+		       	cout << endl;
 			firstNode = pn;
 		}
 		else if(collisionFree(x, HEIGHT - y))
@@ -263,19 +302,29 @@ void mouseControl(int button, int state, int x, int y)
 			inputFunc = 1;
 		}
 	}
-	else if (button == GLUT_LEFT_BUTTON && state == GLUT_UP)
+	else if (state == GLUT_UP)
 	{
 		Point currentPoint = Point(x, HEIGHT - y, true);
-		points.push_back(currentPoint);
+		points.push_back(currentPoint);	
+		pn = pickNode(currentPoint.getX(), currentPoint.getY());
 		
-		int pn = pickNode(currentPoint.getX(), currentPoint.getY());
-		if(pn != -1 && firstNode != -1 && pn != firstNode && !nodes[firstNode].edgeExists(pn))
+		if(button == GLUT_LEFT_BUTTON)
 		{
-			string s = "edgeRelation";
-			cout << firstNode << endl;
-			cout << "Adding Edge from " << firstNode << " to " << pn << endl;
-			graph.addEdge(firstNode, pn, s);
-			firstNode = -1;
+			if(pn != -1 && firstNode != -1 && pn != firstNode && !(*nodes)[firstNode].edgeExists(pn))
+			{
+				MODE = "INPUT";
+				input = "Enter Edge Relation: ";
+				inputFunc = 3;
+			}
+		}
+		else if(button == GLUT_RIGHT_BUTTON)
+		{
+			if(pn != -1)
+			{
+				MODE = "INPUT";
+				input = "Edit Node Data: ";
+				inputFunc = 4;
+			}	
 		}
 	}
 }

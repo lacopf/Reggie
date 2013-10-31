@@ -21,7 +21,7 @@ using namespace std;
 class Graph
 {
 	public:
-		vector<Node> getNodes(){ return nodes; }
+		vector<Node>* getNodes(){ return &nodes; }
 		vector<Edge> getEdges(){ return edges; }
 
 		Graph();

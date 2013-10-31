@@ -39,12 +39,14 @@ class Node
 		inline vector<Edge*> getOutEdges(){return out_edges;}
 		inline vector<string> getTags() {return tags;}
 
+	 	void setInformation(string inf) {information = inf;}
 		void inline addInEdge(Edge* edg) {in_edges.push_back(edg);}
 		void inline addOutEdge(Edge* edg) {out_edges.push_back(edg);}
 		void removeInEdge(Edge* edg);
 		void removeOutEdge(Edge* edg);
 		bool edgeExists(int edg);
 		inline void addTag(string tag) {tags.push_back(tag);}
+		void printTags();
 		inline void setIndex(int ind){index = ind;}
 
 		bool hasTag(string tag);
@@ -68,6 +70,7 @@ Node::Node()
 	index = -1;
 	point = Point(-1,-1,false);
 }
+
 //constructor with information
 Node::Node(string info, int ind, vector<string> new_tags, int x, int y)
 {
@@ -80,6 +83,7 @@ Node::Node(string info, int ind, vector<string> new_tags, int x, int y)
 	index = ind;
 	point = Point(x,y,true);
 }
+
 //returns whether a node has a given tag
 bool Node::hasTag(string tag)
 {
@@ -92,6 +96,14 @@ bool Node::hasTag(string tag)
 	}
 
 	return false;
+}
+
+void Node::printTags()
+{
+	for(int i=0; i<tags.size(); i++)
+	{
+		cout << tags[i] << " ";
+	}
 }
 
 //removes an edge coming into a node
