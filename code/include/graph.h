@@ -24,6 +24,7 @@ class Graph
 		vector<Node> getNodes(){ return nodes; }
 		vector<Edge> getEdges(){ return edges; }
 
+		Graph();
 		inline void addNode(Node node){ nodes.push_back(node); }
 		void addNode(string info, vector<string> tags, int x, int y);
 		void addEdge(int n1, int n2, string rel);
@@ -38,11 +39,20 @@ class Graph
 	private:
 		vector<Node> nodes;
 		vector<Edge> edges;
+		bool f;
 };
 
+Graph::Graph(){
+	f = true;
+}
 
 void Graph::addNode(string info, vector<string> tags, int x, int y)
 {
+	if(nodes.size() == 1 && f)
+	{
+		nodes.clear();
+		f = false;
+	}
 	Node n1(info, nodes.size(), tags, x, y);
 	nodes.push_back(n1);
 }

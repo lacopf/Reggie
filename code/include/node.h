@@ -43,6 +43,7 @@ class Node
 		void inline addOutEdge(Edge* edg) {out_edges.push_back(edg);}
 		void removeInEdge(Edge* edg);
 		void removeOutEdge(Edge* edg);
+		bool edgeExists(int edg);
 		inline void addTag(string tag) {tags.push_back(tag);}
 		inline void setIndex(int ind){index = ind;}
 
@@ -92,6 +93,7 @@ bool Node::hasTag(string tag)
 
 	return false;
 }
+
 //removes an edge coming into a node
 void Node::removeInEdge(Edge* edg)
 {
@@ -105,6 +107,7 @@ void Node::removeInEdge(Edge* edg)
 		in_edges.pop_back();
 	}
 }
+
 //removes an edge going into a node
 void Node::removeOutEdge(Edge* edg)
 {
@@ -118,6 +121,20 @@ void Node::removeOutEdge(Edge* edg)
 		out_edges.pop_back();
 	}
 }
+
+bool Node::edgeExists(int edg)
+{
+	for(int i=0; i<out_edges.size(); i++)
+	{
+		if(out_edges[i]->getNodeB() == edg)
+		{
+			cout << "Edge from " << index << " to " << edg << " already exists." << endl;
+			return true;
+		}
+	}
+	return false;
+}
+
 void Node::draw()
 {
 	glColor3f(1.0, 0.0, 0.0);
