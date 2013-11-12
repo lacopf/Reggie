@@ -32,6 +32,8 @@ class Graph
 		void removeEdge(int index);
 		void removeNode(int index);
 		void printGraph();
+		vector<int> topSort();
+		bool visitNode(int node, vector<bool>& visited, vector<bool>& permanent, vector<int>& sortedVec);
 		void save(string filename);
 		void load(string filename);
 		void draw();
@@ -150,6 +152,45 @@ void Graph::printGraph()
                 cout << endl << endl;
         }
 }
+
+
+//Returns a vector of indices of nodes in graph when sorted in topological order.
+//returns an empty list if graph is not a DAG
+vector<int> Graph::topSort(){
+	vector<bool> visited(nodes.size(), false);
+	vector<bool> permanent(nodes.size(), false);
+	vector<int> sortedVec;
+
+	//calls visitNode on all nodes in graph 
+	//each call represents a new tree if the graph is a DAG
+	for(int i=0; i<nodes.size(); i++){
+		if(permanent[i]){continue;}
+		else if (visitNode(i, visited, permanent, sortedVec)){vector<int> t; return t;}
+	}
+	vector<int> finalVec; 
+	//reverses sorted list
+	for(int i=sortedVec.size()-1; i >= 0; i--){
+		finalVec.push_back(sortedVec[i]);
+	}
+	return finalVec;
+}
+
+//returns true if graph is a DAG
+//visits all children in a DFS pattern
+bool Graph::visitNode(int node, vector<bool>& visited, vector<bool>& permanent, vector<int>& sortedVec){
+	if(visited[node] & not permanent[node]){return true;} //graph is a DAG
+	else if(permanent[node]){return false;} //not a DAG, but this node has been seen before
+	visited[node] = true;
+	const vector<Edge*>& outEdges = nodes[node].getOutEdges(); 
+	for(int i=0; i< outEdges.size(); i++){
+		//calls visitNode on child, returns true if recursive call returned true (graph is a DAG) 
+		if(visitNode(outEdges[i]->getNodeB(), visited, permanent, sortedVec)){return true;}
+	}
+	permanent[node] = true;
+	sortedVec.push_back(node);
+	return false;
+}
+
 //saves the graph to the file
 void Graph::save(string filename)
 {
