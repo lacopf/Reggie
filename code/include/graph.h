@@ -305,7 +305,12 @@ void Graph::load(string filename)
 	source.open( filename.c_str() );
 	if ( !source.is_open() )
 	{
-		filename += ".xml";
+		string filenametemp = filename + ".xml";
+		source.open( filename.c_str() );
+	}
+	if ( !source.is_open() )
+	{
+		filename += ".reggiesbody";
 		source.open( filename.c_str() );
 		if ( !source.is_open() )
 		{
@@ -316,6 +321,7 @@ void Graph::load(string filename)
 
 	//all my temporary variables
 	string line = "";
+	bool isTemplate = false;
 	Node dummyNode;
 	Edge dummyEdge;
 	vector<Node> loadedNodes;
@@ -325,6 +331,17 @@ void Graph::load(string filename)
 
 
 	getline( source, line, '\n');
+	if ( line.find("template") != string::npos )
+	{
+		getline( source, line, '\n');
+		isTemplate = true;
+	}
+	else if ( line.find("graph") == string::npos )
+	{
+		cout << "Not a graph file\n";
+		return;
+	}
+	
 	if ( line.find("graph") == string::npos )
 	{
 		cout << "Not a graph file\n";
