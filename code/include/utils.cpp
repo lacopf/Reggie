@@ -102,10 +102,12 @@ void drawScene()
 //window resize function
 void resize(int w, int h)
 {
+	WIDTH = w;
+	HEIGHT = h;
 	glViewport(0, 0, (GLsizei)w, (GLsizei)h);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	glOrtho(0.0, 100.0, 0.0, 100.0, -1.0, 1.0);
+	glOrtho(0.0, w, 0.0, h, -1.0, 1.0);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 }
@@ -334,6 +336,7 @@ void opengl_init(int argc, char *argv[])
 	MODE = "NORMAL";
 	tags.clear();
 	vector<string>test;
+	glEnable(GL_BLEND);
 	cout << "Left click in empty space to create a node. Left click and drag from one node to another to create an edge between them." << endl;
 	
 	//hacky solution to opengl text rendering problem
