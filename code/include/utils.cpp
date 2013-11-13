@@ -122,12 +122,17 @@ void keyInput(unsigned char key, int x, int y)
 			if(MODE == "SAVING")
 			{
 				input = "";
-				graph.save(FILENAME);			
+				graph.save(FILENAME,false);			
 			}
 			else if(MODE == "LOADING")
 			{
 				input = "";
 				graph.load(FILENAME);
+			}
+			else if(MODE = "TEMPLATE")
+			{
+				input = "";
+				graph.save(FILENAME,true);
 			}
 			FILENAME = "";
 			MODE = "NORMAL";
@@ -259,6 +264,11 @@ void keyInput(unsigned char key, int x, int y)
 				FILENAME = "";
 				MODE = "LOADING";
 				input = "Enter filename: ";
+				break;
+			case 't':
+				FILENAME = "";
+				MODE = "TEMPLATE";
+				input = "Enter template name: ";
 				break;
 			default:
 				break;
