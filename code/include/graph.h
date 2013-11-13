@@ -6,6 +6,8 @@
 #include <string.h>
 #include <vector>
 #include <sstream>
+#include <sys/types.h>
+#include <sys/stat.h>
 
 #ifdef __APPLE__
 #  include <GLUT/glut.h>
@@ -34,7 +36,7 @@ class Graph
 		void printGraph();
 		vector<int> topSort();
 		bool visitNode(int node, vector<bool>& visited, vector<bool>& permanent, vector<int>& sortedVec);
-		void save(string filename);
+		void save(string filename, bool isTemplate);
 		void load(string filename);
 		void draw();
 
@@ -192,16 +194,39 @@ bool Graph::visitNode(int node, vector<bool>& visited, vector<bool>& permanent, 
 }
 
 //saves the graph to the file
-void Graph::save(string filename)
+void Graph::save(string filename, bool isTemplate)
 {
-	int p = filename.find(".xml");
-	if (p == string::npos || filename.length() < 4 || filename.substr(filename.size() - 4, 4).compare(".xml") != 0 )
-		filename += ".xml";
+	struct stat info;
 
-	cout << "The filename is " << filename << endl;
+	//make a templates folder if one doesn't exist
+	if ( lstat("./templates", &info) == -1 )
+		mkdir("./templates", S_IRWXU);
 
+	//treat files differently based on whether it's ging to saved as a template or not
+	if (!isTemplate)
+	{
+		int p = filename.find(".xml");
+		if (p == string::npos || filename.length() < 4 || filename.substr(filename.size() - 4, 4).compare(".xml") != 0 )
+			filename += ".xml";
+
+	}
+	else
+	{
+		int p = filename.find(".reggiesbody");
+		if (p == string::npos || filename.length() < 4 || filename.substr(filename.size() - 4, 4).compare(".xml") != 0 )
+			filename += ".reggiesbody";
+		chdir("./templates");
+	}
+	
 	ofstream saveFile;
 	saveFile.open(filename.c_str());
+	cout << "The filename is " << filename << endl;
+
+
+	if (isTemplate)
+	{
+		saveFile << "<template></template>\n";
+	}
 
 	saveFile << "<graph>\n";
 	saveFile << "-<nodeList>\n";
@@ -269,6 +294,9 @@ void Graph::save(string filename)
 	saveFile << " </edgeList>\n";
 	saveFile << "</graph>\n";
 	saveFile.close();
+
+	if (isTemplate)
+		chdir("..");
 }
 void Graph::load(string filename)
 {

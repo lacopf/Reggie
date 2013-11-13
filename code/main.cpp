@@ -176,7 +176,7 @@ void keyInput(unsigned char key, int x, int y)
 			if(MODE == "SAVING")
 			{
 				input = "";
-				graph.save(FILENAME);
+				graph.save(FILENAME, false);
 			}
 			else if(MODE == "LOADING")
 			{
