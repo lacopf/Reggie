@@ -115,7 +115,7 @@ void resize(int w, int h)
 //keyboard function
 void keyInput(unsigned char key, int x, int y)
 {
-	if(MODE == "SAVING" || MODE == "LOADING")
+	if(MODE == "SAVING" || MODE == "LOADING" || MODE == "TEMPLATE")
 	{
 		if(key == 13 && FILENAME != "")
 		{
@@ -129,7 +129,7 @@ void keyInput(unsigned char key, int x, int y)
 				input = "";
 				graph.load(FILENAME);
 			}
-			else if(MODE = "TEMPLATE")
+			else if(MODE == "TEMPLATE")
 			{
 				input = "";
 				graph.save(FILENAME,true);
