@@ -213,7 +213,7 @@ void Graph::save(string filename, bool isTemplate)
 	else
 	{
 		int p = filename.find(".reggiesbody");
-		if (p == string::npos || filename.length() < 4 || filename.substr(filename.size() - 4, 4).compare(".xml") != 0 )
+		if (p == string::npos || filename.length() < 12 || filename.substr(filename.size() - 12, 12).compare(".reggiesbody") != 0 )
 			filename += ".reggiesbody";
 		chdir("./templates");
 	}
