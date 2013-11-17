@@ -11,10 +11,12 @@
 #  include <GL/glut.h>
 #endif
 
+using namespace std;
+
+int RADIUS = 20;
+
 #include "include/graph.h"
 #include "include/utils.cpp"
-
-using namespace std;
 
 int main(int argc, char *argv[])
 {

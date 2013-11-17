@@ -53,7 +53,7 @@ bool collisionFree(int x, int y)
 	for(int i = 0; i<nodes->size(); i++)
 	{
 		//check the distance from each node to the mousclick position. If it is too close, don't allow node creation
-		if(dist((*nodes)[i].getPoint(), x, y) <= 20)
+		if(dist((*nodes)[i].getPoint(), x, y) <= RADIUS*2)
 		{
 			return false;
 		}
@@ -67,7 +67,7 @@ int pickNode(int x, int y)
 	vector<Node>* nodes = graph.getNodes();
 	for(int i = 0; i<nodes->size(); i++)
 	{
-		if(dist((*nodes)[i].getPoint(), x, y) <= 10)
+		if(dist((*nodes)[i].getPoint(), x, y) <= RADIUS)
 		{
 			return i;
 		}

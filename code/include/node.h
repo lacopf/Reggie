@@ -158,7 +158,7 @@ void Node::draw()
 		for (int i=0; i < 360; i++)
 		{
 			float degInRad = i*M_PI/180;
-			glVertex2f(cos(degInRad)*2.0+point.getX(),sin(degInRad)*2.0+point.getY());
+			glVertex2f(cos(degInRad)*RADIUS+point.getX(),sin(degInRad)*RADIUS+point.getY());
 		}
 	glEnd();
 	
