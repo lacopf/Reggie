@@ -340,32 +340,36 @@ void mouseControl(int button, int state, int x, int y)
 	bool buttFlag = false;
 	vector<Node>* nodes = graph.getNodes();
 	
-	//check for button clicks
-	int left, right, top, bottom;
-	if(state == GLUT_DOWN)
+	//check if in button area
+	if(x >= WIDTH - 200)
 	{
-		for(int i = 0; i < demButtons.size(); i++)
+		buttFlag = true;
+	}
+	
+	if(buttFlag)
+	{
+		//check for button clicks
+		int left, right, top, bottom;
+		if(state == GLUT_DOWN)
 		{
-			left = WIDTH - 185 + 90*(demButtons[i].getCol() - 1);
-			right = left + 80;
-			top = HEIGHT - 15 - 40*(demButtons[i].getRow() - 1);
-			bottom = top - 30;
-		
-			if(x < right && x > left && HEIGHT - y < top && HEIGHT - y > bottom)
+			for(int i = 0; i < demButtons.size(); i++)
 			{
-				buttFlag = true;
-				if(demButtons[i].getName() == "Tiger")
+				left = WIDTH - 185 + 90*(demButtons[i].getCol() - 1);
+				right = left + 80;
+				top = HEIGHT - 15 - 40*(demButtons[i].getRow() - 1);
+				bottom = top - 30;
+		
+				if(x < right && x > left && HEIGHT - y < top && HEIGHT - y > bottom)
 				{
-					graph.saveSortedGraph();
+					if(demButtons[i].getName() == "Tiger")
+					{
+						graph.saveSortedGraph();
+					}
 				}
 			}
 		}
 	}
-	
-	
-	
-	
-	if(!buttFlag)
+	else
 	{
 		// Store the currentPoint in the points vector when left button is released.
 		if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
