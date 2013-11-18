@@ -1,3 +1,9 @@
+#include <iostream>
+
+using namespace std;
+
+#include "button.h"
+
 ///global variables
 Graph graph;
 string MODE;
@@ -15,6 +21,7 @@ int pn = -1;
 int inputFunc = 0;
 string info = "";
 vector<string> tags;
+vector<Button> demButtons;
 
 
 
@@ -74,6 +81,52 @@ int pickNode(int x, int y)
 	}
 	return -1;
 }
+
+//button drawing function
+void drawButton(string name, int row, int column)
+{
+	int left, right, top, bottom;
+	
+	left = WIDTH - 185 + 90*(column - 1);
+	right = left + 80;
+	top = HEIGHT - 15 - 40*(row - 1);
+	bottom = top - 30;	
+	
+	glColor3f(1.0, 0.0, 0.0);
+	glBegin(GL_QUADS);
+		glVertex2f(left, top);
+		glVertex2f(left, bottom);
+		glVertex2f(right, bottom);
+		glVertex2f(right, top);
+	glEnd();
+}
+
+//menu drawing function
+void drawMenu()
+{
+	glColor3f(0.0, 1.0, 0.0);
+	glBegin(GL_QUADS);
+		glVertex2f(WIDTH - 200, 0);
+		glVertex2f(WIDTH, 0);
+		glVertex2f(WIDTH, HEIGHT);
+		glVertex2f(WIDTH - 200, HEIGHT);
+	glEnd();
+	
+	glColor3f(1.0, 0.0, 1.0);
+	glBegin(GL_QUADS);
+		glVertex2f(WIDTH - 190, 10);
+		glVertex2f(WIDTH - 10, 10);
+		glVertex2f(WIDTH - 10, HEIGHT - 10);
+		glVertex2f(WIDTH - 190, HEIGHT - 10);
+	glEnd();
+	
+	for(int i = 0; i < demButtons.size(); i++)
+	{
+		drawButton(demButtons[i].getName(), demButtons[i].getRow(), demButtons[i].getCol());
+	}
+	
+}
+
 //display function
 void drawScene()
 {
@@ -95,7 +148,9 @@ void drawScene()
 			input = "Enter filename: " + FILENAME + "";
 		}
 	}
-
+	
+	drawMenu();
+	
 	glutSwapBuffers();
 }
 
@@ -281,6 +336,31 @@ void mouseControl(int button, int state, int x, int y)
 {	
 
 	vector<Node>* nodes = graph.getNodes();
+	
+	//check for button clicks
+	int left, right, top, bottom;
+	if(state == GLUT_DOWN)
+	{
+		for(int i = 0; i < demButtons.size(); i++)
+		{
+			left = WIDTH - 185 + 90*(demButtons[i].getCol() - 1);
+			right = left + 80;
+			top = HEIGHT - 15 - 40*(demButtons[i].getRow() - 1);
+			bottom = top - 30;
+		
+			if(x < right && x > left && HEIGHT - y < top && HEIGHT - y > bottom)
+			{
+				if(demButtons[i].getName == "tiger")
+				{
+					graph.saveSortedGraph();
+				}
+			}
+		}
+	}
+	
+	
+	
+	
 
 	// Store the currentPoint in the points vector when left button is released.
 	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
@@ -335,8 +415,8 @@ void opengl_init(int argc, char *argv[])
 {
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_SINGLE | GLUT_DOUBLE);
-	glutInitWindowSize(500, 500);
-	glutInitWindowPosition(100, 100);
+	glutInitWindowSize(1000, 800);
+	glutInitWindowPosition(0, 0);
 	gluOrtho2D(0, 500, 0, 500);
 	glutCreateWindow("Babel Graph");
 	glutDisplayFunc(drawScene);
@@ -353,6 +433,11 @@ void opengl_init(int argc, char *argv[])
 	string s = "data";
 	vector<string> ss;
 	graph.addNode(s, ss, -50, -50);
+	
+	//buttons delcaration
+	demButtons.push_back(Button(1,1,"tiger"));
+	demButtons.push_back(Button(1,2,"eye"));
+	demButtons.push_back(Button(2,1,"plow"));
 
 	glutMainLoop();
 }
