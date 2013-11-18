@@ -35,6 +35,7 @@ class Graph
 		void removeEdge(int index);
 		void removeNode(int index);
 		void printGraph();
+		void saveSortedGraph();
 		vector<int> topSort();
 		bool visitNode(int node, vector<bool>& visited, vector<bool>& permanent, vector<int>& sortedVec);
 		void save(string filename, bool isTemplate);
@@ -154,6 +155,15 @@ void Graph::printGraph()
                 }
                 cout << endl << endl;
         }
+}
+
+//Saves topologically sorted graph in a text file
+void Graph::saveSortedGraph(){
+	ofstream out("sorted.txt");
+	vector<int> sorted = topSort();
+	for(int i=0; i<sorted.size(); i++){
+		out << nodes[i].getInformation() << endl;
+	}	
 }
 
 
