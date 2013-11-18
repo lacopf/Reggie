@@ -333,8 +333,8 @@ void keyInput(unsigned char key, int x, int y)
 
 //mouse function
 void mouseControl(int button, int state, int x, int y)
-{	
-
+{
+	bool buttFlag = false;
 	vector<Node>* nodes = graph.getNodes();
 	
 	//check for button clicks
@@ -350,6 +350,7 @@ void mouseControl(int button, int state, int x, int y)
 		
 			if(x < right && x > left && HEIGHT - y < top && HEIGHT - y > bottom)
 			{
+				buttFlag = true;
 				if(demButtons[i].getName == "tiger")
 				{
 					graph.saveSortedGraph();
@@ -361,52 +362,54 @@ void mouseControl(int button, int state, int x, int y)
 	
 	
 	
-
-	// Store the currentPoint in the points vector when left button is released.
-	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
-	{	
-		MODE = "NORMAL";
-		input = "";
-		Point currentPoint = Point(x, HEIGHT - y, false);
-		points.push_back(currentPoint);
-		
-		//check if we picked a node
-		pn = pickNode(currentPoint.getX(), currentPoint.getY());
-		if(pn != -1)
-		{
-		        input = string("Data: ") + string((*nodes)[pn].getInformation()) + string(", Tags: ") + (*nodes)[pn].printTags();
-			firstNode = pn;
-		}
-		else if(collisionFree(x, HEIGHT - y))
-		{
-			MODE = "INPUT";
-			input = "Enter Node Data: ";
-			inputFunc = 1;
-		}
-	}
-	else if (state == GLUT_UP)
+	if(!buttFlag)
 	{
-		Point currentPoint = Point(x, HEIGHT - y, true);
-		points.push_back(currentPoint);	
-		pn = pickNode(currentPoint.getX(), currentPoint.getY());
+		// Store the currentPoint in the points vector when left button is released.
+		if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
+		{	
+			MODE = "NORMAL";
+			input = "";
+			Point currentPoint = Point(x, HEIGHT - y, false);
+			points.push_back(currentPoint);
 		
-		if(button == GLUT_LEFT_BUTTON)
-		{
-			if(pn != -1 && firstNode != -1 && pn != firstNode && !(*nodes)[firstNode].edgeExists(pn))
-			{
-				MODE = "INPUT";
-				input = "Enter Edge Relation: ";
-				inputFunc = 3;
-			}
-		}
-		else if(button == GLUT_RIGHT_BUTTON)
-		{
+			//check if we picked a node
+			pn = pickNode(currentPoint.getX(), currentPoint.getY());
 			if(pn != -1)
 			{
+				    input = string("Data: ") + string((*nodes)[pn].getInformation()) + string(", Tags: ") + (*nodes)[pn].printTags();
+				firstNode = pn;
+			}
+			else if(collisionFree(x, HEIGHT - y))
+			{
 				MODE = "INPUT";
-				input = "Edit Node Data: ";
-				inputFunc = 4;
-			}	
+				input = "Enter Node Data: ";
+				inputFunc = 1;
+			}
+		}
+		else if (state == GLUT_UP)
+		{
+			Point currentPoint = Point(x, HEIGHT - y, true);
+			points.push_back(currentPoint);	
+			pn = pickNode(currentPoint.getX(), currentPoint.getY());
+		
+			if(button == GLUT_LEFT_BUTTON)
+			{
+				if(pn != -1 && firstNode != -1 && pn != firstNode && !(*nodes)[firstNode].edgeExists(pn))
+				{
+					MODE = "INPUT";
+					input = "Enter Edge Relation: ";
+					inputFunc = 3;
+				}
+			}
+			else if(button == GLUT_RIGHT_BUTTON)
+			{
+				if(pn != -1)
+				{
+					MODE = "INPUT";
+					input = "Edit Node Data: ";
+					inputFunc = 4;
+				}	
+			}
 		}
 	}
 }
