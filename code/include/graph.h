@@ -31,7 +31,6 @@ class Graph
 		inline void addNode(Node node){ nodes.push_back(node); }
 		void addNode(string info, vector<string> tags, int x, int y);
 		void addEdge(int n1, int n2, string rel);
-		void printNodes();
 		void removeEdge(int index);
 		void removeNode(int index);
 		void printGraph();
@@ -51,6 +50,7 @@ Graph::Graph(){
 	f = true;
 }
 
+//adds a node to the graph
 void Graph::addNode(string info, vector<string> tags, int x, int y)
 {
 	if(nodes.size() == 1 && f)
@@ -62,6 +62,7 @@ void Graph::addNode(string info, vector<string> tags, int x, int y)
 	nodes.push_back(n1);
 }
 
+//adds an edge between two nodes to the graph
 void Graph::addEdge(int n1, int n2, string rel)
 {
 	Edge e(edges.size(), rel, n1, n2);
@@ -71,13 +72,6 @@ void Graph::addEdge(int n1, int n2, string rel)
 	nodes[n1].addOutEdge(p);
 }
 
-void Graph::printNodes()
-{
-	for(int i=0; i<nodes.size(); i++)
-	{
-		cout << i << ": " << nodes[i].getInformation() << endl;
-	}
-}
 
 void Graph::removeEdge(int index)
 {
@@ -213,9 +207,9 @@ void Graph::save(string filename, bool isTemplate)
 	}
 	else
 	{
-		int p = filename.find(".reggiesbody");
-		if (p == string::npos || filename.length() < 12 || filename.substr(filename.size() - 12, 12).compare(".reggiesbody") != 0 )
-			filename += ".reggiesbody";
+		int p = filename.find(".bgt");
+		if (p == string::npos || filename.length() < 4 || filename.substr(filename.size() - 4, 4).compare(".bgt") != 0 )
+			filename += ".bgt";
 		chdir("./templates");
 	}
 	
@@ -311,7 +305,7 @@ void Graph::load(string filename)
 	}
 	if ( !source.is_open() )
 	{
-		filename += ".reggiesbody";
+		filename += ".bgt";
 		source.open( filename.c_str() );
 		if ( !source.is_open() )
 		{
@@ -529,8 +523,7 @@ void Graph::load(string filename)
 		int endIndex = line.find("</index>");
 		if (parse_index == string::npos)
 		{
-			cout << "INDInvalid file to load from\n";
-			return;
+			break;
 		}
 
 		const char* p = ( line.substr(parse_index + 7, endIndex - parse_index - 7) ).c_str();
