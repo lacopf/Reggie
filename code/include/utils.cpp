@@ -99,6 +99,9 @@ void drawButton(string name, int row, int column)
 		glVertex2f(right, bottom);
 		glVertex2f(right, top);
 	glEnd();
+	
+	glColor3f(1.0, 1.0, 1.0);
+	writeString(left + 5, bottom + 10, GLUT_BITMAP_9_BY_15, name.c_str());
 }
 
 //menu drawing function
@@ -351,7 +354,7 @@ void mouseControl(int button, int state, int x, int y)
 			if(x < right && x > left && HEIGHT - y < top && HEIGHT - y > bottom)
 			{
 				buttFlag = true;
-				if(demButtons[i].getName() == "tiger")
+				if(demButtons[i].getName() == "Tiger")
 				{
 					graph.saveSortedGraph();
 				}
@@ -438,9 +441,9 @@ void opengl_init(int argc, char *argv[])
 	graph.addNode(s, ss, -50, -50);
 	
 	//buttons delcaration
-	demButtons.push_back(Button(1,1,"tiger"));
-	demButtons.push_back(Button(1,2,"eye"));
-	demButtons.push_back(Button(2,1,"plow"));
+	demButtons.push_back(Button(1,1,"Tiger"));
+	demButtons.push_back(Button(1,2,"Eye"));
+	demButtons.push_back(Button(2,1,"Plow"));
 
 	glutMainLoop();
 }
