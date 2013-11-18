@@ -351,7 +351,7 @@ void mouseControl(int button, int state, int x, int y)
 			if(x < right && x > left && HEIGHT - y < top && HEIGHT - y > bottom)
 			{
 				buttFlag = true;
-				if(demButtons[i].getName == "tiger")
+				if(demButtons[i].getName() == "tiger")
 				{
 					graph.saveSortedGraph();
 				}
