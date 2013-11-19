@@ -128,6 +128,15 @@ void drawMenu()
 		drawButton(demButtons[i].getName(), demButtons[i].getRow(), demButtons[i].getCol());
 	}
 	
+	//draw typing area
+	glColor3f(1.0, 1.0, 1.0);
+	glBegin(GL_QUADS);
+		glVertex2f(WIDTH - 185, 15);
+		glVertex2f(WIDTH - 15, 15);
+		glVertex2f(WIDTH - 15, 115);
+		glVertex2f(WIDTH - 185, 115);
+	glEnd();	
+	
 }
 
 //display function
