@@ -13,7 +13,7 @@
 
 using namespace std;
 
-int RADIUS = 20;
+int RADIUS = 50;
 
 #include "include/graph.h"
 #include "include/utils.cpp"

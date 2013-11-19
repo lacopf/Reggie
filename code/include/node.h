@@ -124,6 +124,7 @@ void Node::removeInEdge(Edge* edg)
 	}
 }
 
+	
 //removes an edge going into a node
 void Node::removeOutEdge(Edge* edg)
 {
@@ -161,7 +162,20 @@ void Node::draw()
 			glVertex2f(cos(degInRad)*RADIUS+point.getX(),sin(degInRad)*RADIUS+point.getY());
 		}
 	glEnd();
-	
+	glColor3f(0.0, 0.0, 0.0);
+	const char *cs;
+	vector<const char*> css;
+	if(information.size()*9 >= RADIUS*2){
+		css.push_back(information.substr(0, floor(RADIUS*2/information.size()*9)).c_str());
+		css.push_back(information.substr(floor(RADIUS*2/information.size()*9)+1, string::npos).c_str());
+	}
+	glRasterPos2i(point.getX() - RADIUS , point.getY());
+	for(int i = 0; i < css.size(); i++){
+		for(cs = information.c_str(); *cs != '\0'; cs++){
+			glutBitmapCharacter(GLUT_BITMAP_9_BY_15, *cs);
+		}
+		glutPostRedisplay();
+	}
 }
 
 #endif
