@@ -1,3 +1,9 @@
+#include <iostream>
+
+using namespace std;
+
+#include "button.h"
+
 ///global variables
 Graph graph;
 string MODE;
@@ -6,8 +12,8 @@ int cursorBlinkFrame = 0;
 bool ACTIVE_CTRL = false;
 string input = "";
 vector<Point> points;
-int HEIGHT = 500;
-int WIDTH = 500;
+int HEIGHT = 800;
+int WIDTH = 1200;
 int mouse_x = 0;
 int mouse_y = 0;
 int firstNode = -1;
@@ -15,6 +21,7 @@ int pn = -1;
 int inputFunc = 0;
 string info = "";
 vector<string> tags;
+vector<Button> demButtons;
 
 
 
@@ -74,6 +81,64 @@ int pickNode(int x, int y)
 	}
 	return -1;
 }
+
+//button drawing function
+void drawButton(string name, int row, int column)
+{
+	int left, right, top, bottom;
+	
+	left = WIDTH - 385 + 190*(column - 1);
+	right = left + 180;
+	top = HEIGHT - 15 - 40*(row - 1);
+	bottom = top - 30;	
+	
+	glColor3f(37.0/255.0, 213.0/255.0, 0.0/255.0);
+	glBegin(GL_QUADS);
+		glVertex2f(left, top);
+		glVertex2f(left, bottom);
+		glVertex2f(right, bottom);
+		glVertex2f(right, top);
+	glEnd();
+	
+	glColor3f(255.0/255.0, 255.0/255.0, 255.0/255.0);
+	writeString(left + 5 + (180 - 10*name.length())/2, bottom + 8, GLUT_BITMAP_HELVETICA_18, name.c_str());
+}
+
+//menu drawing function
+void drawMenu()
+{
+	glColor3f(0.0/255.0, 160.0/255.0, 138.0/255.0);
+	glBegin(GL_QUADS);
+		glVertex2f(WIDTH - 400, 0);
+		glVertex2f(WIDTH, 0);
+		glVertex2f(WIDTH, HEIGHT);
+		glVertex2f(WIDTH - 400, HEIGHT);
+	glEnd();
+	
+	glColor3f(16.0/255.0, 73.0/255.0, 169.0/255.0);
+	glBegin(GL_QUADS);
+		glVertex2f(WIDTH - 390, 10);
+		glVertex2f(WIDTH - 10, 10);
+		glVertex2f(WIDTH - 10, HEIGHT - 10);
+		glVertex2f(WIDTH - 390, HEIGHT - 10);
+	glEnd();
+	
+	for(int i = 0; i < demButtons.size(); i++)
+	{
+		drawButton(demButtons[i].getName(), demButtons[i].getRow(), demButtons[i].getCol());
+	}
+	
+	//draw typing area
+	glColor3f(1.0, 1.0, 1.0);
+	glBegin(GL_QUADS);
+		glVertex2f(WIDTH - 385, 15);
+		glVertex2f(WIDTH - 15, 15);
+		glVertex2f(WIDTH - 15, 115);
+		glVertex2f(WIDTH - 385, 115);
+	glEnd();	
+	
+}
+
 //display function
 void drawScene()
 {
@@ -95,7 +160,9 @@ void drawScene()
 			input = "Enter filename: " + FILENAME + "";
 		}
 	}
-
+	
+	drawMenu();
+	
 	glutSwapBuffers();
 }
 
@@ -115,6 +182,7 @@ void resize(int w, int h)
 //keyboard function
 void keyInput(unsigned char key, int x, int y)
 {
+	/*
 	if(MODE == "SAVING" || MODE == "LOADING" || MODE == "TEMPLATE")
 	{
 		if(key == 13 && FILENAME != "")
@@ -155,7 +223,8 @@ void keyInput(unsigned char key, int x, int y)
 			FILENAME += key;
 		}
 	}
-	else if(MODE == "INPUT")
+	
+	else */if(MODE == "INPUT")
 	{
 		//Enter Key: Check what function is currently in progress and compute appropriately
 		if(key == 13)
@@ -255,6 +324,7 @@ void keyInput(unsigned char key, int x, int y)
 			case 27:
 				exit(0);
 				break;
+			/*
 			case 's':
 				FILENAME = "";
 				MODE = "SAVING";
@@ -270,6 +340,7 @@ void keyInput(unsigned char key, int x, int y)
 				MODE = "TEMPLATE";
 				input = "Enter template name: ";
 				break;
+			*/
 			default:
 				break;
 		}
@@ -278,55 +349,108 @@ void keyInput(unsigned char key, int x, int y)
 
 //mouse function
 void mouseControl(int button, int state, int x, int y)
-{	
-
+{
+	bool buttFlag = false;
 	vector<Node>* nodes = graph.getNodes();
-
-	// Store the currentPoint in the points vector when left button is released.
-	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
-	{	
-		MODE = "NORMAL";
-		input = "";
-		Point currentPoint = Point(x, HEIGHT - y, false);
-		points.push_back(currentPoint);
-		
-		//check if we picked a node
-		pn = pickNode(currentPoint.getX(), currentPoint.getY());
-		if(pn != -1)
-		{
-		        input = string("Data: ") + string((*nodes)[pn].getInformation()) + string(", Tags: ") + (*nodes)[pn].printTags();
-			firstNode = pn;
-		}
-		else if(collisionFree(x, HEIGHT - y))
-		{
-			MODE = "INPUT";
-			input = "Enter Node Data: ";
-			inputFunc = 1;
-		}
-	}
-	else if (state == GLUT_UP)
+	
+	//check if in button area
+	if(x >= WIDTH - 400)
 	{
-		Point currentPoint = Point(x, HEIGHT - y, true);
-		points.push_back(currentPoint);	
-		pn = pickNode(currentPoint.getX(), currentPoint.getY());
-		
-		if(button == GLUT_LEFT_BUTTON)
+		buttFlag = true;
+	}
+	
+	if(buttFlag)
+	{
+		//check for button clicks
+		int left, right, top, bottom;
+		if(state == GLUT_DOWN)
 		{
-			if(pn != -1 && firstNode != -1 && pn != firstNode && !(*nodes)[firstNode].edgeExists(pn))
+			for(int i = 0; i < demButtons.size(); i++)
 			{
-				MODE = "INPUT";
-				input = "Enter Edge Relation: ";
-				inputFunc = 3;
+				left = WIDTH - 385 + 190*(demButtons[i].getCol() - 1);
+				right = left + 180;
+				top = HEIGHT - 15 - 40*(demButtons[i].getRow() - 1);
+				bottom = top - 30;	
+		
+				if(x < right && x > left && HEIGHT - y < top && HEIGHT - y > bottom)
+				{
+					cout << demButtons[i].getName() << endl;
+					if(demButtons[i].getName() == "Load File")
+					{
+						graph.load("temp", false);
+					}
+					else if(demButtons[i].getName() == "Save File")
+					{
+						graph.save("temp",false);
+					}
+					else if(demButtons[i].getName() == "Load Template")
+					{
+						graph.load("temp", true);
+					}
+					else if(demButtons[i].getName() == "Save Template")
+					{
+						graph.save("temp",true);
+					}
+					else if(demButtons[i].getName() == "Topological Sort")
+					{
+						graph.saveSortedGraph();
+					}
+					else if(demButtons[i].getName() == "Export Calendar")
+					{
+						
+					}
+				}
 			}
 		}
-		else if(button == GLUT_RIGHT_BUTTON)
-		{
+	}
+	else
+	{
+		// Store the currentPoint in the points vector when left button is released.
+		if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
+		{	
+			MODE = "NORMAL";
+			input = "";
+			Point currentPoint = Point(x, HEIGHT - y, false);
+			points.push_back(currentPoint);
+		
+			//check if we picked a node
+			pn = pickNode(currentPoint.getX(), currentPoint.getY());
 			if(pn != -1)
 			{
+				    input = string("Data: ") + string((*nodes)[pn].getInformation()) + string(", Tags: ") + (*nodes)[pn].printTags();
+				firstNode = pn;
+			}
+			else if(collisionFree(x, HEIGHT - y))
+			{
 				MODE = "INPUT";
-				input = "Edit Node Data: ";
-				inputFunc = 4;
-			}	
+				input = "Enter Node Data: ";
+				inputFunc = 1;
+			}
+		}
+		else if (state == GLUT_UP)
+		{
+			Point currentPoint = Point(x, HEIGHT - y, true);
+			points.push_back(currentPoint);	
+			pn = pickNode(currentPoint.getX(), currentPoint.getY());
+		
+			if(button == GLUT_LEFT_BUTTON)
+			{
+				if(pn != -1 && firstNode != -1 && pn != firstNode && !(*nodes)[firstNode].edgeExists(pn))
+				{
+					MODE = "INPUT";
+					input = "Enter Edge Relation: ";
+					inputFunc = 3;
+				}
+			}
+			else if(button == GLUT_RIGHT_BUTTON)
+			{
+				if(pn != -1)
+				{
+					MODE = "INPUT";
+					input = "Edit Node Data: ";
+					inputFunc = 4;
+				}	
+			}
 		}
 	}
 }
@@ -335,8 +459,8 @@ void opengl_init(int argc, char *argv[])
 {
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_SINGLE | GLUT_DOUBLE);
-	glutInitWindowSize(500, 500);
-	glutInitWindowPosition(100, 100);
+	glutInitWindowSize(WIDTH, HEIGHT);
+	glutInitWindowPosition(0, 0);
 	gluOrtho2D(0, 500, 0, 500);
 	glutCreateWindow("Babel Graph");
 	glutDisplayFunc(drawScene);
@@ -353,6 +477,14 @@ void opengl_init(int argc, char *argv[])
 	string s = "data";
 	vector<string> ss;
 	graph.addNode(s, ss, -50, -50);
+	
+	//buttons delcaration
+	demButtons.push_back(Button(1,1,"Load File"));
+	demButtons.push_back(Button(1,2,"Save File"));
+	demButtons.push_back(Button(2,1,"Load Template"));
+	demButtons.push_back(Button(2,2,"Save Template"));
+	demButtons.push_back(Button(3,1,"Topological Sort"));
+	demButtons.push_back(Button(3,2,"Export Calendar"));
 
 	glutMainLoop();
 }

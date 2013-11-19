@@ -154,7 +154,7 @@ bool Node::edgeExists(int edg)
 
 void Node::draw()
 {
-	glColor3f(1.0, 0.0, 0.0);
+	glColor3f(37.0/255.0, 213.0/255.0, 0.0/255.0);
 	glBegin(GL_TRIANGLE_FAN);
 		for (int i=0; i < 360; i++)
 		{

@@ -31,14 +31,14 @@ class Graph
 		inline void addNode(Node node){ nodes.push_back(node); }
 		void addNode(string info, vector<string> tags, int x, int y);
 		void addEdge(int n1, int n2, string rel);
-		void printNodes();
 		void removeEdge(int index);
 		void removeNode(int index);
 		void printGraph();
+		void saveSortedGraph();
 		vector<int> topSort();
 		bool visitNode(int node, vector<bool>& visited, vector<bool>& permanent, vector<int>& sortedVec);
 		void save(string filename, bool isTemplate);
-		void load(string filename);
+		void load(string filename, bool isTemplate);
 		void draw();
 
 	private:
@@ -51,6 +51,7 @@ Graph::Graph(){
 	f = true;
 }
 
+//adds a node to the graph
 void Graph::addNode(string info, vector<string> tags, int x, int y)
 {
 	if(nodes.size() == 1 && f)
@@ -62,6 +63,7 @@ void Graph::addNode(string info, vector<string> tags, int x, int y)
 	nodes.push_back(n1);
 }
 
+//adds an edge between two nodes to the graph
 void Graph::addEdge(int n1, int n2, string rel)
 {
 	Edge e(edges.size(), rel, n1, n2);
@@ -71,13 +73,6 @@ void Graph::addEdge(int n1, int n2, string rel)
 	nodes[n1].addOutEdge(p);
 }
 
-void Graph::printNodes()
-{
-	for(int i=0; i<nodes.size(); i++)
-	{
-		cout << i << ": " << nodes[i].getInformation() << endl;
-	}
-}
 
 void Graph::removeEdge(int index)
 {
@@ -156,6 +151,15 @@ void Graph::printGraph()
         }
 }
 
+//Saves topologically sorted graph in a text file
+void Graph::saveSortedGraph(){
+	ofstream out("sorted.txt");
+	vector<int> sorted = topSort();
+	for(int i=0; i<sorted.size(); i++){
+		out << nodes[i].getInformation() << endl;
+	}	
+}
+
 
 //Returns a vector of indices of nodes in graph when sorted in topological order.
 //returns an empty list if graph is not a DAG
@@ -213,9 +217,9 @@ void Graph::save(string filename, bool isTemplate)
 	}
 	else
 	{
-		int p = filename.find(".reggiesbody");
-		if (p == string::npos || filename.length() < 12 || filename.substr(filename.size() - 12, 12).compare(".reggiesbody") != 0 )
-			filename += ".reggiesbody";
+		int p = filename.find(".bgt");
+		if (p == string::npos || filename.length() < 4 || filename.substr(filename.size() - 4, 4).compare(".bgt") != 0 )
+			filename += ".bgt";
 		chdir("./templates");
 	}
 	
@@ -299,30 +303,48 @@ void Graph::save(string filename, bool isTemplate)
 	if (isTemplate)
 		chdir("..");
 }
-void Graph::load(string filename)
+void Graph::load(string filename, bool isTemplate)
 {
 	//assume the filename has the proper extension
 	ifstream source;
-	source.open( filename.c_str() );
-	if ( !source.is_open() )
+	if ( !isTemplate )
 	{
-		string filenametemp = filename + ".xml";
-		source.open( filename.c_str() );
-	}
-	if ( !source.is_open() )
-	{
-		filename += ".reggiesbody";
 		source.open( filename.c_str() );
 		if ( !source.is_open() )
 		{
-			cout << "Invalid file name\n";
-			return;
+			string filenametemp = filename + ".xml";
+			source.open( filenametemp.c_str() );
+			if ( !source.is_open() )
+			{
+				cout << "Not a valid file to load\n";
+				return;
+			}
+		}
+	}
+	else
+	{
+		source.open( filename.c_str() );
+		if ( !source.is_open() )
+		{
+			string filenametemp = filename + ".bgt";
+			source.open( filenametemp.c_str() );
+			if ( !source.is_open() )
+			{
+				filenametemp = "./templates/" + filenametemp;
+				source.open( filenametemp.c_str() );
+				
+				if ( !source.is_open() )
+				{
+					cout << "Not a valid template to load\n";
+					return;
+				}
+
+			}
 		}
 	}
 
 	//all my temporary variables
 	string line = "";
-	bool isTemplate = false;
 	Node dummyNode;
 	Edge dummyEdge;
 	vector<Node> loadedNodes;
@@ -529,8 +551,7 @@ void Graph::load(string filename)
 		int endIndex = line.find("</index>");
 		if (parse_index == string::npos)
 		{
-			cout << "INDInvalid file to load from\n";
-			return;
+			break;
 		}
 
 		const char* p = ( line.substr(parse_index + 7, endIndex - parse_index - 7) ).c_str();
@@ -626,8 +647,8 @@ void Graph::draw()
 	for(int i = 0; i < edges.size(); i++)
 	{
 		
-		glLineWidth(2.5); 
-		glColor3f(1.0, 0.0, 0.0);
+		glLineWidth(3*3.14159265359); 
+		glColor3f(16.0/255.0, 73.0/255.0, 169.0/255.0);
 		glBegin(GL_LINES);
 		glVertex2f(nodes[edges[i].getNodeA()].getPoint().getX(), nodes[edges[i].getNodeA()].getPoint().getY());
 		glVertex2f(nodes[edges[i].getNodeB()].getPoint().getX(), nodes[edges[i].getNodeB()].getPoint().getY());
