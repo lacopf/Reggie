@@ -38,7 +38,7 @@ class Graph
 		vector<int> topSort();
 		bool visitNode(int node, vector<bool>& visited, vector<bool>& permanent, vector<int>& sortedVec);
 		void save(string filename, bool isTemplate);
-		void load(string filename);
+		void load(string filename, bool isTemplate);
 		void draw();
 
 	private:
@@ -303,30 +303,48 @@ void Graph::save(string filename, bool isTemplate)
 	if (isTemplate)
 		chdir("..");
 }
-void Graph::load(string filename)
+void Graph::load(string filename, bool isTemplate)
 {
 	//assume the filename has the proper extension
 	ifstream source;
-	source.open( filename.c_str() );
-	if ( !source.is_open() )
+	if ( !isTemplate )
 	{
-		string filenametemp = filename + ".xml";
-		source.open( filename.c_str() );
-	}
-	if ( !source.is_open() )
-	{
-		filename += ".bgt";
 		source.open( filename.c_str() );
 		if ( !source.is_open() )
 		{
-			cout << "Invalid file name\n";
-			return;
+			string filenametemp = filename + ".xml";
+			source.open( filenametemp.c_str() );
+			if ( !source.is_open() )
+			{
+				cout << "Not a valid file to load\n";
+				return;
+			}
+		}
+	}
+	else
+	{
+		source.open( filename.c_str() );
+		if ( !source.is_open() )
+		{
+			string filenametemp = filename + ".bgt";
+			source.open( filenametemp.c_str() );
+			if ( !source.is_open() )
+			{
+				filenametemp = "./templates/" + filenametemp;
+				source.open( filenametemp.c_str() );
+				
+				if ( !source.is_open() )
+				{
+					cout << "Not a valid template to load\n";
+					return;
+				}
+
+			}
 		}
 	}
 
 	//all my temporary variables
 	string line = "";
-	bool isTemplate = false;
 	Node dummyNode;
 	Edge dummyEdge;
 	vector<Node> loadedNodes;
@@ -629,8 +647,8 @@ void Graph::draw()
 	for(int i = 0; i < edges.size(); i++)
 	{
 		
-		glLineWidth(2.5); 
-		glColor3f(1.0, 0.0, 0.0);
+		glLineWidth(3*3.14159265359); 
+		glColor3f(16.0/255.0, 73.0/255.0, 169.0/255.0);
 		glBegin(GL_LINES);
 		glVertex2f(nodes[edges[i].getNodeA()].getPoint().getX(), nodes[edges[i].getNodeA()].getPoint().getY());
 		glVertex2f(nodes[edges[i].getNodeB()].getPoint().getX(), nodes[edges[i].getNodeB()].getPoint().getY());
