@@ -320,7 +320,6 @@ void keyInput(unsigned char key, int x, int y)
 				{
 					(*nodes)[pn].setInformation(input);
 					//graph.printGraph();
-				
 				}
 
 				inputFunc = 5;

@@ -7,6 +7,10 @@
 #include <string>
 #include <vector>
 #include <math.h>
+#include <iostream>
+#include <sstream>
+#include <algorithm>
+#include <iterator>
 
 #ifdef __APPLE__
 #  include <GLUT/glut.h>
@@ -167,18 +171,69 @@ void Node::draw()
 	glColor3f(0.0, 0.0, 0.0);
 	const char *cs;
 	vector<string> css;
-	string inf = information;
+	css.clear();
+	css.resize(5);
+	int count = 0;
 	string tmpstr = "";
-	while(inf.size() > 0){
-		tmpstr = inf.substr(0, min(9, (int)inf.size()));
-		css.push_back(tmpstr);
-		inf = inf.substr(min(9, (int)inf.size()), string::npos);	
-	}
-	for(int i = 0; i < css.size(); i++){
-		glRasterPos2i(point.getX() - RADIUS + 10, point.getY() + 15 - i*15);
-		for(cs = css[i].c_str(); *cs != '\0'; cs++){
-			glutBitmapCharacter(GLUT_BITMAP_9_BY_15, *cs);
+	istringstream iss(information);
+	vector<string> tokens;
+	copy(istream_iterator<string>(iss), 
+		istream_iterator<string>(),
+		back_inserter<vector<string> >(tokens));	
+	vector<string>::iterator tokit = tokens.begin();
+	for(int i = 0; i < 4; i++){
+		while(tmpstr.size() <= 9 && tokit != tokens.end()){
+			if(tmpstr.size() == 0){
+				tmpstr = *tokit++;
+			}
+			else{
+				tmpstr = tmpstr + " " + *tokit++;
+			}
 		}
+		if(tmpstr.size() > 9){
+			if(tmpstr.rfind(" ") != string::npos){
+				css[i+1] = tmpstr.substr(tmpstr.rfind(" ")+1, string::npos);
+		     		tmpstr = tmpstr.substr(0, tmpstr.rfind(" ")+1);
+			}
+			else{
+				css[i+1] = tmpstr.substr(9, string::npos);
+		     		tmpstr = tmpstr.substr(0, 9);
+			}
+		}
+		if(css[i] == ""){
+			css[i] = tmpstr;
+		}
+		else{
+			css[i] += " " + tmpstr;
+		}
+		cout << "css[i] = " << css[i] << endl;
+		cout << "css[i+1] = " << css[i+1] << endl;
+		if(tokit == tokens.end()){
+			break;
+		}
+		tmpstr = "";
+	}
+	for(int i = 0; i < 4; i++){
+		if((int)css[i].size() > 9){
+			if(css[i].rfind(" ", 9) == string::npos){
+				css[i+1] = css[i].substr(9, string::npos) + css[i+1];
+				css[i] = css[i].substr(0, 9);
+			}
+			else{
+				css[i+1] = css[i].substr(css[i].rfind(" ", 9)+1, string::npos) + css[i+1];
+				css[i] = css[i].substr(0, css[i].rfind(" ", 9));
+			}
+		}
+	}
+	for(int i = 0; i < min(4, (int)css.size()); i++){
+		if(css[i] != ""){
+			cout << "printing " << i << endl;
+			glRasterPos2i(point.getX() - RADIUS + 10, point.getY() + 17 - i*15);
+			for(cs = css[i].c_str(); *cs != '\0'; cs++){
+				glutBitmapCharacter(GLUT_BITMAP_9_BY_15, *cs);
+			}
+		}	
+		cout << "iteration " << i << " complete" << endl;
 	}
 }
 
