@@ -83,6 +83,7 @@ Node::Node(string info, int ind, vector<string> new_tags, int x, int y)
 	information = info;
 	index = ind;
 	point = Point(x,y,true);
+	cout << "new node: " << ind << endl;
 }
 
 //returns whether a node has a given tag
@@ -113,29 +114,33 @@ string Node::printTags()
 //removes an edge coming into a node
 void Node::removeInEdge(Edge* edg)
 {
-	if(edg->getIndex() >= in_edges.size())
+	for(int i=0; i<in_edges.size(); i++)
 	{
-		cout << "node does not contain this edge" << endl;
+		if(in_edges[i] == edg)
+		{
+			in_edges[i] = in_edges.back(); 
+			in_edges.pop_back();
+			return;			
+		}		
+
 	}
-	else
-	{
-		in_edges[edg->getIndex()] = in_edges.back();
-		in_edges.pop_back();
-	}
+	
 }
 
 //removes an edge going into a node
 void Node::removeOutEdge(Edge* edg)
 {
-	if(edg->getIndex() >= out_edges.size())
+	for(int i=0; i<out_edges.size(); i++)
 	{
-		cout << "node does not contain this edge" << endl;
+		if(out_edges[i] == edg)
+		{
+			out_edges[i] = out_edges.back(); 
+			out_edges.pop_back();
+			return;			
+		}		
+
 	}
-	else
-	{
-		out_edges[edg->getIndex()] = out_edges.back();
-		out_edges.pop_back();
-	}
+	
 }
 
 bool Node::edgeExists(int edg)

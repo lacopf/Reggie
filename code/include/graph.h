@@ -25,7 +25,7 @@ class Graph
 {
 	public:
 		vector<Node>* getNodes(){ return &nodes; }
-		vector<Edge> getEdges(){ return edges; }
+		vector<Edge*> getEdges(){ return edges; }
 
 		Graph();
 		inline void addNode(Node node){ nodes.push_back(node); }
@@ -43,7 +43,7 @@ class Graph
 
 	private:
 		vector<Node> nodes;
-		vector<Edge> edges;
+		vector<Edge*> edges;
 		bool f;
 };
 
@@ -66,27 +66,27 @@ void Graph::addNode(string info, vector<string> tags, int x, int y)
 //adds an edge between two nodes to the graph
 void Graph::addEdge(int n1, int n2, string rel)
 {
-	Edge e(edges.size(), rel, n1, n2);
-	edges.push_back(e);
-	Edge* p = &(edges.back());
+	Edge* p = new Edge(edges.size(), rel, n1, n2);
+	edges.push_back(p);
 	nodes[n2].addInEdge(p);
 	nodes[n1].addOutEdge(p);
+	cout << n1 << " " << n2 << " " << p->getNodeB() << endl;
 }
 
 
 void Graph::removeEdge(int index)
 {
 	//removes edge from source node
-	Node& n1 = nodes[(edges[index]).getNodeA()];
-	n1.removeOutEdge(&edges[index]);
+	Node& n1 = nodes[(edges[index]) -> getNodeA()];
+	n1.removeOutEdge(edges[index]);
 
 	//removes edge from target node
-	Node& n2 = nodes[(edges[index]).getNodeB()];
-	n2.removeInEdge(&edges[index]);
+	Node& n2 = nodes[(edges[index]) -> getNodeB()];
+	n2.removeInEdge(edges[index]);
 
 	//moves back of edges to index position and pops back
 	edges[index] = edges.back();
-	edges[index].setIndex(index);
+	edges[index]->setIndex(index);
 	edges.pop_back();
 }
 
@@ -153,11 +153,22 @@ void Graph::printGraph()
 
 //Saves topologically sorted graph in a text file
 void Graph::saveSortedGraph(){
+	cout << "_________________________________" << endl;
+	for(int i=0; i < nodes.size(); i++){
+		vector<Edge*> outs = nodes[i].getOutEdges();
+		cout << "node: " << i << endl; 
+		for(int j=0; j < outs.size(); j++){
+			cout << outs[j] -> getNodeA() << " " << outs[j] -> getNodeB() << " " << outs[j] -> getIndex() << " " << outs[j] << endl;
+		}	
+	}	
+	cout << "first position: " << &(edges.front())  << endl;
+	/*cout << "A" << endl;
 	ofstream out("sorted.txt");
 	vector<int> sorted = topSort();
+	cout << "H" << endl;
 	for(int i=0; i<sorted.size(); i++){
 		out << nodes[i].getInformation() << endl;
-	}	
+	}*/	
 }
 
 
@@ -170,12 +181,14 @@ vector<int> Graph::topSort(){
 
 	//calls visitNode on all nodes in graph 
 	//each call represents a new tree if the graph is a DAG
+	cout << "B" << endl;
 	for(int i=0; i<nodes.size(); i++){
 		if(permanent[i]){continue;}
 		else if (visitNode(i, visited, permanent, sortedVec)){vector<int> t; return t;}
 	}
 	vector<int> finalVec; 
 	//reverses sorted list
+	cout << "C" << endl;
 	for(int i=sortedVec.size()-1; i >= 0; i--){
 		finalVec.push_back(sortedVec[i]);
 	}
@@ -185,14 +198,18 @@ vector<int> Graph::topSort(){
 //returns true if graph is a DAG
 //visits all children in a DFS pattern
 bool Graph::visitNode(int node, vector<bool>& visited, vector<bool>& permanent, vector<int>& sortedVec){
+	cout << "K" << " " << node << " " << permanent.size() << " " << visited.size() << endl;
 	if(visited[node] & not permanent[node]){return true;} //graph is a DAG
 	else if(permanent[node]){return false;} //not a DAG, but this node has been seen before
+	cout << "F" << endl;
 	visited[node] = true;
 	const vector<Edge*>& outEdges = nodes[node].getOutEdges(); 
 	for(int i=0; i< outEdges.size(); i++){
+	cout << "index: " << outEdges.size() << " " << node << " " << i << " " << outEdges[i]->getNodeA() << " " << outEdges[i] -> getNodeB() << " " << outEdges[i]->getIndex() << endl;
 		//calls visitNode on child, returns true if recursive call returned true (graph is a DAG) 
 		if(visitNode(outEdges[i]->getNodeB(), visited, permanent, sortedVec)){return true;}
 	}
+	cout << "G" << endl;
 	permanent[node] = true;
 	sortedVec.push_back(node);
 	return false;
