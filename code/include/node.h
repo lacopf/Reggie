@@ -57,6 +57,11 @@ class Node
 		{
 			return point;
 		}
+		
+		void move(int newX, int newY)
+		{
+			point.move(newX, newY);
+		}
 };
 //default constructor
 Node::Node()
