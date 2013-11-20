@@ -133,9 +133,33 @@ void drawMenu()
 	glBegin(GL_QUADS);
 		glVertex2f(WIDTH - 385, 15);
 		glVertex2f(WIDTH - 15, 15);
-		glVertex2f(WIDTH - 15, 115);
-		glVertex2f(WIDTH - 385, 115);
-	glEnd();	
+		glVertex2f(WIDTH - 15, 105);
+		glVertex2f(WIDTH - 385, 105);
+	glEnd();
+	
+	//actual text in area
+	if(MODE == "SAVING FILE" || MODE == "LOADING FILE" || MODE == "SAVING TEMPLATE" || MODE == "LOADING TEMPLATE")
+	{
+		glColor3f(37.0/255.0, 213.0/255.0, 0.0/255.0);
+		writeString(WIDTH - 380, 85, GLUT_BITMAP_9_BY_15, MODE.c_str());
+		
+		string super = input;
+		while(super.length() < 120)
+		{
+			super = super + " ";
+		}
+		string sub[3] = {"", "", ""};
+		for(int i = 0; i < 3; i++)
+		{
+			for(int j = 0; j < 40; j++)
+			{
+				sub[i] = sub[i] + super[40*i+j];
+			}
+		}
+		writeString(WIDTH - 380, 65, GLUT_BITMAP_9_BY_15, sub[0].c_str());
+		writeString(WIDTH - 380, 45, GLUT_BITMAP_9_BY_15, sub[1].c_str());
+		writeString(WIDTH - 380, 25, GLUT_BITMAP_9_BY_15, sub[2].c_str());
+	}	
 	
 }
 
@@ -148,10 +172,10 @@ void drawScene()
 	writeString(10, 10, GLUT_BITMAP_9_BY_15, input.c_str());
 	graph.draw();
 	
-	if(MODE == "SAVING" || MODE == "LOADING")
+	if(MODE == "SAVING FILE" || MODE == "LOADING FILE" || MODE == "SAVING TEMPLATE" || MODE == "LOADING TEMPLATE")
 	{
 		cursorBlinkFrame++;
-		if(cursorBlinkFrame % 20 < 10)
+		if(cursorBlinkFrame % 30 < 15)
 		{
 			input = "Enter filename: " + FILENAME + "|";
 		}
@@ -182,25 +206,29 @@ void resize(int w, int h)
 //keyboard function
 void keyInput(unsigned char key, int x, int y)
 {
-	/*
-	if(MODE == "SAVING" || MODE == "LOADING" || MODE == "TEMPLATE")
+	if(MODE == "SAVING FILE" || MODE == "LOADING FILE" || MODE == "SAVING TEMPLATE" || MODE == "LOADING TEMPLATE")
 	{
 		if(key == 13 && FILENAME != "")
 		{
-			if(MODE == "SAVING")
+			if(MODE == "SAVING FILE")
 			{
 				input = "";
 				graph.save(FILENAME,false);			
 			}
-			else if(MODE == "LOADING")
+			else if(MODE == "LOADING FILE")
 			{
 				input = "";
-				graph.load(FILENAME);
+				graph.load(FILENAME,false);
 			}
-			else if(MODE == "TEMPLATE")
+			else if(MODE == "SAVING_TEMPLATE")
 			{
 				input = "";
 				graph.save(FILENAME,true);
+			}
+			else if(MODE == "LOADING_TEMPLATE")
+			{
+				input = "";
+				graph.load(FILENAME,true);
 			}
 			FILENAME = "";
 			MODE = "NORMAL";
@@ -224,7 +252,7 @@ void keyInput(unsigned char key, int x, int y)
 		}
 	}
 	
-	else */if(MODE == "INPUT")
+	else if(MODE == "INPUT")
 	{
 		//Enter Key: Check what function is currently in progress and compute appropriately
 		if(key == 13)
@@ -324,23 +352,6 @@ void keyInput(unsigned char key, int x, int y)
 			case 27:
 				exit(0);
 				break;
-			/*
-			case 's':
-				FILENAME = "";
-				MODE = "SAVING";
-				input = "Enter filename: ";
-				break;
-			case 'l':
-				FILENAME = "";
-				MODE = "LOADING";
-				input = "Enter filename: ";
-				break;
-			case 't':
-				FILENAME = "";
-				MODE = "TEMPLATE";
-				input = "Enter template name: ";
-				break;
-			*/
 			default:
 				break;
 		}
@@ -377,19 +388,23 @@ void mouseControl(int button, int state, int x, int y)
 					cout << demButtons[i].getName() << endl;
 					if(demButtons[i].getName() == "Load File")
 					{
-						graph.load("temp", false);
+						MODE = "LOADING FILE";
+						//graph.load("temp", false);
 					}
 					else if(demButtons[i].getName() == "Save File")
 					{
-						graph.save("temp",false);
+						MODE = "SAVING FILE";
+						//graph.save("temp",false);
 					}
 					else if(demButtons[i].getName() == "Load Template")
 					{
-						graph.load("temp", true);
+						MODE = "LOADING TEMPLATE";
+						//graph.load("temp", true);
 					}
 					else if(demButtons[i].getName() == "Save Template")
 					{
-						graph.save("temp",true);
+						MODE = "SAVING TEMPLATE";
+						//graph.save("temp",true);
 					}
 					else if(demButtons[i].getName() == "Topological Sort")
 					{
@@ -397,7 +412,7 @@ void mouseControl(int button, int state, int x, int y)
 					}
 					else if(demButtons[i].getName() == "Export Calendar")
 					{
-						
+						//export calendar file
 					}
 				}
 			}
@@ -452,7 +467,7 @@ void mouseControl(int button, int state, int x, int y)
 				}	
 			}
 		}
-	}
+	}	
 }
 
 void opengl_init(int argc, char *argv[])
