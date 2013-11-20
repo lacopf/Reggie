@@ -188,7 +188,8 @@ void drawScene()
 {
 	glClearColor(1.0, 1.0, 1.0, 0.0);
 	glClear(GL_COLOR_BUFFER_BIT);
-
+	glColor3f(0.0, 0.0, 0.0);
+	writeString(10, 10, GLUT_BITMAP_9_BY_15, input.c_str());
 	graph.draw();
 	
 	if(MODE == "SAVING FILE" || MODE == "LOADING FILE" || MODE == "SAVING TEMPLATE" || MODE == "LOADING TEMPLATE")
@@ -509,12 +510,7 @@ void opengl_init(int argc, char *argv[])
 	MESSAGE = "Left click in empty space to create a   node. Left click and drag from one node to another to create an edge between    them.";
 	MODE = "MESSAGE";
 	
-	//hacky solution to opengl text rendering problem
-	string s = "data";
-	vector<string> ss;
-	graph.addNode(s, ss, -50, -50);
-	
-	//buttons delcaration
+	//buttons declaration
 	demButtons.push_back(Button(1,1,"Load File"));
 	demButtons.push_back(Button(1,2,"Save File"));
 	demButtons.push_back(Button(2,1,"Load Template"));
