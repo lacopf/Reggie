@@ -44,21 +44,14 @@ class Graph
 	private:
 		vector<Node> nodes;
 		vector<Edge> edges;
-		bool f;
 };
 
 Graph::Graph(){
-	f = true;
 }
 
 //adds a node to the graph
 void Graph::addNode(string info, vector<string> tags, int x, int y)
 {
-	if(nodes.size() == 1 && f)
-	{
-		nodes.clear();
-		f = false;
-	}
 	Node n1(info, nodes.size(), tags, x, y);
 	nodes.push_back(n1);
 }

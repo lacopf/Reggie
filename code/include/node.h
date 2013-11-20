@@ -106,7 +106,9 @@ string Node::printTags()
 	{
 		s += tags[i] + ",";
 	}
-	s.resize(s.size() - 1);
+	if(s.size() != 0){
+		s.resize(s.size() - 1);
+	}
 	return s; 
 }
 
@@ -164,17 +166,19 @@ void Node::draw()
 	glEnd();
 	glColor3f(0.0, 0.0, 0.0);
 	const char *cs;
-	vector<const char*> css;
-	if(information.size()*9 >= RADIUS*2){
-		css.push_back(information.substr(0, floor(RADIUS*2/information.size()*9)).c_str());
-		css.push_back(information.substr(floor(RADIUS*2/information.size()*9)+1, string::npos).c_str());
+	vector<string> css;
+	string inf = information;
+	string tmpstr = "";
+	while(inf.size() > 0){
+		tmpstr = inf.substr(0, min(9, (int)inf.size()));
+		css.push_back(tmpstr);
+		inf = inf.substr(min(9, (int)inf.size()), string::npos);	
 	}
-	glRasterPos2i(point.getX() - RADIUS , point.getY());
 	for(int i = 0; i < css.size(); i++){
-		for(cs = information.c_str(); *cs != '\0'; cs++){
+		glRasterPos2i(point.getX() - RADIUS + 10, point.getY() + 15 - i*15);
+		for(cs = css[i].c_str(); *cs != '\0'; cs++){
 			glutBitmapCharacter(GLUT_BITMAP_9_BY_15, *cs);
 		}
-		glutPostRedisplay();
 	}
 }
 
