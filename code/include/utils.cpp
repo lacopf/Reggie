@@ -57,9 +57,9 @@ bool collisionFree(int x, int y)
 {
 	vector<Node>* nodes = graph.getNodes();
 	for(int i = 0; i<nodes->size(); i++)
-	{
+	{	
 		//check the distance from each node to the mousclick position. If it is too close, don't allow node creation
-		if(dist((*nodes)[i].getPoint(), x, y) <= RADIUS*2)
+		if(dist((*nodes)[i].getPoint(), x, y) <= RADIUS*2 && i != firstNode)
 		{
 			return false;
 		}
@@ -304,7 +304,7 @@ void keyInput(unsigned char key, int x, int y)
 				input = input.substr(37, string::npos);
 				//cout << points.back().getX() << ", " << points.back().getY() << endl;
 				graph.addNode(info, split(input, ',', tags), points.back().getX(), points.back().getY());
-				firstNode = graph.getNodes()->back().getIndex();
+				firstNode = -1;//graph.getNodes()->back().getIndex();
 				MODE = "NORMAL";
 				input = "";
 				MESSAGE = "";
@@ -399,7 +399,7 @@ void mouseControl(int button, int state, int x, int y)
 	vector<Node>* nodes = graph.getNodes();
 	
 	//check if in button area
-	if(x >= WIDTH - 400)
+	if(x >= WIDTH - 400 || x < 0 || y < 0 || y > HEIGHT)
 	{
 		buttFlag = true;
 	}
@@ -478,6 +478,7 @@ void mouseControl(int button, int state, int x, int y)
 				MODE = "INPUT";
 				input = "Enter Node Data: ";
 				inputFunc = 1;
+				firstNode = -1;
 			}
 		}
 		else if (state == GLUT_UP)
@@ -493,6 +494,10 @@ void mouseControl(int button, int state, int x, int y)
 					MODE = "INPUT";
 					input = "Enter Edge Relation: ";
 					inputFunc = 3;
+				}
+				else if(firstNode != -1 && collisionFree(x, HEIGHT - y))
+				{
+					(*graph.getNodes())[firstNode].move(x, HEIGHT - y);
 				}
 			}
 			else if(button == GLUT_RIGHT_BUTTON)
