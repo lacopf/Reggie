@@ -115,7 +115,7 @@ void Node::removeInEdge(Edge* edg)
 {
 	if(edg->getIndex() >= in_edges.size())
 	{
-		cout << "node does not contain this edge" << endl;
+		//cout << "node does not contain this edge" << endl;
 	}
 	else
 	{
@@ -129,7 +129,7 @@ void Node::removeOutEdge(Edge* edg)
 {
 	if(edg->getIndex() >= out_edges.size())
 	{
-		cout << "node does not contain this edge" << endl;
+		//cout << "node does not contain this edge" << endl;
 	}
 	else
 	{
@@ -144,7 +144,7 @@ bool Node::edgeExists(int edg)
 	{
 		if(out_edges[i]->getNodeB() == edg)
 		{
-			cout << "Edge from " << index << " to " << edg << " already exists." << endl;
+			//cout << "Edge from " << index << " to " << edg << " already exists." << endl;
 			return true;
 		}
 	}

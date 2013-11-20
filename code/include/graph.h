@@ -33,7 +33,7 @@ class Graph
 		void addEdge(int n1, int n2, string rel);
 		void removeEdge(int index);
 		void removeNode(int index);
-		void printGraph();
+		//void printGraph();
 		void saveSortedGraph();
 		vector<int> topSort();
 		bool visitNode(int node, vector<bool>& visited, vector<bool>& permanent, vector<int>& sortedVec);
@@ -116,12 +116,15 @@ void Graph::removeNode(int index)
 	}
 	else
 	{
-		cout << "You cannot delete the root node" << endl;
+		//cout << "You cannot delete the root node." << endl;
+		MESSAGE = "You cannot delete the root node.";
+		MODE = "MESSAGE";		
 	}
 }
 
 
 //prints all in and out edges for each node in the graph
+/*
 void Graph::printGraph()
 {
         for(int i=0; i < nodes.size(); i++)
@@ -150,6 +153,7 @@ void Graph::printGraph()
                 cout << endl << endl;
         }
 }
+*/
 
 //Saves topologically sorted graph in a text file
 void Graph::saveSortedGraph(){
@@ -225,7 +229,9 @@ void Graph::save(string filename, bool isTemplate)
 	
 	ofstream saveFile;
 	saveFile.open(filename.c_str());
-	cout << "The filename is " << filename << endl;
+	//cout << "The filename is " << filename << endl;
+	MESSAGE = "The filename is " + filename + '.';
+	MODE = "MESSAGE";
 
 
 	if (isTemplate)
@@ -316,7 +322,9 @@ void Graph::load(string filename, bool isTemplate)
 			source.open( filenametemp.c_str() );
 			if ( !source.is_open() )
 			{
-				cout << "Not a valid file to load\n";
+				//cout << "Not a valid file to load\n";
+				MESSAGE = "Not a valid file to load";
+				MODE = "MESSAGE";
 				return;
 			}
 		}
@@ -335,7 +343,9 @@ void Graph::load(string filename, bool isTemplate)
 				
 				if ( !source.is_open() )
 				{
-					cout << "Not a valid template to load\n";
+					//cout << "Not a valid template to load\n";
+					MESSAGE = "Not a valid template to load";
+					MODE = "MESSAGE";
 					return;
 				}
 
@@ -361,20 +371,26 @@ void Graph::load(string filename, bool isTemplate)
 	}
 	else if ( line.find("graph") == string::npos )
 	{
-		cout << "Not a graph file\n";
+		//cout << "Not a graph file\n";
+		MESSAGE = "Not a graph file";
+		MODE = "MESSAGE";
 		return;
 	}
 	
 	if ( line.find("graph") == string::npos )
 	{
-		cout << "Not a graph file\n";
+		//cout << "Not a graph file\n";
+		MESSAGE = "Not a graph file";
+		MODE = "MESSAGE";
 		return;
 	}
 
 	getline( source, line, '\n');
 	if ( line.find("nodeList") == string::npos )
 	{
-		cout << "Not a valid file to load from\n";
+		//cout << "Not a valid file to load from\n";
+		MESSAGE = "Not a valid file to load from";
+		MODE = "MESSAGE";
 		return;
 	}	
 	
@@ -398,7 +414,9 @@ void Graph::load(string filename, bool isTemplate)
 		//not a valid file
 		if (parse_index == string::npos)
 		{
-			cout << "Invalid load file\n";
+			//cout << "Invalid load file\n";
+			MESSAGE = "Invalid load file";
+			MODE = "MESSAGE";
 			return;
 		}
 
@@ -421,7 +439,9 @@ void Graph::load(string filename, bool isTemplate)
 		//not a valid file
 		if (parse_index == string::npos || endIndex == string::npos)
 		{
-			cout << "Invalid load file\n";
+			//cout << "Invalid load file\n";
+			MESSAGE = "Invalid load file";
+			MODE = "MESSAGE";
 			return;
 		}
 		else
@@ -439,7 +459,9 @@ void Graph::load(string filename, bool isTemplate)
 		//not a valid file
 		if (parse_index == string::npos || endIndex == string::npos)
 		{
-			cout << "Invalid load file\n";
+			//cout << "Invalid load file\n";
+			MESSAGE = "Invalid load file";
+			MODE = "MESSAGE";
 			return;
 		}
 		else
@@ -461,7 +483,9 @@ void Graph::load(string filename, bool isTemplate)
 		//not a valid file
 		if (parse_index == string::npos || endIndex == string::npos)
 		{
-			cout << "Invalid load file\n";
+			//cout << "Invalid load file\n";
+			MESSAGE = "Invalid load file";
+			MODE = "MESSAGE";
 			return;
 		}
 		else 
@@ -562,7 +586,9 @@ void Graph::load(string filename, bool isTemplate)
 		endIndex = line.find("</relation>");
 		if (parse_index == string::npos || endIndex == string::npos)
 		{
-			cout << "RELInvalid file to load from\n";
+			//cout << "RELInvalid file to load from\n";
+			MESSAGE = "Invalid load file";
+			MODE = "MESSAGE";
 			return;
 		}
 
@@ -574,7 +600,9 @@ void Graph::load(string filename, bool isTemplate)
 		endIndex = line.find("</nodeA>");
 		if (parse_index == string::npos || endIndex == string::npos)
 		{
-			cout << "NAInvalid file to load from\n";
+			//cout << "NAInvalid file to load from\n";
+			MESSAGE = "Invalid load file";
+			MODE = "MESSAGE";
 			return;
 		}
 
@@ -588,7 +616,9 @@ void Graph::load(string filename, bool isTemplate)
 		endIndex = line.find("</nodeA>");
 		if (parse_index == string::npos)
 		{
-			cout << "NBInvalid file to load from\n";
+			//cout << "NBInvalid file to load from\n";
+			MESSAGE = "Invalid load file";
+			MODE = "MESSAGE";
 			return;
 		}
 
@@ -639,7 +669,9 @@ void Graph::load(string filename, bool isTemplate)
 		}
 	}
 	
-	cout << "File was successfully loaded!\n";
+	//cout << "File was successfully loaded!\n";
+	MESSAGE = "File was successfully loaded!";
+	MODE = "MESSAGE";
 
 }
 void Graph::draw()

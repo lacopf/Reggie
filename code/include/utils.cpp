@@ -6,8 +6,6 @@ using namespace std;
 
 ///global variables
 Graph graph;
-string MODE;
-string FILENAME;
 int cursorBlinkFrame = 0;
 bool ACTIVE_CTRL = false;
 string input = "";
@@ -159,7 +157,29 @@ void drawMenu()
 		writeString(WIDTH - 380, 65, GLUT_BITMAP_9_BY_15, sub[0].c_str());
 		writeString(WIDTH - 380, 45, GLUT_BITMAP_9_BY_15, sub[1].c_str());
 		writeString(WIDTH - 380, 25, GLUT_BITMAP_9_BY_15, sub[2].c_str());
-	}	
+	}
+	else if(MODE == "NORMAL" || MODE == "MESSAGE")
+	{
+		glColor3f(37.0/255.0, 213.0/255.0, 0.0/255.0);
+		
+		string super = MESSAGE;
+		while(super.length() < 160)
+		{
+			super = super + " ";
+		}
+		string sub[4] = {"", "", "", ""};
+		for(int i = 0; i < 4; i++)
+		{
+			for(int j = 0; j < 40; j++)
+			{
+				sub[i] = sub[i] + super[40*i+j];
+			}
+		}
+		writeString(WIDTH - 380, 85, GLUT_BITMAP_9_BY_15, sub[0].c_str());
+		writeString(WIDTH - 380, 65, GLUT_BITMAP_9_BY_15, sub[1].c_str());
+		writeString(WIDTH - 380, 45, GLUT_BITMAP_9_BY_15, sub[2].c_str());
+		writeString(WIDTH - 380, 25, GLUT_BITMAP_9_BY_15, sub[3].c_str());
+	}
 	
 }
 
@@ -268,7 +288,7 @@ void keyInput(unsigned char key, int x, int y)
 			else if(inputFunc == 2)
 			{
 				input = input.substr(37, string::npos);
-				cout << points.back().getX() << ", " << points.back().getY() << endl;
+				//cout << points.back().getX() << ", " << points.back().getY() << endl;
 				graph.addNode(info, split(input, ',', tags), points.back().getX(), points.back().getY());
 				firstNode = graph.getNodes()->back().getIndex();
 				MODE = "NORMAL";
@@ -280,9 +300,9 @@ void keyInput(unsigned char key, int x, int y)
 			else if(inputFunc == 3)
 			{
 				input = input.substr(21, string::npos);
-				cout << firstNode << endl;
-				cout << "Adding Edge from " << firstNode << " to " << pn << endl;
-				cout << "Relation: " << input << endl;
+				//cout << firstNode << endl;
+				//cout << "Adding Edge from " << firstNode << " to " << pn << endl;
+				//cout << "Relation: " << input << endl;
 				graph.addEdge(firstNode, pn, input);
 				firstNode = -1;
 				pn = -1;
@@ -298,7 +318,7 @@ void keyInput(unsigned char key, int x, int y)
 				if(input != "")
 				{
 					(*nodes)[pn].setInformation(input);
-					graph.printGraph();
+					//graph.printGraph();
 				
 				}
 
@@ -384,7 +404,7 @@ void mouseControl(int button, int state, int x, int y)
 		
 				if(x < right && x > left && HEIGHT - y < top && HEIGHT - y > bottom)
 				{
-					cout << demButtons[i].getName() << endl;
+					//cout << demButtons[i].getName() << endl;
 					if(demButtons[i].getName() == "Load File")
 					{
 						MODE = "LOADING FILE";
@@ -485,7 +505,9 @@ void opengl_init(int argc, char *argv[])
 	tags.clear();
 	vector<string>test;
 	glEnable(GL_BLEND);
-	cout << "Left click in empty space to create a node. Left click and drag from one node to another to create an edge between them." << endl;
+	//cout << "Left click in empty space to create a node. Left click and drag from one node to another to create an edge between them." << endl;
+	MESSAGE = "Left click in empty space to create a   node. Left click and drag from one node to another to create an edge between    them.";
+	MODE = "MESSAGE";
 	
 	//hacky solution to opengl text rendering problem
 	string s = "data";

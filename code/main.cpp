@@ -14,6 +14,9 @@
 using namespace std;
 
 int RADIUS = 20;
+string MODE;
+string MESSAGE;
+string FILENAME;
 
 #include "include/graph.h"
 #include "include/utils.cpp"
