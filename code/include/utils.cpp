@@ -28,7 +28,8 @@ vector<string> &split(const std::string &s, char delim, std::vector<std::string>
 {
 	std::stringstream ss(s);
 	std::string item;
-	while (std::getline(ss, item, delim)) {
+	while (std::getline(ss, item, delim)) 
+	{
 		elems.push_back(item);
 	}
 	return elems;
@@ -136,12 +137,12 @@ void drawMenu()
 	glEnd();
 	
 	//actual text in area
-	if(MODE == "SAVING FILE" || MODE == "LOADING FILE" || MODE == "SAVING TEMPLATE" || MODE == "LOADING TEMPLATE")
-	{
+	if(MODE == "SAVING FILE" || MODE == "LOADING FILE" || MODE == "SAVING TEMPLATE" || MODE == "LOADING TEMPLATE" || MODE == "INPUT")
+	{	
 		glColor3f(37.0/255.0, 213.0/255.0, 0.0/255.0);
 		writeString(WIDTH - 380, 85, GLUT_BITMAP_9_BY_15, MODE.c_str());
 		
-		string super = input;
+		string super = MESSAGE;
 		while(super.length() < 120)
 		{
 			super = super + " ";
@@ -159,7 +160,7 @@ void drawMenu()
 		writeString(WIDTH - 380, 25, GLUT_BITMAP_9_BY_15, sub[2].c_str());
 	}
 	else if(MODE == "NORMAL" || MODE == "MESSAGE")
-	{
+	{		
 		glColor3f(37.0/255.0, 213.0/255.0, 0.0/255.0);
 		
 		string super = MESSAGE;
@@ -189,7 +190,7 @@ void drawScene()
 	glClearColor(1.0, 1.0, 1.0, 0.0);
 	glClear(GL_COLOR_BUFFER_BIT);
 	glColor3f(0.0, 0.0, 0.0);
-	writeString(10, 10, GLUT_BITMAP_9_BY_15, input.c_str());
+	//writeString(10, 10, GLUT_BITMAP_9_BY_15, input.c_str());
 	graph.draw();
 	
 	if(MODE == "SAVING FILE" || MODE == "LOADING FILE" || MODE == "SAVING TEMPLATE" || MODE == "LOADING TEMPLATE")
@@ -197,11 +198,23 @@ void drawScene()
 		cursorBlinkFrame++;
 		if(cursorBlinkFrame % 30 < 15)
 		{
-			input = "Enter filename: " + FILENAME + "|";
+			MESSAGE = "Enter filename: " + FILENAME + "|";
 		}
 		else
 		{
-			input = "Enter filename: " + FILENAME + "";
+			MESSAGE = "Enter filename: " + FILENAME + "";
+		}
+	}
+	else if(MODE == "INPUT")
+	{
+		cursorBlinkFrame++;
+		if(cursorBlinkFrame % 30 < 15)
+		{
+			MESSAGE = input + "|";
+		}
+		else
+		{
+			MESSAGE = input + "";
 		}
 	}
 	
@@ -232,22 +245,22 @@ void keyInput(unsigned char key, int x, int y)
 		{
 			if(MODE == "SAVING FILE")
 			{
-				input = "";
+				MESSAGE = "";
 				graph.save(FILENAME,false);			
 			}
 			else if(MODE == "LOADING FILE")
 			{
-				input = "";
+				MESSAGE = "";
 				graph.load(FILENAME,false);
 			}
 			else if(MODE == "SAVING_TEMPLATE")
 			{
-				input = "";
+				MESSAGE = "";
 				graph.save(FILENAME,true);
 			}
 			else if(MODE == "LOADING_TEMPLATE")
 			{
-				input = "";
+				MESSAGE = "";
 				graph.load(FILENAME,true);
 			}
 			FILENAME = "";
@@ -264,7 +277,7 @@ void keyInput(unsigned char key, int x, int y)
 		{
 			FILENAME = "";
 			MODE = "NORMAL";
-			input = "";
+			MESSAGE = "";
 		}
 		else if(key != 13)
 		{
@@ -275,7 +288,7 @@ void keyInput(unsigned char key, int x, int y)
 	else if(MODE == "INPUT")
 	{
 		//Enter Key: Check what function is currently in progress and compute appropriately
-		if(key == 13)
+		if(key == 13)//enter key
 		{
 			vector<Node>* nodes = graph.getNodes();
 			//add node data
@@ -294,6 +307,7 @@ void keyInput(unsigned char key, int x, int y)
 				firstNode = graph.getNodes()->back().getIndex();
 				MODE = "NORMAL";
 				input = "";
+				MESSAGE = "";
 				tags.clear();
 				inputFunc = 0;
 			}
@@ -310,6 +324,7 @@ void keyInput(unsigned char key, int x, int y)
 
 				MODE = "NORMAL";
 				input = "";
+				MESSAGE = "";
 				inputFunc = 0;
 			}
 			//edit node data
@@ -408,21 +423,25 @@ void mouseControl(int button, int state, int x, int y)
 					if(demButtons[i].getName() == "Load File")
 					{
 						MODE = "LOADING FILE";
+						FILENAME = "";
 						//graph.load("temp", false);
 					}
 					else if(demButtons[i].getName() == "Save File")
 					{
 						MODE = "SAVING FILE";
+						FILENAME = "";
 						//graph.save("temp",false);
 					}
 					else if(demButtons[i].getName() == "Load Template")
 					{
 						MODE = "LOADING TEMPLATE";
+						FILENAME = "";
 						//graph.load("temp", true);
 					}
 					else if(demButtons[i].getName() == "Save Template")
 					{
 						MODE = "SAVING TEMPLATE";
+						FILENAME = "";
 						//graph.save("temp",true);
 					}
 					else if(demButtons[i].getName() == "Topological Sort")
@@ -451,7 +470,7 @@ void mouseControl(int button, int state, int x, int y)
 			pn = pickNode(currentPoint.getX(), currentPoint.getY());
 			if(pn != -1)
 			{
-				    input = string("Data: ") + string((*nodes)[pn].getInformation()) + string(", Tags: ") + (*nodes)[pn].printTags();
+				MESSAGE = string("Data: ") + string((*nodes)[pn].getInformation()) + string(", Tags: ") + (*nodes)[pn].printTags();
 				firstNode = pn;
 			}
 			else if(collisionFree(x, HEIGHT - y))
