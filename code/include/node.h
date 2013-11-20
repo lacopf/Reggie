@@ -206,8 +206,6 @@ void Node::draw()
 		else{
 			css[i] += " " + tmpstr;
 		}
-		cout << "css[i] = " << css[i] << endl;
-		cout << "css[i+1] = " << css[i+1] << endl;
 		if(tokit == tokens.end()){
 			break;
 		}
@@ -227,13 +225,11 @@ void Node::draw()
 	}
 	for(int i = 0; i < min(4, (int)css.size()); i++){
 		if(css[i] != ""){
-			cout << "printing " << i << endl;
 			glRasterPos2i(point.getX() - RADIUS + 10, point.getY() + 17 - i*15);
 			for(cs = css[i].c_str(); *cs != '\0'; cs++){
 				glutBitmapCharacter(GLUT_BITMAP_9_BY_15, *cs);
 			}
 		}	
-		cout << "iteration " << i << " complete" << endl;
 	}
 }
 
