@@ -288,12 +288,12 @@ void keyInput(unsigned char key, int x, int y)
 				MESSAGE = "";
 				graph.load(FILENAME,false);
 			}
-			else if(MODE == "SAVING_TEMPLATE")
+			else if(MODE == "SAVING TEMPLATE")
 			{
 				MESSAGE = "";
 				graph.save(FILENAME,true);
 			}
-			else if(MODE == "LOADING_TEMPLATE")
+			else if(MODE == "LOADING TEMPLATE")
 			{
 				MESSAGE = "";
 				graph.load(FILENAME,true);

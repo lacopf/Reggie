@@ -153,7 +153,7 @@ void Graph::printGraph()
 void Graph::saveSortedGraph(){
 	vector<int> sorted = topSort();
 	if(sorted.size() == 0 && nodes.size() != 0){
-		cout << "Error: graph contains cycles" << endl;
+		MESSAGE = "Error: graph contains cycles";
 		return;
 	}	
 	ofstream out("sorted.txt");
@@ -214,14 +214,14 @@ void Graph::exportCalendar(){
 
 			//checks if given date is valid
 			if(date.size() != 7 || date[2] != '/'){
-				cout << "Invalid date: please enter a date of form MM/YYYY" << endl;
+				MESSAGE = "Invalid date: please enter a date of form MM/YYYY";
 				return;
 			} 
 		}
 	}
 	
 	//If graph does not contain a month node
-	if(!found_month){cout << "Error: please load calendar template before exporting calendar" << endl;}
+	if(!found_month){MESSAGE = "Error: please load calendar template before exporting calendar";}
 	
 	
 	//holds date as a string
@@ -262,8 +262,8 @@ void Graph::exportCalendar(){
 	}
 	out << "END:VCALENDAR" << endl;
 	//outputs error message if graph does not contain date nodes
-	if(found_date){cout << "Calendar successfully saved" << endl;}
-	else{cout << "Error: please load calendar template before exporting calendar" << endl;}
+	if(found_date){MESSAGE = "Calendar successfully saved";}
+	else{MESSAGE = "Error: please load calendar template before exporting calendar";}
 }
 
 
@@ -276,7 +276,7 @@ void Graph::save(string filename, bool isTemplate)
 	if ( lstat("./templates", &info) == -1 )
 		mkdir("./templates", S_IRWXU);
 
-	//treat files differently based on whether it's ging to saved as a template or not
+	//treat files differently based on whether it's going to saved as a template or not
 	if (!isTemplate)
 	{
 		int p = filename.find(".xml");
@@ -294,7 +294,7 @@ void Graph::save(string filename, bool isTemplate)
 	
 	ofstream saveFile;
 	saveFile.open(filename.c_str());
-	cout << "The filename is " << filename << endl;
+	MESSAGE = "The filename is " + filename;
 
 
 	if (isTemplate)
@@ -372,30 +372,56 @@ void Graph::save(string filename, bool isTemplate)
 	if (isTemplate)
 		chdir("..");
 }
-void Graph::load(string filename, bool isTemplate = false)
+void Graph::load(string filename, bool isTemplate)
 {
 	//assume the filename has the proper extension
 	ifstream source;
-	source.open( filename.c_str() );
-	if ( !source.is_open() )
+	
+	//file being loaded is a savefile
+	if ( !isTemplate )
 	{
-		string filenametemp = filename + ".xml";
 		source.open( filename.c_str() );
-	}
-	if ( !source.is_open() )
-	{
-		filename += ".bgt";
-		source.open( filename.c_str() );
+		
 		if ( !source.is_open() )
 		{
-			cout << "Invalid file name\n";
-			return;
+			filename = filename + ".xml";
+			source.open( filename.c_str() );
+			if ( !source.is_open() )
+			{
+				MESSAGE = "Invalid file name";
+				return;
+			}
+		}
+	}
+	//file being loaded is a template
+	else
+	{
+		source.open( filename.c_str() );
+		
+		if ( !source.is_open() )
+		{
+			string file_ending = "";
+			if (filename.size() > 5)
+				file_ending = filename.substr(filename.size() - 4, 4);
+
+			if (filename.size() < 5 || file_ending.compare(".bgt") != 0)
+				filename += ".bgt";
+
+			if (filename.size() < 12 || filename.substr(0, 12).compare("./templates/") != 0)
+				filename = "./templates/" + filename;
+
+			source.open( filename.c_str() );
+			if ( !source.is_open() )
+			{
+				MESSAGE = "Invalid file name";
+				return;
+			}
+			
 		}
 	}
 
 	//all my temporary variables
 	string line = "";
-	//bool isTemplate = false;
 	Node dummyNode;
 	Edge dummyEdge;
 	vector<Node> loadedNodes;
@@ -412,20 +438,14 @@ void Graph::load(string filename, bool isTemplate = false)
 	}
 	else if ( line.find("graph") == string::npos )
 	{
-		cout << "Not a graph file\n";
-		return;
-	}
-	
-	if ( line.find("graph") == string::npos )
-	{
-		cout << "Not a graph file\n";
+		MESSAGE = "Not a graph file";
 		return;
 	}
 
 	getline( source, line, '\n');
 	if ( line.find("nodeList") == string::npos )
 	{
-		cout << "Not a valid file to load from\n";
+		MESSAGE = "Not a valid file to load from\n";
 		return;
 	}	
 	
@@ -449,7 +469,7 @@ void Graph::load(string filename, bool isTemplate = false)
 		//not a valid file
 		if (parse_index == string::npos)
 		{
-			cout << "Invalid load file\n";
+			MESSAGE = "Invalid load file";
 			return;
 		}
 
@@ -472,7 +492,7 @@ void Graph::load(string filename, bool isTemplate = false)
 		//not a valid file
 		if (parse_index == string::npos || endIndex == string::npos)
 		{
-			cout << "Invalid load file\n";
+			MESSAGE = "Invalid load file";
 			return;
 		}
 		else
@@ -490,7 +510,7 @@ void Graph::load(string filename, bool isTemplate = false)
 		//not a valid file
 		if (parse_index == string::npos || endIndex == string::npos)
 		{
-			cout << "Invalid load file\n";
+			MESSAGE = "Invalid load file";
 			return;
 		}
 		else
@@ -512,7 +532,7 @@ void Graph::load(string filename, bool isTemplate = false)
 		//not a valid file
 		if (parse_index == string::npos || endIndex == string::npos)
 		{
-			cout << "Invalid load file\n";
+			MESSAGE = "Invalid load file";
 			return;
 		}
 		else 
@@ -613,7 +633,7 @@ void Graph::load(string filename, bool isTemplate = false)
 		endIndex = line.find("</relation>");
 		if (parse_index == string::npos || endIndex == string::npos)
 		{
-			cout << "RELInvalid file to load from\n";
+			MESSAGE = "RELInvalid file to load from";
 			return;
 		}
 
@@ -625,7 +645,7 @@ void Graph::load(string filename, bool isTemplate = false)
 		endIndex = line.find("</nodeA>");
 		if (parse_index == string::npos || endIndex == string::npos)
 		{
-			cout << "NAInvalid file to load from\n";
+			MESSAGE = "NAInvalid file to load from";
 			return;
 		}
 
@@ -639,7 +659,7 @@ void Graph::load(string filename, bool isTemplate = false)
 		endIndex = line.find("</nodeA>");
 		if (parse_index == string::npos)
 		{
-			cout << "NBInvalid file to load from\n";
+			MESSAGE = "NBInvalid file to load from";
 			return;
 		}
 
@@ -694,7 +714,7 @@ void Graph::load(string filename, bool isTemplate = false)
 		}
 	}
 	
-	cout << "File was successfully loaded!\n";
+	MESSAGE = "File was successfully loaded!";
 
 }
 void Graph::draw()
