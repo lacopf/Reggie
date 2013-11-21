@@ -278,7 +278,7 @@ void Graph::save(string filename, bool isTemplate)
 	if ( lstat("./templates", &info) == -1 )
 		mkdir("./templates", S_IRWXU);
 
-	//treat files differently based on whether it's ging to saved as a template or not
+	//treat files differently based on whether it's going to saved as a template or not
 	if (!isTemplate)
 	{
 		int p = filename.find(".xml");
@@ -402,18 +402,21 @@ void Graph::load(string filename, bool isTemplate)
 		
 		if ( !source.is_open() )
 		{
-			filename += ".bgt";
+			string file_ending = "";
+			if (filename.size() > 5)
+				file_ending = filename.substr(filename.size() - 4, 4);
+
+			if (filename.size() < 5 || file_ending.compare(".bgt") != 0)
+				filename += ".bgt";
+
+			if (filename.size() < 12 || filename.substr(0, 12).compare("./templates/") != 0)
+				filename = "./templates/" + filename;
+
 			source.open( filename.c_str() );
 			if ( !source.is_open() )
 			{
-				filename = "./templates/" + filename;
-				source.open( filename.c_str() );
-				
-				if ( !source.is_open() )
-				{
-					cout << "Invalid file name\n";
-					return;
-				}
+				cout << "Invalid file name\n";
+				return;
 			}
 			
 		}
