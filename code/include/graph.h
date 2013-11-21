@@ -155,7 +155,11 @@ void Graph::printGraph()
 void Graph::saveSortedGraph(){
 	vector<int> sorted = topSort();
 	if(sorted.size() == 0 && nodes.size() != 0){
+<<<<<<< HEAD
+		MESSAGE =  "Error: Graph contains cycles";
+=======
 		MESSAGE = "Error: graph contains cycles";
+>>>>>>> 839e0a681e888f40ae52e94ca5c1ceee885f56bc
 		return;
 	}	
 	ofstream out("sorted.txt");
@@ -223,7 +227,11 @@ void Graph::exportCalendar(){
 	}
 	
 	//If graph does not contain a month node
+<<<<<<< HEAD
+	if(!found_month){MESSAGE = "Error: please load calendar template before exporting calendar"; return;}
+=======
 	if(!found_month){MESSAGE = "Error: please load calendar template before exporting calendar";}
+>>>>>>> 839e0a681e888f40ae52e94ca5c1ceee885f56bc
 	
 	
 	//holds date as a string
@@ -264,8 +272,13 @@ void Graph::exportCalendar(){
 	}
 	out << "END:VCALENDAR" << endl;
 	//outputs error message if graph does not contain date nodes
+<<<<<<< HEAD
+	if(found_date){MESSAGE =  "Calendar successfully saved";}
+	else{MESSAGE = "Error: please load calendar template before exporting calendar" ;}
+=======
 	if(found_date){MESSAGE = "Calendar successfully saved";}
 	else{MESSAGE = "Error: please load calendar template before exporting calendar";}
+>>>>>>> 839e0a681e888f40ae52e94ca5c1ceee885f56bc
 }
 
 
