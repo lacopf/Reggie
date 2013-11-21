@@ -224,7 +224,6 @@ void Graph::exportCalendar(){
 	
 	//If graph does not contain a month node
 	if(!found_month){MESSAGE = "Error: please load calendar template before exporting calendar"; return;}
-	if(!found_month){MESSAGE = "Error: please load calendar template before exporting calendar";}	
 	
 	//holds date as a string
 	string ds = ""; 
@@ -264,8 +263,6 @@ void Graph::exportCalendar(){
 	}
 	out << "END:VCALENDAR" << endl;
 	//outputs error message if graph does not contain date nodes
-	if(found_date){MESSAGE =  "Calendar successfully saved";}
-	else{MESSAGE = "Error: please load calendar template before exporting calendar";}
 	if(found_date){MESSAGE = "Calendar successfully saved";}
 	else{MESSAGE = "Error: please load calendar template before exporting calendar";}
 }
