@@ -33,6 +33,12 @@ class Point
 		{
 			return down;
 		}
+		
+		void move(int newX, int newY)
+		{
+			x = newX;
+			y = newY;
+		}
 };
 
 #endif
