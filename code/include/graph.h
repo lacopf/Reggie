@@ -155,7 +155,7 @@ void Graph::printGraph()
 void Graph::saveSortedGraph(){
 	vector<int> sorted = topSort();
 	if(sorted.size() == 0 && nodes.size() != 0){
-		cout << "Error: graph contains cycles" << endl;
+		MESSAGE =  "Error: Graph contains cycles";
 		return;
 	}	
 	ofstream out("sorted.txt");
@@ -216,14 +216,14 @@ void Graph::exportCalendar(){
 
 			//checks if given date is valid
 			if(date.size() != 7 || date[2] != '/'){
-				cout << "Invalid date: please enter a date of form MM/YYYY" << endl;
+				MESSAGE = "Invalid date: please enter a date of form MM/YYYY";
 				return;
 			} 
 		}
 	}
 	
 	//If graph does not contain a month node
-	if(!found_month){cout << "Error: please load calendar template before exporting calendar" << endl;}
+	if(!found_month){MESSAGE = "Error: please load calendar template before exporting calendar"; return;}
 	
 	
 	//holds date as a string
@@ -264,8 +264,8 @@ void Graph::exportCalendar(){
 	}
 	out << "END:VCALENDAR" << endl;
 	//outputs error message if graph does not contain date nodes
-	if(found_date){cout << "Calendar successfully saved" << endl;}
-	else{cout << "Error: please load calendar template before exporting calendar" << endl;}
+	if(found_date){MESSAGE =  "Calendar successfully saved";}
+	else{MESSAGE = "Error: please load calendar template before exporting calendar" ;}
 }
 
 
