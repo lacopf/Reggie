@@ -3,7 +3,7 @@
  -<node>
    <index>0</index>
    <info>Input date as MM/YYYY</info>
-   <point>1000,800</point>
+   <point>1050,800</point>
    <tags>month</tags>
   </node>
  -<node>
