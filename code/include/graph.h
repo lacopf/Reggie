@@ -630,20 +630,55 @@ void Graph::load(string filename, bool isTemplate = false)
 }
 void Graph::draw()
 {
+	glEnable( GL_LINE_SMOOTH );
+	glEnable( GL_POLYGON_SMOOTH );
+
+	//edges
 	for(int i = 0; i < edges.size(); i++)
 	{
 		
 		glLineWidth(3*3.14159265359); 
 		glColor3f(16.0 / 255.0, 73.0 / 255.0, 169.0 / 255.0);
+		
+		float startX = nodes[edges[i]->getNodeA()].getPoint().getX();
+		float startY = nodes[edges[i]->getNodeA()].getPoint().getY();
+		
+		float endX = nodes[edges[i]->getNodeB()].getPoint().getX();
+		float endY = nodes[edges[i]->getNodeB()].getPoint().getY();
+		
+		float diffX = endX - startX;
+		float diffY = endY - startY;
+		float length = sqrt(diffX*diffX + diffY*diffY);
+		
+		float pointX = endX - diffX/length*RADIUS;
+		float pointY = endY - diffY/length*RADIUS;
+		
+		float centX = pointX - diffX/length*RADIUS/3;
+		float centY = pointY - diffY/length*RADIUS/3;
+		
+		float leftX = centX - diffY/length*RADIUS/3;
+		float leftY = centY + diffX/length*RADIUS/3;
+		
+		float rightX = centX + diffY/length*RADIUS/3;
+		float rightY = centY - diffX/length*RADIUS/3;
+		
 		glBegin(GL_LINES);
-		glVertex2f(nodes[edges[i]->getNodeA()].getPoint().getX(), nodes[edges[i]->getNodeA()].getPoint().getY());
-		glVertex2f(nodes[edges[i]->getNodeB()].getPoint().getX(), nodes[edges[i]->getNodeB()].getPoint().getY());
+			glVertex2f(startX, startY);
+			glVertex2f(centX, centY);
+		glEnd();
+		
+		glBegin(GL_TRIANGLES);
+			glVertex2f(leftX,leftY);
+			glVertex2f(pointX, pointY);
+			glVertex2f(rightX,rightY);
 		glEnd();
 	}
+	//nodes
 	for(int i = 0; i < nodes.size(); i++)
 	{
 		nodes[i].draw();
 	}
+	
 }
 
 #endif

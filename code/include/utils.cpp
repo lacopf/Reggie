@@ -189,7 +189,7 @@ void drawScene()
 {
 	glClearColor(1.0, 1.0, 1.0, 0.0);
 	glClear(GL_COLOR_BUFFER_BIT);
-	glColor3f(0.0, 0.0, 0.0);
+	glColor3f(1.0, 1.0, 1.0);
 	//writeString(10, 10, GLUT_BITMAP_9_BY_15, input.c_str());
 	graph.draw();
 	
@@ -524,6 +524,7 @@ void opengl_init(int argc, char *argv[])
 	tags.clear();
 	vector<string>test;
 	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	//cout << "Left click in empty space to create a node. Left click and drag from one node to another to create an edge between them." << endl;
 	MESSAGE = "Left click in empty space to create a   node. Left click and drag from one node to another to create an edge between    them.";
 	MODE = "MESSAGE";

@@ -177,7 +177,7 @@ void Node::draw()
 			glVertex2f(cos(degInRad)*RADIUS+point.getX(),sin(degInRad)*RADIUS+point.getY());
 		}
 	glEnd();
-	glColor3f(0.0, 0.0, 0.0);
+	glColor3f(1.0, 1.0, 1.0);
 	const char *cs;
 	vector<string> css;
 	css.clear();
