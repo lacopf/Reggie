@@ -291,6 +291,12 @@ void Graph::save(string filename, bool isTemplate)
 		chdir("./templates");
 	}
 	
+	if (isTemplate && lstat(filename.c_str(), &info) != -1 )
+	{
+		MESSAGE = "You can't save over existing template files";
+		return;
+	}
+
 	ofstream saveFile;
 	saveFile.open(filename.c_str());
 	MESSAGE = "The filename is " + filename;
