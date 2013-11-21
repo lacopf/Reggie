@@ -633,8 +633,8 @@ void Graph::draw()
 	for(int i = 0; i < edges.size(); i++)
 	{
 		
-		glLineWidth(2.5); 
-		glColor3f(1.0, 0.0, 0.0);
+		glLineWidth(3*3.14159265359); 
+		glColor3f(16.0 / 255.0, 73.0 / 255.0, 169.0 / 255.0);
 		glBegin(GL_LINES);
 		glVertex2f(nodes[edges[i]->getNodeA()].getPoint().getX(), nodes[edges[i]->getNodeA()].getPoint().getY());
 		glVertex2f(nodes[edges[i]->getNodeB()].getPoint().getX(), nodes[edges[i]->getNodeB()].getPoint().getY());
