@@ -36,6 +36,7 @@ class Graph
 		void printGraph();
 		void saveSortedGraph();
 		vector<int> topSort();
+		void exportCalendar();
 		bool visitNode(int node, vector<bool>& visited, vector<bool>& permanent, vector<int>& sortedVec);
 		void save(string filename, bool isTemplate);
 		void load(string filename, bool isTemplate);
@@ -70,7 +71,6 @@ void Graph::addEdge(int n1, int n2, string rel)
 	edges.push_back(p);
 	nodes[n2].addInEdge(p);
 	nodes[n1].addOutEdge(p);
-	cout << n1 << " " << n2 << " " << p->getNodeB() << endl;
 }
 
 
@@ -153,8 +153,12 @@ void Graph::printGraph()
 
 //Saves topologically sorted graph in a text file
 void Graph::saveSortedGraph(){
-	ofstream out("sorted.txt");
 	vector<int> sorted = topSort();
+	if(sorted.size() == 0 && nodes.size() != 0){
+		cout << "Error: graph contains cycles" << endl;
+		return;
+	}	
+	ofstream out("sorted.txt");
 	for(int i=0; i<sorted.size(); i++){
 		out << nodes[i].getInformation() << endl;
 	}	
@@ -197,6 +201,73 @@ bool Graph::visitNode(int node, vector<bool>& visited, vector<bool>& permanent, 
 	sortedVec.push_back(node);
 	return false;
 }
+
+
+//If user has loaded the "calendar" template, exports graph into iCalendar (ics) format
+void Graph::exportCalendar(){
+	string date = "";
+
+	//Finds month node
+	bool found_month = false;
+	for(int i=0; i<nodes.size(); i++){
+		if(nodes[i].hasTag("month")){
+			found_month = true;
+			date = nodes[i].getInformation();
+
+			//checks if given date is valid
+			if(date.size() != 7 || date[2] != '/'){
+				cout << "Invalid date: please enter a date of form MM/YYYY" << endl;
+				return;
+			} 
+		}
+	}
+	
+	//If graph does not contain a month node
+	if(!found_month){cout << "Error: please load calendar template before exporting calendar" << endl;}
+	
+	
+	//holds date as a string
+	string ds = ""; 
+	ds += date.substr(3,date.size());
+	ds += date.substr(0,2);
+
+	//Writes head of ical file
+	ofstream out("calendar.ics");
+	out << "BEGIN:VCALENDAR" << endl;
+	out << "VERSION:2.0" << endl;
+
+	//if this bool is false at end of computation, graph is not of calendar form
+	bool found_date = false;
+	
+	//runs through all date nodes and adds their corresponding event-nodes to ical file
+	for(int i=0; i<nodes.size(); i++){
+		if(nodes[i].hasTag("date")){ //only nodes with "date" tag are dates
+			found_date = true;
+			string ds1 = ds;
+			string info = nodes[i].getInformation();
+			if(info.size() > 2 || info.size() == 0){continue;}
+			else if(info.size() == 1){ds1 += "0";}
+			ds1 += info;
+			const vector<Edge*>& outedges = nodes[i].getOutEdges();
+			//adds new ical event for each event-node connected to date node
+			for(int j=0; j< outedges.size(); j++){
+				Node nodeB = nodes[outedges[j] -> getNodeB()];
+				if(nodeB.hasTag("date")){continue;}
+				out << "BEGIN:VEVENT" << endl;
+				out << "DTSTAMP:" << ds1 << "T000001Z" << endl;
+				out << "DTSTART:" << ds1 << "T000001Z" << endl;
+				out << "DTEND:" << ds1 <<  "T235959Z" << endl;
+				out << "SUMMARY:" << nodeB.getInformation() << endl;
+				out << "END:VEVENT" << endl;
+			}
+		}					
+	}
+	out << "END:VCALENDAR" << endl;
+	//outputs error message if graph does not contain date nodes
+	if(found_date){cout << "Calendar successfully saved" << endl;}
+	else{cout << "Error: please load calendar template before exporting calendar" << endl;}
+}
+
 
 //saves the graph to the file
 void Graph::save(string filename, bool isTemplate)

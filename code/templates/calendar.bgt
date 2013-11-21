@@ -2,186 +2,179 @@
 -<nodeList>
  -<node>
    <index>0</index>
-   <info>Month</info>
-   <point>250,469</point>
-   <tags>Year</tags>
+   <info>Input date as MM/YYYY</info>
+   <point>1000,800</point>
+   <tags>month</tags>
   </node>
  -<node>
    <index>1</index>
-   <info>Sunday</info>
-   <point>40,403</point>
-   <tags>week1</tags>
+   <info>1</info>
+   <point>76,775</point>
+   <tags>date,week1</tags>
   </node>
  -<node>
    <index>2</index>
-   <info>Monday</info>
-   <point>110,403</point>
-   <tags>week1</tags>
+   <info>2</info>
+   <point>221,775</point>
+   <tags>date,week1</tags>
   </node>
  -<node>
    <index>3</index>
-   <info>Tuesday</info>
-   <point>180,403</point>
-   <tags>week1</tags>
+   <info>3</info>
+   <point>366,775</point>
+   <tags>date,week1</tags>
   </node>
  -<node>
    <index>4</index>
-   <info>Wednesday</info>
-   <point>250,403</point>
-   <tags>week1</tags>
+   <info>4</info>
+   <point>511,775</point>
+   <tags>date,week1</tags>
   </node>
  -<node>
    <index>5</index>
-   <info>Thursday</info>
-   <point>320,403</point>
-   <tags>week1</tags>
+   <info>5</info>
+   <point>656,775</point>
+   <tags>date,week1</tags>
   </node>
  -<node>
    <index>6</index>
-   <info>Friday</info>
-   <point>390,403</point>
-   <tags>week1</tags>
+   <info>6</info>
+   <point>800,775</point>
+   <tags>date,week1</tags>
   </node>
  -<node>
    <index>7</index>
-   <info>Saturday</info>
-   <point>460,403</point>
-   <tags>week1</tags>
+   <info>7</info>
+   <point>946,775</point>
+   <tags>date,week1</tags>
   </node>
  -<node>
    <index>8</index>
-   <info>Sunday</info>
-   <point>40,603</point>
-   <tags>week2</tags>
+   <info>28</info>
+   <point>946,175</point>
+   <tags>date,week4</tags>
   </node>
  -<node>
    <index>9</index>
-   <info>Sunday</info>
-   <point>40,315</point>
-   <tags>week2</tags>
+   <info>8</info>
+   <point>76,575</point>
+   <tags>date,week2</tags>
   </node>
  -<node>
    <index>10</index>
-   <info>Monday</info>
-   <point>110,315</point>
-   <tags>week2</tags>
+   <info>9</info>
+   <point>221,575</point>
+   <tags>date,week2</tags>
   </node>
  -<node>
    <index>11</index>
-   <info>Tuesday</info>
-   <point>180,315</point>
-   <tags>week2</tags>
+   <info>10</info>
+   <point>366,575</point>
+   <tags>date,week2</tags>
   </node>
  -<node>
    <index>12</index>
-   <info>Wednesday</info>
-   <point>250,315</point>
-   <tags>week3</tags>
+   <info>11</info>
+   <point>511,575</point>
+   <tags>date,week3</tags>
   </node>
  -<node>
    <index>13</index>
-   <info>Thursday</info>
-   <point>320,315</point>
-   <tags>week2</tags>
+   <info>12</info>
+   <point>656,575</point>
+   <tags>date,week2</tags>
   </node>
  -<node>
    <index>14</index>
-   <info>Friday</info>
-   <point>390,315</point>
-   <tags>week2</tags>
+   <info>13</info>
+   <point>800,575</point>
+   <tags>date,week2</tags>
   </node>
  -<node>
    <index>15</index>
-   <info>Saturday</info>
-   <point>460,315</point>
-   <tags>week2</tags>
+   <info>14</info>
+   <point>946,575</point>
+   <tags>date,week2</tags>
   </node>
  -<node>
    <index>16</index>
-   <info>Sunday</info>
-   <point>40,220</point>
-   <tags>week3</tags>
+   <info>15</info>
+   <point>76,375</point>
+   <tags>date,week3</tags>
   </node>
  -<node>
    <index>17</index>
-   <info>Monday</info>
-   <point>110,220</point>
-   <tags>week3</tags>
+   <info>16</info>
+   <point>221,375</point>
+   <tags>date,week3</tags>
   </node>
  -<node>
    <index>18</index>
-   <info>Tuesday</info>
-   <point>180,220</point>
-   <tags>week3</tags>
+   <info>17</info>
+   <point>366,375</point>
+   <tags>date,week3</tags>
   </node>
  -<node>
    <index>19</index>
-   <info>Wednesday</info>
-   <point>250,220</point>
-   <tags>week3</tags>
+   <info>18</info>
+   <point>511,375</point>
+   <tags>date,week3</tags>
   </node>
  -<node>
    <index>20</index>
-   <info>Thursday</info>
-   <point>320,220</point>
-   <tags>week3</tags>
+   <info>19</info>
+   <point>656,375</point>
+   <tags>date,week3</tags>
   </node>
  -<node>
    <index>21</index>
-   <info>Friday</info>
-   <point>390,220</point>
-   <tags>week3</tags>
+   <info>20</info>
+   <point>800,375</point>
+   <tags>date,week3</tags>
   </node>
  -<node>
    <index>22</index>
-   <info>Saturday</info>
-   <point>460,220</point>
-   <tags>week3</tags>
+   <info>21</info>
+   <point>946,375</point>
+   <tags>date,week3</tags>
   </node>
  -<node>
    <index>23</index>
-   <info>Sunday</info>
-   <point>40,125</point>
-   <tags>week4</tags>
+   <info>22</info>
+   <point>76,175</point>
+   <tags>date,week4</tags>
   </node>
  -<node>
    <index>24</index>
-   <info>Monday</info>
-   <point>110,125</point>
-   <tags>week4</tags>
+   <info>23</info>
+   <point>221,175</point>
+   <tags>date,week4</tags>
   </node>
  -<node>
    <index>25</index>
-   <info>Tuesday</info>
-   <point>180,125</point>
-   <tags>week4</tags>
+   <info>24</info>
+   <point>366,175</point>
+   <tags>date,week4</tags>
   </node>
  -<node>
    <index>26</index>
-   <info>Wednesday</info>
-   <point>250,125</point>
-   <tags>week5</tags>
+   <info>25</info>
+   <point>511,175</point>
+   <tags>date,week5</tags>
   </node>
  -<node>
    <index>27</index>
-   <info>Thursday</info>
-   <point>320,125</point>
-   <tags>week4</tags>
+   <info>26</info>
+   <point>656,175</point>
+   <tags>date,week4</tags>
   </node>
  -<node>
    <index>28</index>
-   <info>Friday</info>
-   <point>390,125</point>
-   <tags>week4</tags>
-  </node>
- -<node>
-   <index>29</index>
-   <info>Saturday</info>
-   <point>460,125</point>
-   <tags>week4</tags>
+   <info>27</info>
+   <point>800,175</point>
+   <tags>date,week4</tags>
   </node>
  </nodeList>
-
 -<edgeList>
  </edgeList>
 </graph>

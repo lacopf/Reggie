@@ -92,7 +92,6 @@ Node::Node(string info, int ind, vector<string> new_tags, int x, int y)
 	information = info;
 	index = ind;
 	point = Point(x,y,true);
-	cout << "new node: " << ind << endl;
 }
 
 //returns whether a node has a given tag
@@ -160,7 +159,6 @@ bool Node::edgeExists(int edg)
 	{
 		if(out_edges[i]->getNodeB() == edg)
 		{
-			//cout << "Edge from " << index << " to " << edg << " already exists." << endl;
 			return true;
 		}
 	}
