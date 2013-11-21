@@ -153,7 +153,7 @@ void Graph::printGraph()
 void Graph::saveSortedGraph(){
 	vector<int> sorted = topSort();
 	if(sorted.size() == 0 && nodes.size() != 0){
-		MESSAGE = "Error: graph contains cycles";
+		MESSAGE =  "Error: Graph contains cycles";
 		return;
 	}	
 	ofstream out("sorted.txt");
@@ -221,8 +221,7 @@ void Graph::exportCalendar(){
 	}
 	
 	//If graph does not contain a month node
-	if(!found_month){MESSAGE = "Error: please load calendar template before exporting calendar";}
-	
+	if(!found_month){MESSAGE = "Error: please load calendar template before exporting calendar"; return;}
 	
 	//holds date as a string
 	string ds = ""; 
