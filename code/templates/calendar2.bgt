@@ -1,97 +1,91 @@
+<template></template>
 <graph>
 -<nodeList>
  -<node>
    <index>0</index>
    <info>Month</info>
-   <point>243,253</point>
+   <point>531,472</point>
    <tags>default</tags>
-   <outedges>0,-1,15598608,15956048</outedges>
+   <outedges>0</outedges>
   </node>
  -<node>
-   <index>1</index>
+   <index>0</index>
    <info>Week1</info>
-   <point>79,398</point>
+   <point>200,700</point>
    <tags>todo</tags>
    <inedges>0</inedges>
-   <outedges>0,512</outedges>
+   <outedges>0</outedges>
   </node>
  -<node>
-   <index>2</index>
+   <index>0</index>
    <info>Week2</info>
-   <point>416,405</point>
+   <point>900,700</point>
    <tags>default</tags>
-   <inedges>-1,15598552</inedges>
-   <outedges>-1</outedges>
   </node>
  -<node>
-   <index>3</index>
+   <index>0</index>
    <info>Week3</info>
-   <point>72,65</point>
+   <point>200,200</point>
    <tags>default</tags>
-   <inedges>15598608</inedges>
    <outedges>8,9</outedges>
   </node>
  -<node>
-   <index>4</index>
+   <index>0</index>
    <info>Week4</info>
-   <point>409,55</point>
+   <point>840,249</point>
    <tags>default</tags>
-   <inedges>15956048</inedges>
    <outedges>10,11</outedges>
   </node>
  -<node>
-   <index>5</index>
+   <index>0</index>
    <info>ThingToDo1</info>
-   <point>27,474</point>
+   <point>159,574</point>
    <tags>task</tags>
-   <inedges>512</inedges>
   </node>
  -<node>
-   <index>6</index>
+   <index>0</index>
    <info>ThingToDo2</info>
-   <point>138,459</point>
+   <point>329,733</point>
    <tags>task</tags>
    <inedges>0</inedges>
   </node>
  -<node>
-   <index>7</index>
+   <index>0</index>
    <info>ThingToDo1</info>
-   <point>340,455</point>
+   <point>757,760</point>
    <tags>task</tags>
-   <outedges>15598552</outedges>
   </node>
  -<node>
-   <index>8</index>
+   <index>0</index>
    <info>ThingtoDo2</info>
-   <point>464,474</point>
+   <point>884,555</point>
    <tags>task</tags>
-   <inedges>-1</inedges>
   </node>
  -<node>
-   <index>9</index>
+   <index>0</index>
    <info>ThingToDo1</info>
-   <point>151,66</point>
+   <point>372,174</point>
    <tags>task</tags>
    <inedges>8</inedges>
   </node>
  -<node>
-   <index>10</index>
+   <index>0</index>
    <info>ThingtoDo2</info>
-   <point>44,123</point>
+   <point>169,344</point>
    <tags>task</tags>
    <inedges>9</inedges>
   </node>
  -<node>
-   <index>11</index>
+   <index>0</index>
    <info>ThingToDo1</info>
-   <point>437,121</point>
+   <point>893,377</point>
    <tags>task</tags>
    <inedges>10</inedges>
   </node>
  -<node>
-   <index>12</index>
-   <info>k</info>
-   <point>335,63</point>
+   <index>0</index>
+   <info>ThingToDo2</info>
+   <point>691,156</point>
    <tags>task</tags>
    <inedges>11</inedges>
   </node>
