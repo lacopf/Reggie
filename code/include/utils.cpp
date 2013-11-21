@@ -48,7 +48,7 @@ void writeString(int x, int y, void *font, const char *str){
 }
 
 //euclidean distance
-float dist(Point p1, int x, int y)
+float dist(Point p1, double x, double y)
 {
 	return sqrt(pow(p1.getX() - x, 2) + pow(p1.getY() - y, 2));
 }
@@ -91,24 +91,23 @@ int pickEdge(int x, int y)
 	Point nodeBCoords;
 	float angle;
 	float xdist = -1.0;
+	float slope = -1.0;
 	for(int i = 0; i<edges->size(); i++)
 	{
 		nodeACoords = (*nodes)[((*edges)[i])->getNodeA()].getPoint();
 		nodeBCoords = (*nodes)[((*edges)[i])->getNodeB()].getPoint();
 		if((nodeACoords.getX() < x && x < nodeBCoords.getX()) || (nodeACoords.getX() > x && x > nodeBCoords.getX())){
-			if((nodeACoords.getY() < y && nodeBCoords.getY() < y) || ((nodeACoords.getY() > y && y > nodeBCoords.getY()))){
-				cout << "within range" << endl;
-				angle = atan2(nodeACoords.getY() - nodeBCoords.getY(), nodeACoords.getX() - nodeBCoords.getX());
-				angle = angle*180/M_PI;
-
-				if(angle == 90){
-					if(abs(y-nodeACoords.getY()) < 5){
-						return i;
-					}
+			if((nodeACoords.getY() < y && y < nodeBCoords.getY()) || ((nodeACoords.getY() > y && y > nodeBCoords.getY()))){
+				slope = (float)(nodeACoords.getY() - nodeBCoords.getY())/abs((float)(nodeACoords.getX() - nodeBCoords.getX()));
+				if(nodeACoords.getY() > nodeBCoords.getY()){
+					slope = abs(slope)*(-1.0);
 				}
-
-				xdist = abs(nodeACoords.getX() - x);
-				if(dist(Point((double)x, (double)(nodeACoords.getY() + x*tan(angle)), false), x, y) < 5){
+				else{
+					slope = abs(slope);
+				}
+				cout << slope << endl;
+				xdist = x - nodeACoords.getX();
+				if(dist(Point((double)(x), (double)(nodeACoords.getY() + xdist*slope), false), x, y) < 20){
 					return i;
 				}	
 			}
@@ -120,20 +119,20 @@ int pickEdge(int x, int y)
 void drawButton(string name, int row, int column)
 {
 	int left, right, top, bottom;
-	
+
 	left = WIDTH - 385 + 190*(column - 1);
 	right = left + 180;
 	top = HEIGHT - 15 - 40*(row - 1);
 	bottom = top - 30;	
-	
+
 	glColor3f(37.0/255.0, 213.0/255.0, 0.0/255.0);
 	glBegin(GL_QUADS);
-		glVertex2f(left, top);
-		glVertex2f(left, bottom);
-		glVertex2f(right, bottom);
-		glVertex2f(right, top);
+	glVertex2f(left, top);
+	glVertex2f(left, bottom);
+	glVertex2f(right, bottom);
+	glVertex2f(right, top);
 	glEnd();
-	
+
 	glColor3f(255.0/255.0, 255.0/255.0, 255.0/255.0);
 	writeString(left + 5 + (180 - 10*name.length())/2, bottom + 8, GLUT_BITMAP_HELVETICA_18, name.c_str());
 }
@@ -143,40 +142,40 @@ void drawMenu()
 {
 	glColor3f(0.0/255.0, 160.0/255.0, 138.0/255.0);
 	glBegin(GL_QUADS);
-		glVertex2f(WIDTH - 400, 0);
-		glVertex2f(WIDTH, 0);
-		glVertex2f(WIDTH, HEIGHT);
-		glVertex2f(WIDTH - 400, HEIGHT);
+	glVertex2f(WIDTH - 400, 0);
+	glVertex2f(WIDTH, 0);
+	glVertex2f(WIDTH, HEIGHT);
+	glVertex2f(WIDTH - 400, HEIGHT);
 	glEnd();
-	
+
 	glColor3f(16.0/255.0, 73.0/255.0, 169.0/255.0);
 	glBegin(GL_QUADS);
-		glVertex2f(WIDTH - 390, 10);
-		glVertex2f(WIDTH - 10, 10);
-		glVertex2f(WIDTH - 10, HEIGHT - 10);
-		glVertex2f(WIDTH - 390, HEIGHT - 10);
+	glVertex2f(WIDTH - 390, 10);
+	glVertex2f(WIDTH - 10, 10);
+	glVertex2f(WIDTH - 10, HEIGHT - 10);
+	glVertex2f(WIDTH - 390, HEIGHT - 10);
 	glEnd();
-	
+
 	for(int i = 0; i < demButtons.size(); i++)
 	{
 		drawButton(demButtons[i].getName(), demButtons[i].getRow(), demButtons[i].getCol());
 	}
-	
+
 	//draw typing area
 	glColor3f(1.0, 1.0, 1.0);
 	glBegin(GL_QUADS);
-		glVertex2f(WIDTH - 385, 15);
-		glVertex2f(WIDTH - 15, 15);
-		glVertex2f(WIDTH - 15, 105);
-		glVertex2f(WIDTH - 385, 105);
+	glVertex2f(WIDTH - 385, 15);
+	glVertex2f(WIDTH - 15, 15);
+	glVertex2f(WIDTH - 15, 105);
+	glVertex2f(WIDTH - 385, 105);
 	glEnd();
-	
+
 	//actual text in area
 	if(MODE == "SAVING FILE" || MODE == "LOADING FILE" || MODE == "SAVING TEMPLATE" || MODE == "LOADING TEMPLATE" || MODE == "INPUT")
 	{	
 		glColor3f(37.0/255.0, 213.0/255.0, 0.0/255.0);
 		writeString(WIDTH - 380, 85, GLUT_BITMAP_9_BY_15, MODE.c_str());
-		
+
 		string super = MESSAGE;
 		while(super.length() < 120)
 		{
@@ -197,7 +196,7 @@ void drawMenu()
 	else if(MODE == "NORMAL" || MODE == "MESSAGE")
 	{		
 		glColor3f(37.0/255.0, 213.0/255.0, 0.0/255.0);
-		
+
 		string super = MESSAGE;
 		while(super.length() < 160)
 		{
@@ -216,7 +215,7 @@ void drawMenu()
 		writeString(WIDTH - 380, 45, GLUT_BITMAP_9_BY_15, sub[2].c_str());
 		writeString(WIDTH - 380, 25, GLUT_BITMAP_9_BY_15, sub[3].c_str());
 	}
-	
+
 }
 
 //display function
@@ -227,7 +226,7 @@ void drawScene()
 	glColor3f(1.0, 1.0, 1.0);
 	//writeString(10, 10, GLUT_BITMAP_9_BY_15, input.c_str());
 	graph.draw();
-	
+
 	if(MODE == "SAVING FILE" || MODE == "LOADING FILE" || MODE == "SAVING TEMPLATE" || MODE == "LOADING TEMPLATE")
 	{
 		cursorBlinkFrame++;
@@ -252,9 +251,9 @@ void drawScene()
 			MESSAGE = input + "";
 		}
 	}
-	
+
 	drawMenu();
-	
+
 	glutSwapBuffers();
 }
 
@@ -319,7 +318,7 @@ void keyInput(unsigned char key, int x, int y)
 			FILENAME += key;
 		}
 	}
-	
+
 	else if(MODE == "INPUT")
 	{
 		//Enter Key: Check what function is currently in progress and compute appropriately
@@ -432,13 +431,13 @@ void mouseControl(int button, int state, int x, int y)
 {
 	bool buttFlag = false;
 	vector<Node>* nodes = graph.getNodes();
-	
+
 	//check if in button area
 	if(x >= WIDTH - 400 - RADIUS || x < 0 + RADIUS || y < 0 + RADIUS || y > HEIGHT- RADIUS)
 	{
 		buttFlag = true;
 	}
-	
+
 	if(buttFlag)
 	{
 		//check for button clicks
@@ -451,7 +450,7 @@ void mouseControl(int button, int state, int x, int y)
 				right = left + 180;
 				top = HEIGHT - 15 - 40*(demButtons[i].getRow() - 1);
 				bottom = top - 30;	
-		
+
 				if(x < right && x > left && HEIGHT - y < top && HEIGHT - y > bottom)
 				{
 					if(demButtons[i].getName() == "Load File")
@@ -495,7 +494,7 @@ void mouseControl(int button, int state, int x, int y)
 			input = "";
 			Point currentPoint = Point(x, HEIGHT - y, false);
 			points.push_back(currentPoint);
-		
+
 			//check if we picked a node
 			pn = pickNode(currentPoint.getX(), currentPoint.getY());
 			if(pn != -1)
