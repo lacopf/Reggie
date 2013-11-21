@@ -13,7 +13,10 @@
 
 using namespace std;
 
-int RADIUS = 20;
+int RADIUS = 50;
+string MODE;
+string MESSAGE;
+string FILENAME;
 
 #include "include/graph.h"
 #include "include/utils.cpp"
@@ -24,4 +27,3 @@ int main(int argc, char *argv[])
 
 	return 0;
 }
-

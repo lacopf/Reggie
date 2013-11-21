@@ -107,7 +107,9 @@ string Node::printTags()
 	{
 		s += tags[i] + ",";
 	}
-	s.resize(s.size() - 1);
+	if(s.size() != 0){
+		s.resize(s.size() - 1);
+	}
 	return s; 
 }
 
@@ -122,11 +124,11 @@ void Node::removeInEdge(Edge* edg)
 			in_edges.pop_back();
 			return;			
 		}		
-
 	}
 	
 }
 
+	
 //removes an edge going into a node
 void Node::removeOutEdge(Edge* edg)
 {
@@ -149,7 +151,7 @@ bool Node::edgeExists(int edg)
 	{
 		if(out_edges[i]->getNodeB() == edg)
 		{
-			cout << "Edge from " << index << " to " << edg << " already exists." << endl;
+			//cout << "Edge from " << index << " to " << edg << " already exists." << endl;
 			return true;
 		}
 	}
@@ -158,7 +160,7 @@ bool Node::edgeExists(int edg)
 
 void Node::draw()
 {
-	glColor3f(1.0, 0.0, 0.0);
+	glColor3f(37.0/255.0, 213.0/255.0, 0.0/255.0);
 	glBegin(GL_TRIANGLE_FAN);
 		for (int i=0; i < 360; i++)
 		{
@@ -166,7 +168,22 @@ void Node::draw()
 			glVertex2f(cos(degInRad)*RADIUS+point.getX(),sin(degInRad)*RADIUS+point.getY());
 		}
 	glEnd();
-	
+	glColor3f(0.0, 0.0, 0.0);
+	const char *cs;
+	vector<string> css;
+	string inf = information;
+	string tmpstr = "";
+	while(inf.size() > 0){
+		tmpstr = inf.substr(0, min(9, (int)inf.size()));
+		css.push_back(tmpstr);
+		inf = inf.substr(min(9, (int)inf.size()), string::npos);	
+	}
+	for(int i = 0; i < css.size(); i++){
+		glRasterPos2i(point.getX() - RADIUS + 10, point.getY() + 15 - i*15);
+		for(cs = css[i].c_str(); *cs != '\0'; cs++){
+			glutBitmapCharacter(GLUT_BITMAP_9_BY_15, *cs);
+		}
+	}
 }
 
 #endif

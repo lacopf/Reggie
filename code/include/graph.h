@@ -38,7 +38,7 @@ class Graph
 		vector<int> topSort();
 		bool visitNode(int node, vector<bool>& visited, vector<bool>& permanent, vector<int>& sortedVec);
 		void save(string filename, bool isTemplate);
-		void load(string filename);
+		void load(string filename, bool isTemplate);
 		void draw();
 
 	private:
@@ -48,17 +48,17 @@ class Graph
 };
 
 Graph::Graph(){
-	f = true;
+	//f = true;
 }
 
 //adds a node to the graph
 void Graph::addNode(string info, vector<string> tags, int x, int y)
 {
-	if(nodes.size() == 1 && f)
+	/*if(nodes.size() == 1 && f)
 	{
 		nodes.clear();
 		f = false;
-	}
+	}*/
 	Node n1(info, nodes.size(), tags, x, y);
 	nodes.push_back(n1);
 }
@@ -153,22 +153,11 @@ void Graph::printGraph()
 
 //Saves topologically sorted graph in a text file
 void Graph::saveSortedGraph(){
-	cout << "_________________________________" << endl;
-	for(int i=0; i < nodes.size(); i++){
-		vector<Edge*> outs = nodes[i].getOutEdges();
-		cout << "node: " << i << endl; 
-		for(int j=0; j < outs.size(); j++){
-			cout << outs[j] -> getNodeA() << " " << outs[j] -> getNodeB() << " " << outs[j] -> getIndex() << " " << outs[j] << endl;
-		}	
-	}	
-	cout << "first position: " << &(edges.front())  << endl;
-	/*cout << "A" << endl;
 	ofstream out("sorted.txt");
 	vector<int> sorted = topSort();
-	cout << "H" << endl;
 	for(int i=0; i<sorted.size(); i++){
 		out << nodes[i].getInformation() << endl;
-	}*/	
+	}	
 }
 
 
@@ -181,14 +170,12 @@ vector<int> Graph::topSort(){
 
 	//calls visitNode on all nodes in graph 
 	//each call represents a new tree if the graph is a DAG
-	cout << "B" << endl;
 	for(int i=0; i<nodes.size(); i++){
 		if(permanent[i]){continue;}
 		else if (visitNode(i, visited, permanent, sortedVec)){vector<int> t; return t;}
 	}
 	vector<int> finalVec; 
 	//reverses sorted list
-	cout << "C" << endl;
 	for(int i=sortedVec.size()-1; i >= 0; i--){
 		finalVec.push_back(sortedVec[i]);
 	}
@@ -198,18 +185,14 @@ vector<int> Graph::topSort(){
 //returns true if graph is a DAG
 //visits all children in a DFS pattern
 bool Graph::visitNode(int node, vector<bool>& visited, vector<bool>& permanent, vector<int>& sortedVec){
-	cout << "K" << " " << node << " " << permanent.size() << " " << visited.size() << endl;
 	if(visited[node] & not permanent[node]){return true;} //graph is a DAG
 	else if(permanent[node]){return false;} //not a DAG, but this node has been seen before
-	cout << "F" << endl;
 	visited[node] = true;
 	const vector<Edge*>& outEdges = nodes[node].getOutEdges(); 
 	for(int i=0; i< outEdges.size(); i++){
-	cout << "index: " << outEdges.size() << " " << node << " " << i << " " << outEdges[i]->getNodeA() << " " << outEdges[i] -> getNodeB() << " " << outEdges[i]->getIndex() << endl;
 		//calls visitNode on child, returns true if recursive call returned true (graph is a DAG) 
 		if(visitNode(outEdges[i]->getNodeB(), visited, permanent, sortedVec)){return true;}
 	}
-	cout << "G" << endl;
 	permanent[node] = true;
 	sortedVec.push_back(node);
 	return false;
@@ -305,10 +288,10 @@ void Graph::save(string filename, bool isTemplate)
 		saveFile << " -<edge>" << endl;
 
 		//save index and node information
-		saveFile << "   <index>" << edges[i].getIndex() << "</index>" << endl;
-		saveFile << "   <relation>" << edges[i].getRelation() << "</relation>" << endl;
-		saveFile << "   <nodeA>" << edges[i].getNodeA() << "</nodeA>" << endl;
-		saveFile << "   <nodeB>" << edges[i].getNodeB() << "</nodeB>" << endl;		
+		saveFile << "   <index>" << edges[i]->getIndex() << "</index>" << endl;
+		saveFile << "   <relation>" << edges[i]->getRelation() << "</relation>" << endl;
+		saveFile << "   <nodeA>" << edges[i]->getNodeA() << "</nodeA>" << endl;
+		saveFile << "   <nodeB>" << edges[i]->getNodeB() << "</nodeB>" << endl;		
 
 		saveFile << "  </edge>" << endl;
 	}
@@ -320,7 +303,7 @@ void Graph::save(string filename, bool isTemplate)
 	if (isTemplate)
 		chdir("..");
 }
-void Graph::load(string filename)
+void Graph::load(string filename, bool isTemplate = false)
 {
 	//assume the filename has the proper extension
 	ifstream source;
@@ -343,7 +326,7 @@ void Graph::load(string filename)
 
 	//all my temporary variables
 	string line = "";
-	bool isTemplate = false;
+	//bool isTemplate = false;
 	Node dummyNode;
 	Edge dummyEdge;
 	vector<Node> loadedNodes;
@@ -614,8 +597,12 @@ void Graph::load(string filename)
 
 	for (int i = 0; i < loadedNodes.size(); i++)
 		nodes.push_back(loadedNodes[i]);
-	for (int i = 0; i < loadedEdges.size(); i++)
-		edges.push_back(loadedEdges[i]);
+	for (int i = 0; i < loadedEdges.size(); i++){
+		Edge& e = loadedEdges[i];		
+		Edge* p = new Edge(e.getIndex(), e.getRelation(), e.getNodeA(), e.getNodeB());
+		//p* = loadedEdges[i]; //!!!!!!!!!!PROBLEM?	
+		edges.push_back(p);
+	}
 
 	//reassign edges to nodes
 	for (int i = 0; i < nodes.size(); i++)
@@ -623,17 +610,17 @@ void Graph::load(string filename)
 		for (int numInEdges = 0; numInEdges < nodeInEdges[i].size(); numInEdges++)
 		{
 			for(int searchEdges = 0; searchEdges < edges.size(); searchEdges++)
-				if (edges[searchEdges].getIndex() == nodeInEdges[i][numInEdges])
+				if (edges[searchEdges]->getIndex() == nodeInEdges[i][numInEdges])
 				{
-					nodes[i].addInEdge(&edges[searchEdges]);
+					nodes[i].addInEdge(edges[searchEdges]);
 				}
 		}
 		for (int numOutEdges = 0; numOutEdges < nodeOutEdges[i].size(); numOutEdges++)
 		{
 			for(int searchEdges = 0; searchEdges < edges.size(); searchEdges++)
-				if (edges[searchEdges].getIndex() == nodeOutEdges[i][numOutEdges])
+				if (edges[searchEdges]->getIndex() == nodeOutEdges[i][numOutEdges])
 				{
-					nodes[i].addOutEdge(&edges[searchEdges]);
+					nodes[i].addOutEdge(edges[searchEdges]);
 				}
 		}
 	}
@@ -649,8 +636,8 @@ void Graph::draw()
 		glLineWidth(2.5); 
 		glColor3f(1.0, 0.0, 0.0);
 		glBegin(GL_LINES);
-		glVertex2f(nodes[edges[i].getNodeA()].getPoint().getX(), nodes[edges[i].getNodeA()].getPoint().getY());
-		glVertex2f(nodes[edges[i].getNodeB()].getPoint().getX(), nodes[edges[i].getNodeB()].getPoint().getY());
+		glVertex2f(nodes[edges[i]->getNodeA()].getPoint().getX(), nodes[edges[i]->getNodeA()].getPoint().getY());
+		glVertex2f(nodes[edges[i]->getNodeB()].getPoint().getX(), nodes[edges[i]->getNodeB()].getPoint().getY());
 		glEnd();
 	}
 	for(int i = 0; i < nodes.size(); i++)

@@ -6,14 +6,12 @@ using namespace std;
 
 ///global variables
 Graph graph;
-string MODE;
-string FILENAME;
 int cursorBlinkFrame = 0;
 bool ACTIVE_CTRL = false;
 string input = "";
 vector<Point> points;
-int HEIGHT = 500;
-int WIDTH = 500;
+int HEIGHT = 800;
+int WIDTH = 1200;
 int mouse_x = 0;
 int mouse_y = 0;
 int firstNode = -1;
@@ -30,7 +28,8 @@ vector<string> &split(const std::string &s, char delim, std::vector<std::string>
 {
 	std::stringstream ss(s);
 	std::string item;
-	while (std::getline(ss, item, delim)) {
+	while (std::getline(ss, item, delim)) 
+	{
 		elems.push_back(item);
 	}
 	return elems;
@@ -87,12 +86,12 @@ void drawButton(string name, int row, int column)
 {
 	int left, right, top, bottom;
 	
-	left = WIDTH - 185 + 90*(column - 1);
-	right = left + 80;
+	left = WIDTH - 385 + 190*(column - 1);
+	right = left + 180;
 	top = HEIGHT - 15 - 40*(row - 1);
 	bottom = top - 30;	
 	
-	glColor3f(1.0, 0.0, 0.0);
+	glColor3f(37.0/255.0, 213.0/255.0, 0.0/255.0);
 	glBegin(GL_QUADS);
 		glVertex2f(left, top);
 		glVertex2f(left, bottom);
@@ -100,32 +99,87 @@ void drawButton(string name, int row, int column)
 		glVertex2f(right, top);
 	glEnd();
 	
-	glColor3f(1.0, 1.0, 1.0);
-	writeString(left + 5, bottom + 10, GLUT_BITMAP_9_BY_15, name.c_str());
+	glColor3f(255.0/255.0, 255.0/255.0, 255.0/255.0);
+	writeString(left + 5 + (180 - 10*name.length())/2, bottom + 8, GLUT_BITMAP_HELVETICA_18, name.c_str());
 }
 
 //menu drawing function
 void drawMenu()
 {
-	glColor3f(0.0, 1.0, 0.0);
+	glColor3f(0.0/255.0, 160.0/255.0, 138.0/255.0);
 	glBegin(GL_QUADS);
-		glVertex2f(WIDTH - 200, 0);
+		glVertex2f(WIDTH - 400, 0);
 		glVertex2f(WIDTH, 0);
 		glVertex2f(WIDTH, HEIGHT);
-		glVertex2f(WIDTH - 200, HEIGHT);
+		glVertex2f(WIDTH - 400, HEIGHT);
 	glEnd();
 	
-	glColor3f(1.0, 0.0, 1.0);
+	glColor3f(16.0/255.0, 73.0/255.0, 169.0/255.0);
 	glBegin(GL_QUADS);
-		glVertex2f(WIDTH - 190, 10);
+		glVertex2f(WIDTH - 390, 10);
 		glVertex2f(WIDTH - 10, 10);
 		glVertex2f(WIDTH - 10, HEIGHT - 10);
-		glVertex2f(WIDTH - 190, HEIGHT - 10);
+		glVertex2f(WIDTH - 390, HEIGHT - 10);
 	glEnd();
 	
 	for(int i = 0; i < demButtons.size(); i++)
 	{
 		drawButton(demButtons[i].getName(), demButtons[i].getRow(), demButtons[i].getCol());
+	}
+	
+	//draw typing area
+	glColor3f(1.0, 1.0, 1.0);
+	glBegin(GL_QUADS);
+		glVertex2f(WIDTH - 385, 15);
+		glVertex2f(WIDTH - 15, 15);
+		glVertex2f(WIDTH - 15, 105);
+		glVertex2f(WIDTH - 385, 105);
+	glEnd();
+	
+	//actual text in area
+	if(MODE == "SAVING FILE" || MODE == "LOADING FILE" || MODE == "SAVING TEMPLATE" || MODE == "LOADING TEMPLATE" || MODE == "INPUT")
+	{	
+		glColor3f(37.0/255.0, 213.0/255.0, 0.0/255.0);
+		writeString(WIDTH - 380, 85, GLUT_BITMAP_9_BY_15, MODE.c_str());
+		
+		string super = MESSAGE;
+		while(super.length() < 120)
+		{
+			super = super + " ";
+		}
+		string sub[3] = {"", "", ""};
+		for(int i = 0; i < 3; i++)
+		{
+			for(int j = 0; j < 40; j++)
+			{
+				sub[i] = sub[i] + super[40*i+j];
+			}
+		}
+		writeString(WIDTH - 380, 65, GLUT_BITMAP_9_BY_15, sub[0].c_str());
+		writeString(WIDTH - 380, 45, GLUT_BITMAP_9_BY_15, sub[1].c_str());
+		writeString(WIDTH - 380, 25, GLUT_BITMAP_9_BY_15, sub[2].c_str());
+	}
+	else if(MODE == "NORMAL" || MODE == "MESSAGE")
+	{		
+		glColor3f(37.0/255.0, 213.0/255.0, 0.0/255.0);
+		
+		string super = MESSAGE;
+		while(super.length() < 160)
+		{
+			super = super + " ";
+		}
+		string sub[4] = {"", "", "", ""};
+		for(int i = 0; i < 4; i++)
+		{
+			for(int j = 0; j < 40; j++)
+			{
+				sub[i] = sub[i] + super[40*i+j];
+			}
+		}
+		writeString(WIDTH - 380, 85, GLUT_BITMAP_9_BY_15, sub[0].c_str());
+		writeString(WIDTH - 380, 65, GLUT_BITMAP_9_BY_15, sub[1].c_str());
+		writeString(WIDTH - 380, 45, GLUT_BITMAP_9_BY_15, sub[2].c_str());
+		writeString(WIDTH - 380, 25, GLUT_BITMAP_9_BY_15, sub[3].c_str());
 	}
 	
 }
@@ -135,20 +189,32 @@ void drawScene()
 {
 	glClearColor(1.0, 1.0, 1.0, 0.0);
 	glClear(GL_COLOR_BUFFER_BIT);
-
-	writeString(10, 10, GLUT_BITMAP_9_BY_15, input.c_str());
+	glColor3f(0.0, 0.0, 0.0);
+	//writeString(10, 10, GLUT_BITMAP_9_BY_15, input.c_str());
 	graph.draw();
 	
-	if(MODE == "SAVING" || MODE == "LOADING")
+	if(MODE == "SAVING FILE" || MODE == "LOADING FILE" || MODE == "SAVING TEMPLATE" || MODE == "LOADING TEMPLATE")
 	{
 		cursorBlinkFrame++;
-		if(cursorBlinkFrame % 20 < 10)
+		if(cursorBlinkFrame % 30 < 15)
 		{
-			input = "Enter filename: " + FILENAME + "|";
+			MESSAGE = "Enter filename: " + FILENAME + "|";
 		}
 		else
 		{
-			input = "Enter filename: " + FILENAME + "";
+			MESSAGE = "Enter filename: " + FILENAME + "";
+		}
+	}
+	else if(MODE == "INPUT")
+	{
+		cursorBlinkFrame++;
+		if(cursorBlinkFrame % 30 < 15)
+		{
+			MESSAGE = input + "|";
+		}
+		else
+		{
+			MESSAGE = input + "";
 		}
 	}
 	
@@ -173,24 +239,29 @@ void resize(int w, int h)
 //keyboard function
 void keyInput(unsigned char key, int x, int y)
 {
-	if(MODE == "SAVING" || MODE == "LOADING" || MODE == "TEMPLATE")
+	if(MODE == "SAVING FILE" || MODE == "LOADING FILE" || MODE == "SAVING TEMPLATE" || MODE == "LOADING TEMPLATE")
 	{
 		if(key == 13 && FILENAME != "")
 		{
-			if(MODE == "SAVING")
+			if(MODE == "SAVING FILE")
 			{
-				input = "";
+				MESSAGE = "";
 				graph.save(FILENAME,false);			
 			}
-			else if(MODE == "LOADING")
+			else if(MODE == "LOADING FILE")
 			{
-				input = "";
-				graph.load(FILENAME);
+				MESSAGE = "";
+				graph.load(FILENAME,false);
 			}
-			else if(MODE == "TEMPLATE")
+			else if(MODE == "SAVING_TEMPLATE")
 			{
-				input = "";
+				MESSAGE = "";
 				graph.save(FILENAME,true);
+			}
+			else if(MODE == "LOADING_TEMPLATE")
+			{
+				MESSAGE = "";
+				graph.load(FILENAME,true);
 			}
 			FILENAME = "";
 			MODE = "NORMAL";
@@ -206,17 +277,18 @@ void keyInput(unsigned char key, int x, int y)
 		{
 			FILENAME = "";
 			MODE = "NORMAL";
-			input = "";
+			MESSAGE = "";
 		}
 		else if(key != 13)
 		{
 			FILENAME += key;
 		}
 	}
+	
 	else if(MODE == "INPUT")
 	{
 		//Enter Key: Check what function is currently in progress and compute appropriately
-		if(key == 13)
+		if(key == 13)//enter key
 		{
 			vector<Node>* nodes = graph.getNodes();
 			//add node data
@@ -230,11 +302,12 @@ void keyInput(unsigned char key, int x, int y)
 			else if(inputFunc == 2)
 			{
 				input = input.substr(37, string::npos);
-				cout << points.back().getX() << ", " << points.back().getY() << endl;
+				//cout << points.back().getX() << ", " << points.back().getY() << endl;
 				graph.addNode(info, split(input, ',', tags), points.back().getX(), points.back().getY());
 				firstNode = graph.getNodes()->back().getIndex();
 				MODE = "NORMAL";
 				input = "";
+				MESSAGE = "";
 				tags.clear();
 				inputFunc = 0;
 			}
@@ -242,15 +315,16 @@ void keyInput(unsigned char key, int x, int y)
 			else if(inputFunc == 3)
 			{
 				input = input.substr(21, string::npos);
-				cout << firstNode << endl;
-				cout << "Adding Edge from " << firstNode << " to " << pn << endl;
-				cout << "Relation: " << input << endl;
+				//cout << firstNode << endl;
+				//cout << "Adding Edge from " << firstNode << " to " << pn << endl;
+				//cout << "Relation: " << input << endl;
 				graph.addEdge(firstNode, pn, input);
 				firstNode = -1;
 				pn = -1;
 
 				MODE = "NORMAL";
 				input = "";
+				MESSAGE = "";
 				inputFunc = 0;
 			}
 			//edit node data
@@ -260,7 +334,7 @@ void keyInput(unsigned char key, int x, int y)
 				if(input != "")
 				{
 					(*nodes)[pn].setInformation(input);
-					graph.printGraph();
+					//graph.printGraph();
 				
 				}
 
@@ -313,21 +387,6 @@ void keyInput(unsigned char key, int x, int y)
 			case 27:
 				exit(0);
 				break;
-			case 's':
-				FILENAME = "";
-				MODE = "SAVING";
-				input = "Enter filename: ";
-				break;
-			case 'l':
-				FILENAME = "";
-				MODE = "LOADING";
-				input = "Enter filename: ";
-				break;
-			case 't':
-				FILENAME = "";
-				MODE = "TEMPLATE";
-				input = "Enter template name: ";
-				break;
 			default:
 				break;
 		}
@@ -341,7 +400,7 @@ void mouseControl(int button, int state, int x, int y)
 	vector<Node>* nodes = graph.getNodes();
 	
 	//check if in button area
-	if(x >= WIDTH - 200)
+	if(x >= WIDTH - 400)
 	{
 		buttFlag = true;
 	}
@@ -354,16 +413,45 @@ void mouseControl(int button, int state, int x, int y)
 		{
 			for(int i = 0; i < demButtons.size(); i++)
 			{
-				left = WIDTH - 185 + 90*(demButtons[i].getCol() - 1);
-				right = left + 80;
+				left = WIDTH - 385 + 190*(demButtons[i].getCol() - 1);
+				right = left + 180;
 				top = HEIGHT - 15 - 40*(demButtons[i].getRow() - 1);
-				bottom = top - 30;
+				bottom = top - 30;	
 		
 				if(x < right && x > left && HEIGHT - y < top && HEIGHT - y > bottom)
 				{
-					if(demButtons[i].getName() == "Tiger")
+					//cout << demButtons[i].getName() << endl;
+					if(demButtons[i].getName() == "Load File")
+					{
+						MODE = "LOADING FILE";
+						FILENAME = "";
+						//graph.load("temp", false);
+					}
+					else if(demButtons[i].getName() == "Save File")
+					{
+						MODE = "SAVING FILE";
+						FILENAME = "";
+						//graph.save("temp",false);
+					}
+					else if(demButtons[i].getName() == "Load Template")
+					{
+						MODE = "LOADING TEMPLATE";
+						FILENAME = "";
+						//graph.load("temp", true);
+					}
+					else if(demButtons[i].getName() == "Save Template")
+					{
+						MODE = "SAVING TEMPLATE";
+						FILENAME = "";
+						//graph.save("temp",true);
+					}
+					else if(demButtons[i].getName() == "Topological Sort")
 					{
 						graph.saveSortedGraph();
+					}
+					else if(demButtons[i].getName() == "Export Calendar")
+					{
+						//export calendar file
 					}
 				}
 			}
@@ -383,7 +471,7 @@ void mouseControl(int button, int state, int x, int y)
 			pn = pickNode(currentPoint.getX(), currentPoint.getY());
 			if(pn != -1)
 			{
-				    input = string("Data: ") + string((*nodes)[pn].getInformation()) + string(", Tags: ") + (*nodes)[pn].printTags();
+				MESSAGE = string("Data: ") + string((*nodes)[pn].getInformation()) + string(", Tags: ") + (*nodes)[pn].printTags();
 				firstNode = pn;
 			}
 			else if(collisionFree(x, HEIGHT - y))
@@ -418,14 +506,14 @@ void mouseControl(int button, int state, int x, int y)
 				}	
 			}
 		}
-	}
+	}	
 }
 
 void opengl_init(int argc, char *argv[])
 {
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_SINGLE | GLUT_DOUBLE);
-	glutInitWindowSize(1000, 800);
+	glutInitWindowSize(WIDTH, HEIGHT);
 	glutInitWindowPosition(0, 0);
 	gluOrtho2D(0, 500, 0, 500);
 	glutCreateWindow("Babel Graph");
@@ -437,17 +525,17 @@ void opengl_init(int argc, char *argv[])
 	tags.clear();
 	vector<string>test;
 	glEnable(GL_BLEND);
-	cout << "Left click in empty space to create a node. Left click and drag from one node to another to create an edge between them." << endl;
+	//cout << "Left click in empty space to create a node. Left click and drag from one node to another to create an edge between them." << endl;
+	MESSAGE = "Left click in empty space to create a   node. Left click and drag from one node to another to create an edge between    them.";
+	MODE = "MESSAGE";
 	
-	//hacky solution to opengl text rendering problem
-	string s = "data";
-	vector<string> ss;
-	graph.addNode(s, ss, -50, -50);
-	
-	//buttons delcaration
-	demButtons.push_back(Button(1,1,"Tiger"));
-	demButtons.push_back(Button(1,2,"Eye"));
-	demButtons.push_back(Button(2,1,"Plow"));
+	//buttons declaration
+	demButtons.push_back(Button(1,1,"Load File"));
+	demButtons.push_back(Button(1,2,"Save File"));
+	demButtons.push_back(Button(2,1,"Load Template"));
+	demButtons.push_back(Button(2,2,"Save Template"));
+	demButtons.push_back(Button(3,1,"Topological Sort"));
+	demButtons.push_back(Button(3,2,"Export Calendar"));
 
 	glutMainLoop();
 }
