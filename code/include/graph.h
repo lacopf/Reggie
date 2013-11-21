@@ -374,30 +374,53 @@ void Graph::save(string filename, bool isTemplate)
 	if (isTemplate)
 		chdir("..");
 }
-void Graph::load(string filename, bool isTemplate = false)
+void Graph::load(string filename, bool isTemplate)
 {
 	//assume the filename has the proper extension
 	ifstream source;
-	source.open( filename.c_str() );
-	if ( !source.is_open() )
+	
+	//file being loaded is a savefile
+	if ( !isTemplate )
 	{
-		string filenametemp = filename + ".xml";
 		source.open( filename.c_str() );
-	}
-	if ( !source.is_open() )
-	{
-		filename += ".bgt";
-		source.open( filename.c_str() );
+		
 		if ( !source.is_open() )
 		{
-			cout << "Invalid file name\n";
-			return;
+			filename = filename + ".xml";
+			source.open( filename.c_str() );
+			if ( !source.is_open() )
+			{
+				cout << "Invalid file name\n";
+				return;
+			}
+		}
+	}
+	//file being loaded is a template
+	else
+	{
+		source.open( filename.c_str() );
+		
+		if ( !source.is_open() )
+		{
+			filename += ".bgt";
+			source.open( filename.c_str() );
+			if ( !source.is_open() )
+			{
+				filename = "./templates/" + filename;
+				source.open( filename.c_str() );
+				
+				if ( !source.is_open() )
+				{
+					cout << "Invalid file name\n";
+					return;
+				}
+			}
+			
 		}
 	}
 
 	//all my temporary variables
 	string line = "";
-	//bool isTemplate = false;
 	Node dummyNode;
 	Edge dummyEdge;
 	vector<Node> loadedNodes;
@@ -413,12 +436,6 @@ void Graph::load(string filename, bool isTemplate = false)
 		isTemplate = true;
 	}
 	else if ( line.find("graph") == string::npos )
-	{
-		cout << "Not a graph file\n";
-		return;
-	}
-	
-	if ( line.find("graph") == string::npos )
 	{
 		cout << "Not a graph file\n";
 		return;
