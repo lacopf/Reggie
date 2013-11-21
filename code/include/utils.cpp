@@ -419,30 +419,25 @@ void mouseControl(int button, int state, int x, int y)
 		
 				if(x < right && x > left && HEIGHT - y < top && HEIGHT - y > bottom)
 				{
-					//cout << demButtons[i].getName() << endl;
 					if(demButtons[i].getName() == "Load File")
 					{
 						MODE = "LOADING FILE";
 						FILENAME = "";
-						//graph.load("temp", false);
 					}
 					else if(demButtons[i].getName() == "Save File")
 					{
 						MODE = "SAVING FILE";
 						FILENAME = "";
-						//graph.save("temp",false);
 					}
 					else if(demButtons[i].getName() == "Load Template")
 					{
 						MODE = "LOADING TEMPLATE";
 						FILENAME = "";
-						//graph.load("temp", true);
 					}
 					else if(demButtons[i].getName() == "Save Template")
 					{
 						MODE = "SAVING TEMPLATE";
 						FILENAME = "";
-						//graph.save("temp",true);
 					}
 					else if(demButtons[i].getName() == "Topological Sort")
 					{
