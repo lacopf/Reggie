@@ -155,7 +155,11 @@ void Graph::printGraph()
 void Graph::saveSortedGraph(){
 	vector<int> sorted = topSort();
 	if(sorted.size() == 0 && nodes.size() != 0){
+<<<<<<< HEAD
 		MESSAGE =  "Error: Graph contains cycles";
+=======
+		MESSAGE = "Error: graph contains cycles";
+>>>>>>> 839e0a681e888f40ae52e94ca5c1ceee885f56bc
 		return;
 	}	
 	ofstream out("sorted.txt");
@@ -223,7 +227,11 @@ void Graph::exportCalendar(){
 	}
 	
 	//If graph does not contain a month node
+<<<<<<< HEAD
 	if(!found_month){MESSAGE = "Error: please load calendar template before exporting calendar"; return;}
+=======
+	if(!found_month){MESSAGE = "Error: please load calendar template before exporting calendar";}
+>>>>>>> 839e0a681e888f40ae52e94ca5c1ceee885f56bc
 	
 	
 	//holds date as a string
@@ -264,8 +272,13 @@ void Graph::exportCalendar(){
 	}
 	out << "END:VCALENDAR" << endl;
 	//outputs error message if graph does not contain date nodes
+<<<<<<< HEAD
 	if(found_date){MESSAGE =  "Calendar successfully saved";}
 	else{MESSAGE = "Error: please load calendar template before exporting calendar" ;}
+=======
+	if(found_date){MESSAGE = "Calendar successfully saved";}
+	else{MESSAGE = "Error: please load calendar template before exporting calendar";}
+>>>>>>> 839e0a681e888f40ae52e94ca5c1ceee885f56bc
 }
 
 
@@ -296,7 +309,7 @@ void Graph::save(string filename, bool isTemplate)
 	
 	ofstream saveFile;
 	saveFile.open(filename.c_str());
-	cout << "The filename is " << filename << endl;
+	MESSAGE = "The filename is " + filename;
 
 
 	if (isTemplate)
@@ -390,7 +403,7 @@ void Graph::load(string filename, bool isTemplate)
 			source.open( filename.c_str() );
 			if ( !source.is_open() )
 			{
-				cout << "Invalid file name\n";
+				MESSAGE = "Invalid file name";
 				return;
 			}
 		}
@@ -415,7 +428,7 @@ void Graph::load(string filename, bool isTemplate)
 			source.open( filename.c_str() );
 			if ( !source.is_open() )
 			{
-				cout << "Invalid file name\n";
+				MESSAGE = "Invalid file name";
 				return;
 			}
 			
@@ -440,14 +453,14 @@ void Graph::load(string filename, bool isTemplate)
 	}
 	else if ( line.find("graph") == string::npos )
 	{
-		cout << "Not a graph file\n";
+		MESSAGE = "Not a graph file";
 		return;
 	}
 
 	getline( source, line, '\n');
 	if ( line.find("nodeList") == string::npos )
 	{
-		cout << "Not a valid file to load from\n";
+		MESSAGE = "Not a valid file to load from\n";
 		return;
 	}	
 	
@@ -471,7 +484,7 @@ void Graph::load(string filename, bool isTemplate)
 		//not a valid file
 		if (parse_index == string::npos)
 		{
-			cout << "Invalid load file\n";
+			MESSAGE = "Invalid load file";
 			return;
 		}
 
@@ -494,7 +507,7 @@ void Graph::load(string filename, bool isTemplate)
 		//not a valid file
 		if (parse_index == string::npos || endIndex == string::npos)
 		{
-			cout << "Invalid load file\n";
+			MESSAGE = "Invalid load file";
 			return;
 		}
 		else
@@ -512,7 +525,7 @@ void Graph::load(string filename, bool isTemplate)
 		//not a valid file
 		if (parse_index == string::npos || endIndex == string::npos)
 		{
-			cout << "Invalid load file\n";
+			MESSAGE = "Invalid load file";
 			return;
 		}
 		else
@@ -534,7 +547,7 @@ void Graph::load(string filename, bool isTemplate)
 		//not a valid file
 		if (parse_index == string::npos || endIndex == string::npos)
 		{
-			cout << "Invalid load file\n";
+			MESSAGE = "Invalid load file";
 			return;
 		}
 		else 
@@ -635,7 +648,7 @@ void Graph::load(string filename, bool isTemplate)
 		endIndex = line.find("</relation>");
 		if (parse_index == string::npos || endIndex == string::npos)
 		{
-			cout << "RELInvalid file to load from\n";
+			MESSAGE = "RELInvalid file to load from";
 			return;
 		}
 
@@ -647,7 +660,7 @@ void Graph::load(string filename, bool isTemplate)
 		endIndex = line.find("</nodeA>");
 		if (parse_index == string::npos || endIndex == string::npos)
 		{
-			cout << "NAInvalid file to load from\n";
+			MESSAGE = "NAInvalid file to load from";
 			return;
 		}
 
@@ -661,7 +674,7 @@ void Graph::load(string filename, bool isTemplate)
 		endIndex = line.find("</nodeA>");
 		if (parse_index == string::npos)
 		{
-			cout << "NBInvalid file to load from\n";
+			MESSAGE = "NBInvalid file to load from";
 			return;
 		}
 
@@ -716,7 +729,7 @@ void Graph::load(string filename, bool isTemplate)
 		}
 	}
 	
-	cout << "File was successfully loaded!\n";
+	MESSAGE = "File was successfully loaded!";
 
 }
 void Graph::draw()
