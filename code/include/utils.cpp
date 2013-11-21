@@ -399,7 +399,7 @@ void mouseControl(int button, int state, int x, int y)
 	vector<Node>* nodes = graph.getNodes();
 	
 	//check if in button area
-	if(x >= WIDTH - 400 || x < 0 || y < 0 || y > HEIGHT)
+	if(x >= WIDTH - 400 - RADIUS || x < 0 + RADIUS || y < 0 + RADIUS || y > HEIGHT- RADIUS)
 	{
 		buttFlag = true;
 	}
