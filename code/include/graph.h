@@ -25,7 +25,7 @@ class Graph
 {
 	public:
 		vector<Node>* getNodes(){ return &nodes; }
-		vector<Edge*> getEdges(){ return edges; }
+		vector<Edge*>* getEdges(){ return &edges; }
 
 		Graph();
 		inline void addNode(Node node){ nodes.push_back(node); }
@@ -45,11 +45,9 @@ class Graph
 	private:
 		vector<Node> nodes;
 		vector<Edge*> edges;
-		bool f;
 };
 
 Graph::Graph(){
-	//f = true;
 }
 
 //adds a node to the graph

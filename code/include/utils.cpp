@@ -16,6 +16,7 @@ int mouse_x = 0;
 int mouse_y = 0;
 int firstNode = -1;
 int pn = -1;
+int pe = -1;
 int inputFunc = 0;
 string info = "";
 vector<string> tags;
@@ -81,6 +82,40 @@ int pickNode(int x, int y)
 	return -1;
 }
 
+int pickEdge(int x, int y)
+{
+	vector<Edge*>* edges = graph.getEdges();
+	vector<Node>* nodes = graph.getNodes();
+
+	Point nodeACoords;
+	Point nodeBCoords;
+	float angle;
+	float xdist = -1.0;
+	for(int i = 0; i<edges->size(); i++)
+	{
+		nodeACoords = (*nodes)[((*edges)[i])->getNodeA()].getPoint();
+		nodeBCoords = (*nodes)[((*edges)[i])->getNodeB()].getPoint();
+		if((nodeACoords.getX() < x && x < nodeBCoords.getX()) || (nodeACoords.getX() > x && x > nodeBCoords.getX())){
+			if((nodeACoords.getY() < y && nodeBCoords.getY() < y) || ((nodeACoords.getY() > y && y > nodeBCoords.getY()))){
+				cout << "within range" << endl;
+				angle = atan2(nodeACoords.getY() - nodeBCoords.getY(), nodeACoords.getX() - nodeBCoords.getX());
+				angle = angle*180/M_PI;
+
+				if(angle == 90){
+					if(abs(y-nodeACoords.getY()) < 5){
+						return i;
+					}
+				}
+
+				xdist = abs(nodeACoords.getX() - x);
+				if(dist(Point((double)x, (double)(nodeACoords.getY() + x*tan(angle)), false), x, y) < 5){
+					return i;
+				}	
+			}
+		}
+	}	
+	return -1;
+}
 //button drawing function
 void drawButton(string name, int row, int column)
 {
@@ -475,6 +510,15 @@ void mouseControl(int button, int state, int x, int y)
 				inputFunc = 1;
 				firstNode = -1;
 			}
+			//check if we picked an edge
+			vector<Edge*>* edges = graph.getEdges();
+			pe = pickEdge(currentPoint.getX(), currentPoint.getY());
+			if(pe != -1)
+			{
+				MESSAGE = string("Relation: ") + string((*edges)[pe]->getRelation());
+				cout << "Edge Picked" << endl;
+			}
+			
 		}
 		else if (state == GLUT_UP)
 		{
