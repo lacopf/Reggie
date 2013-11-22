@@ -1,97 +1,89 @@
+<template></template>
 <graph>
 -<nodeList>
  -<node>
    <index>0</index>
    <info>Collection</info>
-   <point>250,451</point>
+   <point>559,771</point>
    <tags>music,collection</tags>
-   <outedges>23747544,33,-1,23747544</outedges>
   </node>
  -<node>
    <index>0</index>
    <info>Album1</info>
-   <point>70,310</point>
+   <point>150,515</point>
    <tags>genre,artist</tags>
-   <inedges>23747544</inedges>
-   <outedges>0,512</outedges>
+   <outedges>0</outedges>
   </node>
  -<node>
    <index>0</index>
    <info>Album2</info>
-   <point>190,310</point>
+   <point>381,515</point>
    <tags>genre,artist</tags>
-   <inedges>33</inedges>
-   <outedges>23735224,-1</outedges>
   </node>
  -<node>
    <index>0</index>
    <info>Album3</info>
-   <point>310,310</point>
+   <point>652,515</point>
    <tags>genre,artist</tags>
-   <inedges>-1</inedges>
    <outedges>8,9</outedges>
   </node>
  -<node>
    <index>0</index>
    <info>Album4</info>
-   <point>430,310</point>
+   <point>974,515</point>
    <tags>genre,artist</tags>
-   <inedges>23747544</inedges>
    <outedges>10,11</outedges>
   </node>
  -<node>
    <index>0</index>
    <info>Song1</info>
-   <point>20,170</point>
+   <point>77,175</point>
    <tags>tag</tags>
    <inedges>0</inedges>
   </node>
  -<node>
    <index>0</index>
    <info>Song2</info>
-   <point>85,170</point>
+   <point>200,175</point>
    <tags>tag</tags>
-   <inedges>512</inedges>
   </node>
  -<node>
    <index>0</index>
    <info>Song1</info>
-   <point>150,170</point>
+   <point>316,175</point>
    <tags>tag</tags>
-   <inedges>23735224</inedges>
   </node>
  -<node>
    <index>0</index>
    <info>Song2</info>
-   <point>215,170</point>
+   <point>466,175</point>
    <tags>tag</tags>
-   <inedges>-1</inedges>
   </node>
  -<node>
    <index>0</index>
    <info>Song1</info>
-   <point>280,170</point>
+   <point>614,175</point>
    <tags>tag</tags>
    <inedges>8</inedges>
   </node>
  -<node>
    <index>0</index>
    <info>Song2</info>
-   <point>345,170</point>
+   <point>730,175</point>
    <tags>tag</tags>
    <inedges>9</inedges>
   </node>
  -<node>
    <index>0</index>
    <info>Song1</info>
-   <point>410,170</point>
+   <point>874,175</point>
    <tags>tag</tags>
    <inedges>10</inedges>
   </node>
  -<node>
    <index>0</index>
    <info>Song2</info>
-   <point>475,170</point>
+   <point>1056,175</point>
    <tags>tag</tags>
    <inedges>11</inedges>
   </node>

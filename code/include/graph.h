@@ -294,6 +294,7 @@ void Graph::save(string filename, bool isTemplate)
 	if (isTemplate && lstat(filename.c_str(), &info) != -1 )
 	{
 		MESSAGE = "You can't save over existing template files";
+		chdir("..");
 		return;
 	}
 
