@@ -82,6 +82,7 @@ int pickNode(int x, int y)
 	return -1;
 }
 
+//check if user clicked on an edge
 int pickEdge(int x, int y)
 {
 	vector<Edge*>* edges = graph.getEdges();
@@ -89,24 +90,27 @@ int pickEdge(int x, int y)
 
 	Point nodeACoords;
 	Point nodeBCoords;
-	float angle;
 	float xdist = -1.0;
 	float slope = -1.0;
 	for(int i = 0; i<edges->size(); i++)
 	{
 		nodeACoords = (*nodes)[((*edges)[i])->getNodeA()].getPoint();
 		nodeBCoords = (*nodes)[((*edges)[i])->getNodeB()].getPoint();
+		//check that the edge is in the right area of the screen to have been selected before inspecting fully
 		if((nodeACoords.getX() < x && x < nodeBCoords.getX()) || (nodeACoords.getX() > x && x > nodeBCoords.getX())){
 			if((nodeACoords.getY() < y && y < nodeBCoords.getY()) || ((nodeACoords.getY() > y && y > nodeBCoords.getY()))){
+				//calculate slope based on node positions
 				slope = (float)(nodeACoords.getY() - nodeBCoords.getY())/abs((float)(nodeACoords.getX() - nodeBCoords.getX()));
+				//set slope sign
 				if(nodeACoords.getY() > nodeBCoords.getY()){
 					slope = abs(slope)*(-1.0);
 				}
 				else{
 					slope = abs(slope);
 				}
-				cout << slope << endl;
+				//distance from node to clicked point
 				xdist = x - nodeACoords.getX();
+				//check that the clicked point is near the edge
 				if(dist(Point((double)(x), (double)(nodeACoords.getY() + xdist*slope), false), x, y) < 20){
 					return i;
 				}	

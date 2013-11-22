@@ -176,6 +176,7 @@ void Node::draw()
 		}
 	glEnd();
 	glColor3f(1.0, 1.0, 1.0);
+	//set up temp variable and stringstream for text formatting
 	const char *cs;
 	vector<string> css;
 	css.clear();
@@ -183,12 +184,14 @@ void Node::draw()
 	int count = 0;
 	string tmpstr = "";
 	istringstream iss(information);
+	//tokenize input string
 	vector<string> tokens;
 	copy(istream_iterator<string>(iss), 
 		istream_iterator<string>(),
 		back_inserter<vector<string> >(tokens));	
 	vector<string>::iterator tokit = tokens.begin();
 	for(int i = 0; i < 4; i++){
+		//insert tokens into tempstring until the tempstring goes oversize
 		while(tmpstr.size() <= 9 && tokit != tokens.end()){
 			if(tmpstr.size() == 0){
 				tmpstr = *tokit++;
@@ -197,6 +200,7 @@ void Node::draw()
 				tmpstr = tmpstr + " " + *tokit++;
 			}
 		}
+		//peel off word that went out of bounds or split long word over multiple lines
 		if(tmpstr.size() > 9){
 			if(tmpstr.rfind(" ") != string::npos){
 				css[i+1] = tmpstr.substr(tmpstr.rfind(" ")+1, string::npos);
@@ -218,6 +222,7 @@ void Node::draw()
 		}
 		tmpstr = "";
 	}
+	//second pass: move any tokens that go out of bounds to the next render line
 	for(int i = 0; i < 4; i++){
 		if((int)css[i].size() > 9){
 			if(css[i].rfind(" ", 9) == string::npos){
@@ -230,6 +235,7 @@ void Node::draw()
 			}
 		}
 	}
+	//loop through render array, decrementing rasterpos as lines are completed
 	for(int i = 0; i < min(4, (int)css.size()); i++){
 		if(css[i] != ""){
 			glRasterPos2i(point.getX() - RADIUS + 10, point.getY() + 17 - i*15);
