@@ -433,6 +433,7 @@ void keyInput(unsigned char key, int x, int y)
 //mouse function
 void mouseControl(int button, int state, int x, int y)
 {
+	//flag if outside of canvas area boundaries, usually in button area
 	bool buttFlag = false;
 	vector<Node>* nodes = graph.getNodes();
 
@@ -485,6 +486,22 @@ void mouseControl(int button, int state, int x, int y)
 					{
 						graph.exportCalendar();
 					}
+					else if(demButtons[i].getName() == "Delete Node")
+					{
+						graph.removeNode(pn);
+						while(demButtons.size() > 6)
+						{
+							demButtons.pop_back();
+						}
+					}
+					else if(demButtons[i].getName() == "Delete Edge")
+					{
+						graph.removeEdge(pe);
+						while(demButtons.size() > 6)
+						{
+							demButtons.pop_back();
+						}
+					}
 				}
 			}
 		}
@@ -505,6 +522,11 @@ void mouseControl(int button, int state, int x, int y)
 			{
 				MESSAGE = string("Data: ") + string((*nodes)[pn].getInformation()) + string(", Tags: ") + (*nodes)[pn].printTags();
 				firstNode = pn;
+				while(demButtons.size() > 6)
+				{
+					demButtons.pop_back();
+				}
+				demButtons.push_back(Button(4, 1, "Delete Node"));
 			}
 			else if(collisionFree(x, HEIGHT - y))
 			{
@@ -520,6 +542,19 @@ void mouseControl(int button, int state, int x, int y)
 			{
 				MESSAGE = string("Relation: ") + string((*edges)[pe]->getRelation());
 				cout << "Edge Picked" << endl;
+				while(demButtons.size() > 6)
+				{
+					demButtons.pop_back();
+				}
+				demButtons.push_back(Button(4, 1, "Delete Edge"));
+			}
+			
+			if(pe == -1 && pn == -1)
+			{
+				while(demButtons.size() > 6)
+				{
+					demButtons.pop_back();
+				}
 			}
 			
 		}
