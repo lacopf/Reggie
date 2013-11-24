@@ -150,16 +150,20 @@ void Graph::printGraph()
 }
 
 //Saves topologically sorted graph in a text file
-void Graph::saveSortedGraph(){
+void Graph::saveSortedGraph()
+{
 	vector<int> sorted = topSort();
-	if(sorted.size() == 0 && nodes.size() != 0){
-		MESSAGE =  "Error: Graph contains cycles";
+	if(sorted.size() == 0 && nodes.size() != 0)
+	{
+		MESSAGE =  "Error: The graph contains cycles and    cannot be sorted topologically.";
 		return;
 	}	
 	ofstream out("sorted.txt");
-	for(int i=0; i<sorted.size(); i++){
+	for(int i=0; i<sorted.size(); i++)
+	{
 		out << nodes[i].getInformation() << endl;
-	}	
+	}
+	MESSAGE =  "The graph has been successfully sorted! The sorted list of nodes has been       exported to sorted.txt.";
 }
 
 
