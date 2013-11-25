@@ -34,7 +34,7 @@ class Point
 			return down;
 		}
 		
-		void move(int newX, int newY)
+		void move(int newX, int newY)//lets you move a node after you've already placed it
 		{
 			x = newX;
 			y = newY;

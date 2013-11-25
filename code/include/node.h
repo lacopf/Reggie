@@ -152,7 +152,7 @@ void Node::removeOutEdge(Edge* edg)
 	}
 	
 }
-
+//returns whether a node has a given outgoing edge
 bool Node::edgeExists(int edg)
 {
 	for(int i=0; i<out_edges.size(); i++)
@@ -164,7 +164,7 @@ bool Node::edgeExists(int edg)
 	}
 	return false;
 }
-
+//draws the node to the window
 void Node::draw(bool picked)
 {
 	if(picked)
