@@ -15,8 +15,6 @@ int WIDTH = 1200;
 int mouse_x = 0;
 int mouse_y = 0;
 int firstNode = -1;
-int pn = -1;
-int pe = -1;
 int inputFunc = 0;
 string info = "";
 vector<string> tags;

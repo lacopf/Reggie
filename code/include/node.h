@@ -56,7 +56,7 @@ class Node
 
 		bool hasTag(string tag);
 		
-		void draw();
+		void draw(bool picked);
 		Point getPoint()
 		{
 			return point;
@@ -165,9 +165,16 @@ bool Node::edgeExists(int edg)
 	return false;
 }
 
-void Node::draw()
+void Node::draw(bool picked)
 {
-	glColor3f(37.0/255.0, 213.0/255.0, 0.0/255.0);
+	if(picked)
+	{
+		glColor3f(255.0/255.0, 255.0/255.0, 0.0/255.0);
+	}
+	else
+	{
+		glColor3f(37.0/255.0, 213.0/255.0, 0.0/255.0);
+	}
 	glBegin(GL_TRIANGLE_FAN);
 		for (int i=0; i < 360; i++)
 		{
@@ -175,7 +182,14 @@ void Node::draw()
 			glVertex2f(cos(degInRad)*RADIUS+point.getX(),sin(degInRad)*RADIUS+point.getY());
 		}
 	glEnd();
-	glColor3f(1.0, 1.0, 1.0);
+	if(picked)
+	{
+		glColor3f(0.0/255.0, 0.0/255.0, 0.0/255.0);
+	}
+	else
+	{
+		glColor3f(1.0, 1.0, 1.0);
+	}
 	//set up temp variable and stringstream for text formatting
 	const char *cs;
 	vector<string> css;

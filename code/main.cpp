@@ -17,6 +17,8 @@ int RADIUS = 50;
 string MODE;
 string MESSAGE;
 string FILENAME;
+int pn = -1;
+int pe = -1;
 
 #include "include/graph.h"
 #include "include/utils.cpp"
