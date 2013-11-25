@@ -80,6 +80,11 @@ int pickNode(int x, int y)
 	return -1;
 }
 
+double triArea(double aX, double aY, double bX, double bY, double cX, double cY)
+{
+	return abs(((bX - aX)*(cY - aY) - (cX - aX)*(bY - aY))/2.0);
+}
+
 //check if user clicked on an edge
 int pickEdge(int x, int y)
 {
@@ -88,32 +93,49 @@ int pickEdge(int x, int y)
 
 	Point nodeACoords;
 	Point nodeBCoords;
-	float xdist = -1.0;
-	float slope = -1.0;
 	for(int i = 0; i<edges->size(); i++)
 	{
 		nodeACoords = (*nodes)[((*edges)[i])->getNodeA()].getPoint();
 		nodeBCoords = (*nodes)[((*edges)[i])->getNodeB()].getPoint();
-		//check that the edge is in the right area of the screen to have been selected before inspecting fully
-		if((nodeACoords.getX() < x && x < nodeBCoords.getX()) || (nodeACoords.getX() > x && x > nodeBCoords.getX())){
-			if((nodeACoords.getY() < y && y < nodeBCoords.getY()) || ((nodeACoords.getY() > y && y > nodeBCoords.getY()))){
-				//calculate slope based on node positions
-				slope = (float)(nodeACoords.getY() - nodeBCoords.getY())/abs((float)(nodeACoords.getX() - nodeBCoords.getX()));
-				//set slope sign
-				if(nodeACoords.getY() > nodeBCoords.getY()){
-					slope = abs(slope)*(-1.0);
-				}
-				else{
-					slope = abs(slope);
-				}
-				//distance from node to clicked point
-				xdist = x - nodeACoords.getX();
-				//check that the clicked point is near the edge
-				if(dist(Point((double)(x), (double)(nodeACoords.getY() + xdist*slope), false), x, y) < 20){
-					return i;
-				}	
-			}
+		
+		//sum of triangles method
+		double startX = nodeACoords.getX();
+		double startY = nodeACoords.getY();
+		
+		double endX = nodeBCoords.getX();
+		double endY = nodeBCoords.getY();
+		
+		double diffX = endX - startX;
+		double diffY = endY - startY;
+		double length = sqrt(diffX*diffX + diffY*diffY);
+		
+		double startLeftX = startX - diffY/length*3*3.14159265359/2;
+		double startLeftY = startY + diffX/length*3*3.14159265359/2;
+		
+		double startRightX = startX + diffY/length*3*3.14159265359/2;
+		double startRightY = startY - diffX/length*3*3.14159265359/2;
+		
+		double endLeftX = endX - diffY/length*3*3.14159265359/2;
+		double endLeftY = endY + diffX/length*3*3.14159265359/2;
+		
+		double endRightX = endX + diffY/length*3*3.14159265359/2;
+		double endRightY = endY - diffX/length*3*3.14159265359/2;
+				
+		double tri1 = triArea(x,y,startLeftX,startLeftY,startRightX,startRightY);
+		double tri2 = triArea(x,y,startRightX,startRightY,endRightX,endRightY);
+		double tri3 = triArea(x,y,endRightX,endRightY,endLeftX,endLeftY);
+		double tri4 = triArea(x,y,endLeftX,endLeftY,startLeftX,startLeftY);
+		
+		double bigTri1 = triArea(startLeftX,startLeftY,startRightX,startRightY,endRightX,endRightY);
+		double bigTri2 = triArea(endRightX,endRightY,endLeftX,endLeftY,startLeftX,startLeftY);
+		
+		if(tri1 + tri2 + tri3 + tri4 <= bigTri1 + bigTri2 + 2)
+		{
+			return i;
 		}
+		
+		
+		
 	}	
 	return -1;
 }
@@ -446,7 +468,7 @@ void mouseControl(int button, int state, int x, int y)
 	{
 		//check for button clicks
 		int left, right, top, bottom;
-		if(state == GLUT_DOWN)
+		if(state == GLUT_DOWN && button == GLUT_LEFT_BUTTON)
 		{
 			for(int i = 0; i < demButtons.size(); i++)
 			{
@@ -528,23 +550,12 @@ void mouseControl(int button, int state, int x, int y)
 			{
 				MESSAGE = string("Data: ") + string((*nodes)[pn].getInformation()) + string(", Tags: ") + (*nodes)[pn].printTags();
 				firstNode = pn;
-				while(demButtons.size() > 6)
-				{
-					demButtons.pop_back();
-				}
-				demButtons.push_back(Button(4, 1, "Delete Node"));
 				pe = -1;
 			}
 			else if(pe != -1)//check if we picked an edge
 			{
 				firstNode = -1;
 				MESSAGE = string("Relation: ") + string((*edges)[pe]->getRelation());
-				cout << "Edge Picked" << endl;
-				while(demButtons.size() > 6)
-				{
-					demButtons.pop_back();
-				}
-				demButtons.push_back(Button(4, 1, "Delete Edge"));
 			}
 			else if(collisionFree(x, HEIGHT - y))
 			{
@@ -554,16 +565,8 @@ void mouseControl(int button, int state, int x, int y)
 				firstNode = -1;
 			}
 			
-			if(pe == -1 && pn == -1)
-			{
-				while(demButtons.size() > 6)
-				{
-					demButtons.pop_back();
-				}
-			}
-			
 		}
-		else if (state == GLUT_UP)
+		else if (state == GLUT_UP && (button == GLUT_LEFT_BUTTON || button == GLUT_RIGHT_BUTTON))
 		{
 			Point currentPoint = Point(x, HEIGHT - y, true);
 			points.push_back(currentPoint);	
@@ -580,6 +583,33 @@ void mouseControl(int button, int state, int x, int y)
 				else if(firstNode != -1 && collisionFree(x, HEIGHT - y))
 				{
 					(*graph.getNodes())[firstNode].move(x, HEIGHT - y);
+				}
+				
+				//edge/node delete button
+				if(pn != -1)
+				{
+					while(demButtons.size() > 6)
+					{
+						demButtons.pop_back();
+					}
+					demButtons.push_back(Button(4, 1, "Delete Node"));
+					pe = -1;
+				}
+				else if(pe != -1)//check if we picked an edge
+				{
+					while(demButtons.size() > 6)
+					{
+						demButtons.pop_back();
+					}
+					demButtons.push_back(Button(4, 1, "Delete Edge"));
+				}
+			
+				if(pe == -1 && pn == -1)
+				{
+					while(demButtons.size() > 6)
+					{
+						demButtons.pop_back();
+					}
 				}
 			}
 			else if(button == GLUT_RIGHT_BUTTON)
