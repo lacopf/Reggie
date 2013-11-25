@@ -1,0 +1,59 @@
+<graph>
+-<nodeList>
+ -<node>
+   <index>0</index>
+   <info>CSCourses</info>
+   <point>548,432</point>
+   <tags>classes</tags>
+   <outedges>0,1,2</outedges>
+  </node>
+ -<node>
+   <index>1</index>
+   <info>CS1</info>
+   <point>218,690</point>
+   <tags>hardwick</tags>
+   <inedges>0</inedges>
+  </node>
+ -<node>
+   <index>2</index>
+   <info>DataStructures</info>
+   <point>888,695</point>
+   <tags>cutlet</tags>
+   <inedges>1</inedges>
+  </node>
+ -<node>
+   <index>3</index>
+   <info>SoftwareD&D</info>
+   <point>235,146</point>
+   <tags>sturman</tags>
+   <inedges>2</inedges>
+  </node>
+ -<node>
+   <index>4</index>
+   <info>IntroToAI</info>
+   <point>905,131</point>
+   <tags>macdonald</tags>
+  </node>
+ </nodeList>
+
+-<edgeList>
+ -<edge>
+   <index>0</index>
+   <relation>subclass</relation>
+   <nodeA>0</nodeA>
+   <nodeB>1</nodeB>
+  </edge>
+ -<edge>
+   <index>1</index>
+   <relation>subclass</relation>
+   <nodeA>0</nodeA>
+   <nodeB>2</nodeB>
+  </edge>
+ -<edge>
+   <index>2</index>
+   <relation>subclass</relation>
+   <nodeA>0</nodeA>
+   <nodeB>3</nodeB>
+  </edge>
+ </edgeList>
+</graph>
