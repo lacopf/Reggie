@@ -359,6 +359,7 @@ void keyInput(unsigned char key, int x, int y)
 				graph.addEdge(firstNode, pn, input);
 				firstNode = -1;
 				pn = -1;
+				demButtons.pop_back();
 
 				MODE = "NORMAL";
 				input = "";
