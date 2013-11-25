@@ -525,7 +525,7 @@ void mouseControl(int button, int state, int x, int y)
 			//check if we picked a node
 			pn = pickNode(currentPoint.getX(), currentPoint.getY());
 			pe = pickEdge(currentPoint.getX(), currentPoint.getY());
-			
+
 			if(pn != -1)
 			{
 				MESSAGE = string("Data: ") + string((*nodes)[pn].getInformation()) + string(", Tags: ") + (*nodes)[pn].printTags();
@@ -535,6 +535,7 @@ void mouseControl(int button, int state, int x, int y)
 					demButtons.pop_back();
 				}
 				demButtons.push_back(Button(4, 1, "Delete Node"));
+				pe = -1;
 			}
 			else if(pe != -1)//check if we picked an edge
 			{
