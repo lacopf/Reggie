@@ -13,6 +13,8 @@ using namespace std;
 
 #include "point.h"
 
+//An edge connects two nodes
+//The nodes are referred to by their index number
 class Edge
 {
 	private:

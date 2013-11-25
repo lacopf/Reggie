@@ -360,7 +360,6 @@ void keyInput(unsigned char key, int x, int y)
 			else if(inputFunc == 2)
 			{
 				input = input.substr(37, string::npos);
-				//cout << points.back().getX() << ", " << points.back().getY() << endl;
 				graph.addNode(info, split(input, ',', tags), points.back().getX(), points.back().getY());
 				firstNode = -1;//graph.getNodes()->back().getIndex();
 				MODE = "NORMAL";
@@ -373,9 +372,6 @@ void keyInput(unsigned char key, int x, int y)
 			else if(inputFunc == 3)
 			{
 				input = input.substr(21, string::npos);
-				//cout << firstNode << endl;
-				//cout << "Adding Edge from " << firstNode << " to " << pn << endl;
-				//cout << "Relation: " << input << endl;
 				graph.addEdge(firstNode, pn, input);
 				firstNode = -1;
 				pn = -1;
@@ -642,7 +638,6 @@ void opengl_init(int argc, char *argv[])
 	vector<string>test;
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	//cout << "Left click in empty space to create a node. Left click and drag from one node to another to create an edge between them." << endl;
 	MESSAGE = "Left click in empty space to create a   node. Left click and drag from one node to another to create an edge between    them.";
 	MODE = "MESSAGE";
 	

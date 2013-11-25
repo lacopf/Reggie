@@ -1,6 +1,8 @@
 #ifndef _BUTTON
 #define _BUTTON
 
+//helps with managing buttons on the window
+//stores a button's location and name
 class Button
 {
 	private:
