@@ -206,22 +206,27 @@ void Graph::exportCalendar(){
 	string date = "";
 
 	//Finds month node
-	bool found_month = false;
+	bool month1 = false;
+	bool month2 = false;
+	int root_pos = 0;
 	for(int i=0; i<nodes.size(); i++){
-		if(nodes[i].hasTag("month")){
-			found_month = true;
+		if(nodes[i].hasTag("month1")){month1 = true;}
+		else if (nodes[i].hasTag("month2")){month2 = true; root_pos = i;}
+		if(month1 || month2){
 			date = nodes[i].getInformation();
 
 			//checks if given date is valid
 			if(date.size() != 7 || date[2] != '/'){
 				MESSAGE = "Invalid date: please enter a date of form MM/YYYY";
 				return;
-			} 
+			}
+ 
+		break;
 		}
 	}
 	
 	//If graph does not contain a month node
-	if(!found_month){MESSAGE = "Error: please load calendar template before exporting calendar"; return;}
+	if(!month1 and !month2){MESSAGE = "Error: please load calendar template before exporting calendar"; return;}
 	
 	//holds date as a string
 	string ds = ""; 
@@ -236,33 +241,56 @@ void Graph::exportCalendar(){
 	//if this bool is false at end of computation, graph is not of calendar form
 	bool found_date = false;
 	
-	//runs through all date nodes and adds their corresponding event-nodes to ical file
-	for(int i=0; i<nodes.size(); i++){
-		if(nodes[i].hasTag("date")){ //only nodes with "date" tag are dates
-			found_date = true;
+	if(month1){
+		//runs through all date nodes and adds their corresponding event-nodes to ical file
+		for(int i=0; i<nodes.size(); i++){
+			if(nodes[i].hasTag("date")){ //only nodes with "date" tag are dates
+				found_date = true;
+				string ds1 = ds;
+				string info = nodes[i].getInformation();
+				if(info.size() > 2 || info.size() == 0){continue;}
+				else if(info.size() == 1){ds1 += "0";}
+				ds1 += info;
+				const vector<Edge*>& outedges = nodes[i].getOutEdges();
+				//adds new ical event for each event-node connected to date node
+				for(int j=0; j< outedges.size(); j++){
+					Node nodeB = nodes[outedges[j] -> getNodeB()];
+					if(nodeB.hasTag("date")){continue;}
+					out << "BEGIN:VEVENT" << endl;
+					out << "DTSTAMP:" << ds1 << "T000001Z" << endl;
+					out << "DTSTART:" << ds1 << "T000001Z" << endl;
+					out << "DTEND:" << ds1 <<  "T235959Z" << endl;
+					out << "SUMMARY:" << nodeB.getInformation() << endl;
+					out << "END:VEVENT" << endl;
+				}
+			}					
+		}
+	}
+
+	if(month2){
+		const vector<Edge*>& outedges = nodes[root_pos].getOutEdges();
+		for(int i=0; i<outedges.size(); i++){
+			const vector<Edge*>& out2 = nodes[outedges[i] -> getNodeB()].getOutEdges();
+			string cinfo = nodes[outedges[i] -> getNodeB()].getInformation();
 			string ds1 = ds;
-			string info = nodes[i].getInformation();
-			if(info.size() > 2 || info.size() == 0){continue;}
-			else if(info.size() == 1){ds1 += "0";}
-			ds1 += info;
-			const vector<Edge*>& outedges = nodes[i].getOutEdges();
-			//adds new ical event for each event-node connected to date node
-			for(int j=0; j< outedges.size(); j++){
-				Node nodeB = nodes[outedges[j] -> getNodeB()];
-				if(nodeB.hasTag("date")){continue;}
+			//if(cinfo.size() > 2 || cinfo.size() == 0){continue;}
+			//else if(cinfo.size() == 1){ds1 += "0";}
+			ds1 += cinfo;
+			for(int j=0; j<out2.size(); j++){
 				out << "BEGIN:VEVENT" << endl;
 				out << "DTSTAMP:" << ds1 << "T000001Z" << endl;
 				out << "DTSTART:" << ds1 << "T000001Z" << endl;
 				out << "DTEND:" << ds1 <<  "T235959Z" << endl;
-				out << "SUMMARY:" << nodeB.getInformation() << endl;
-				out << "END:VEVENT" << endl;
+				out << "SUMMARY:" << nodes[out2[j] -> getNodeB()].getInformation() << endl;
+				out << "END:VEVENT" << endl;				
 			}
-		}					
+		}
 	}
+
+
 	out << "END:VCALENDAR" << endl;
 	//outputs error message if graph does not contain date nodes
-	if(found_date){MESSAGE = "Calendar successfully saved";}
-	else{MESSAGE = "Error: please load calendar template before exporting calendar";}
+	MESSAGE = "Calendar successfully saved";
 }
 
 
