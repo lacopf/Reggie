@@ -52,6 +52,7 @@ class Node
 		bool edgeExists(int edg);
 		inline void addTag(string tag) {tags.push_back(tag);}
 		string printTags();
+		string printInfo(){return information;}
 		inline void setIndex(int ind){index = ind;}
 
 		bool hasTag(string tag);
