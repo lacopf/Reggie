@@ -493,6 +493,8 @@ void mouseControl(int button, int state, int x, int y)
 						{
 							demButtons.pop_back();
 						}
+						pn = -1;
+						MESSAGE = "The node was successfully deleted.";
 					}
 					else if(demButtons[i].getName() == "Delete Edge")
 					{
@@ -501,6 +503,8 @@ void mouseControl(int button, int state, int x, int y)
 						{
 							demButtons.pop_back();
 						}
+						pe = -1;
+						MESSAGE = "The edge was successfully deleted.";
 					}
 				}
 			}
@@ -515,9 +519,12 @@ void mouseControl(int button, int state, int x, int y)
 			input = "";
 			Point currentPoint = Point(x, HEIGHT - y, false);
 			points.push_back(currentPoint);
-
+			vector<Edge*>* edges = graph.getEdges();
+			
 			//check if we picked a node
 			pn = pickNode(currentPoint.getX(), currentPoint.getY());
+			pe = pickEdge(currentPoint.getX(), currentPoint.getY());
+			
 			if(pn != -1)
 			{
 				MESSAGE = string("Data: ") + string((*nodes)[pn].getInformation()) + string(", Tags: ") + (*nodes)[pn].printTags();
@@ -528,17 +535,7 @@ void mouseControl(int button, int state, int x, int y)
 				}
 				demButtons.push_back(Button(4, 1, "Delete Node"));
 			}
-			else if(collisionFree(x, HEIGHT - y))
-			{
-				MODE = "INPUT";
-				input = "Enter Node Data: ";
-				inputFunc = 1;
-				firstNode = -1;
-			}
-			//check if we picked an edge
-			vector<Edge*>* edges = graph.getEdges();
-			pe = pickEdge(currentPoint.getX(), currentPoint.getY());
-			if(pe != -1)
+			else if(pe != -1)//check if we picked an edge
 			{
 				MESSAGE = string("Relation: ") + string((*edges)[pe]->getRelation());
 				cout << "Edge Picked" << endl;
@@ -547,6 +544,13 @@ void mouseControl(int button, int state, int x, int y)
 					demButtons.pop_back();
 				}
 				demButtons.push_back(Button(4, 1, "Delete Edge"));
+			}
+			else if(collisionFree(x, HEIGHT - y))
+			{
+				MODE = "INPUT";
+				input = "Enter Node Data: ";
+				inputFunc = 1;
+				firstNode = -1;
 			}
 			
 			if(pe == -1 && pn == -1)
