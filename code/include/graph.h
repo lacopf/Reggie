@@ -241,6 +241,7 @@ void Graph::exportCalendar(){
 	//if this bool is false at end of computation, graph is not of calendar form
 	bool found_date = false;
 	
+	//saves if using template1
 	if(month1){
 		//runs through all date nodes and adds their corresponding event-nodes to ical file
 		for(int i=0; i<nodes.size(); i++){
@@ -267,6 +268,7 @@ void Graph::exportCalendar(){
 		}
 	}
 
+	//saves if using template2
 	if(month2){
 		const vector<Edge*>& outedges = nodes[root_pos].getOutEdges();
 		for(int i=0; i<outedges.size(); i++){
