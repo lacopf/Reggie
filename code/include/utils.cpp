@@ -537,6 +537,7 @@ void mouseControl(int button, int state, int x, int y)
 			}
 			else if(pe != -1)//check if we picked an edge
 			{
+				firstNode = -1;
 				MESSAGE = string("Relation: ") + string((*edges)[pe]->getRelation());
 				cout << "Edge Picked" << endl;
 				while(demButtons.size() > 6)
