@@ -403,6 +403,7 @@ void keyInput(unsigned char key, int x, int y)
 				(*nodes)[pn].setTags(tags);
 
 				MODE = "NORMAL";
+				MESSAGE = "";
 				input = "";
 				pn = -1;
 				inputFunc = 0;
@@ -613,7 +614,7 @@ void mouseControl(int button, int state, int x, int y)
 				if(pn != -1)
 				{
 					MODE = "INPUT";
-					input = "Edit Node Data: ";
+					input = "Edit Node Data: " + (*nodes)[pn].printInfo();
 					inputFunc = 4;
 				}	
 			}
