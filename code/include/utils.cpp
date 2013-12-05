@@ -35,7 +35,10 @@ vector<string> &split(const std::string &s, char delim, std::vector<std::string>
 }
 
 //writes bitmap string to screen
-void writeString(int x, int y, void *font, const char *str){
+//This is an example of the facade design pattern
+//Writing strings to the screen is a common task
+void writeString(int x, int y, void *font, const char *str)
+{
 	const char *cs;
 	glRasterPos2i(x, y);
 	for(cs = str; *cs != '\0'; cs++)
@@ -139,7 +142,9 @@ int pickEdge(int x, int y)
 	}	
 	return -1;
 }
+
 //button drawing function
+//This method is a use of the facade design pattern, since it generalizes the common task of button drawing.
 void drawButton(string name, int row, int column)
 {
 	int left, right, top, bottom;
@@ -248,7 +253,6 @@ void drawScene()
 	glClearColor(1.0, 1.0, 1.0, 0.0);
 	glClear(GL_COLOR_BUFFER_BIT);
 	glColor3f(1.0, 1.0, 1.0);
-	//writeString(10, 10, GLUT_BITMAP_9_BY_15, input.c_str());
 	graph.draw();
 
 	if(MODE == "SAVING FILE" || MODE == "LOADING FILE" || MODE == "SAVING TEMPLATE" || MODE == "LOADING TEMPLATE")
