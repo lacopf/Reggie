@@ -21,20 +21,6 @@ int main(int argc, char *argv[])
 	Graph graph;
 	
 	cout << "Welcome to Reggie's Ready Body! Would you like me to Calamar your Balderdash?\n1. Create Root Node\n: ";
-	/*cin >> input;
-	while(input != "1")
-	{
-		cout << "I'm sorry.\nThat is not a valid menu option.\nPlease, select again.\n1. Create Root Node\n: ";
-		cin >> input;
-	}
-	cout << "Thank you for selecting \"Create Root Node\".\nPlease input a single piece of information to identify your root node.\n: ";
-	cin >> info;
-	
-	cout << "Thank you for adding information.\nPlease input all tags to be associated with the root node, separated by commas without spaces.\n: ";
-	cin >> input;
-		
-	graph.addNode(info, parse(input), -1);
-	*/
 	int index1, index2;
 	
 	while(true)
