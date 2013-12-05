@@ -46,8 +46,8 @@ class Node
 		void setTags(vector<string> t) {tags = t;}
 
 		void setInformation(string inf) {information = inf;}
-		void inline addInEdge(Edge* edg) {in_edges.push_back(edg);}
-		void inline addOutEdge(Edge* edg) {out_edges.push_back(edg);}
+		inline void addInEdge(Edge* edg) {in_edges.push_back(edg);}
+		inline void addOutEdge(Edge* edg) {out_edges.push_back(edg);}
 		void removeInEdge(Edge* edg);
 		void removeOutEdge(Edge* edg);
 		bool edgeExists(int edg);
