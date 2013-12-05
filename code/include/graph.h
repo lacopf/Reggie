@@ -50,8 +50,7 @@ class Graph
 };
 
 //default constructor, never used
-Graph::Graph(){
-}
+Graph::Graph(){}
 
 //adds a node to the graph
 void Graph::addNode(string info, vector<string> tags, int x, int y)
@@ -169,13 +168,22 @@ vector<int> Graph::topSort(){
 
 	//calls visitNode on all nodes in graph 
 	//each call represents a new tree if the graph is a DAG
-	for(int i=0; i<nodes.size(); i++){
-		if(permanent[i]){continue;}
-		else if (visitNode(i, visited, permanent, sortedVec)){vector<int> t; return t;}
+	for(int i=0; i<nodes.size(); i++)
+	{
+		if(permanent[i])
+		{
+			continue;
+		}
+		else if (visitNode(i, visited, permanent, sortedVec))
+		{
+			vector<int> t;
+			return t;
+		}
 	}
 	vector<int> finalVec; 
 	//reverses sorted list
-	for(int i=sortedVec.size()-1; i >= 0; i--){
+	for(int i=sortedVec.size()-1; i >= 0; i--)
+	{
 		finalVec.push_back(sortedVec[i]);
 	}
 	return finalVec;
@@ -184,13 +192,23 @@ vector<int> Graph::topSort(){
 //returns true if graph is a DAG
 //visits all children in a DFS pattern
 bool Graph::visitNode(int node, vector<bool>& visited, vector<bool>& permanent, vector<int>& sortedVec){
-	if(visited[node] & not permanent[node]){return true;} //graph is a DAG
-	else if(permanent[node]){return false;} //not a DAG, but this node has been seen before
+	if(visited[node] & not permanent[node])
+	{
+		return true; //graph is a DAG
+	} 
+	else if(permanent[node])
+	{
+		return false; //not a DAG, but this node has been seen before
+	} 
 	visited[node] = true;
 	const vector<Edge*>& outEdges = nodes[node].getOutEdges(); 
-	for(int i=0; i< outEdges.size(); i++){
+	for(int i=0; i< outEdges.size(); i++)
+	{
 		//calls visitNode on child, returns true if recursive call returned true (graph is a DAG) 
-		if(visitNode(outEdges[i]->getNodeB(), visited, permanent, sortedVec)){return true;}
+		if(visitNode(outEdges[i]->getNodeB(), visited, permanent, sortedVec))
+		{
+			return true;
+		}
 	}
 	permanent[node] = true;
 	sortedVec.push_back(node);
@@ -206,14 +224,24 @@ void Graph::exportCalendar(){
 	bool month1 = false;
 	bool month2 = false;
 	int root_pos = 0;
-	for(int i=0; i<nodes.size(); i++){
-		if(nodes[i].hasTag("month1")){month1 = true;}
-		else if (nodes[i].hasTag("month2")){month2 = true; root_pos = i;}
-		if(month1 || month2){
+	for(int i=0; i<nodes.size(); i++)
+	{
+		if(nodes[i].hasTag("month1"))
+		{
+			month1 = true;
+		}
+		else if (nodes[i].hasTag("month2"))
+		{
+			month2 = true;
+			root_pos = i;
+		}
+		if(month1 || month2)
+		{
 			date = nodes[i].getInformation();
 
 			//checks if given date is valid
-			if(date.size() != 7 || date[2] != '/'){
+			if(date.size() != 7 || date[2] != '/')
+			{
 				MESSAGE = "Invalid date: please enter a date of form MM/YYYY";
 				return;
 			}
@@ -223,7 +251,10 @@ void Graph::exportCalendar(){
 	}
 
 	//If graph does not contain a month node
-	if(!month1 and !month2){MESSAGE = "Error: please load calendar template before exporting calendar"; return;}
+	if(!month1 and !month2)
+	{
+		MESSAGE = "Error: please load calendar template before exporting calendar"; return;
+	}
 
 	//holds date as a string
 	string ds = ""; 
@@ -241,17 +272,26 @@ void Graph::exportCalendar(){
 	//saves if using template1
 	if(month1){
 		//runs through all date nodes and adds their corresponding event-nodes to ical file
-		for(int i=0; i<nodes.size(); i++){
-			if(nodes[i].hasTag("date")){ //only nodes with "date" tag are dates
+		for(int i=0; i<nodes.size(); i++)
+		{
+			if(nodes[i].hasTag("date")) //only nodes with "date" tag are dates
+			{ 
 				found_date = true;
 				string ds1 = ds;
 				string info = nodes[i].getInformation();
-				if(info.size() > 2 || info.size() == 0){continue;}
-				else if(info.size() == 1){ds1 += "0";}
+				if(info.size() > 2 || info.size() == 0)
+				{
+					continue;
+				}
+				else if(info.size() == 1)
+				{
+					ds1 += "0";
+				}
 				ds1 += info;
 				const vector<Edge*>& outedges = nodes[i].getOutEdges();
 				//adds new ical event for each event-node connected to date node
-				for(int j=0; j< outedges.size(); j++){
+				for(int j=0; j< outedges.size(); j++)
+				{
 					Node nodeB = nodes[outedges[j] -> getNodeB()];
 					if(nodeB.hasTag("date")){continue;}
 					out << "BEGIN:VEVENT" << endl;
@@ -266,16 +306,19 @@ void Graph::exportCalendar(){
 	}
 
 	//saves if using template2
-	if(month2){
+	if(month2)
+	{
 		const vector<Edge*>& outedges = nodes[root_pos].getOutEdges();
-		for(int i=0; i<outedges.size(); i++){
+		for(int i=0; i<outedges.size(); i++)
+		{
 			const vector<Edge*>& out2 = nodes[outedges[i] -> getNodeB()].getOutEdges();
 			string cinfo = nodes[outedges[i] -> getNodeB()].getInformation();
 			string ds1 = ds;
 			//if(cinfo.size() > 2 || cinfo.size() == 0){continue;}
 			//else if(cinfo.size() == 1){ds1 += "0";}
 			ds1 += cinfo;
-			for(int j=0; j<out2.size(); j++){
+			for(int j=0; j<out2.size(); j++)
+			{
 				out << "BEGIN:VEVENT" << endl;
 				out << "DTSTAMP:" << ds1 << "T000001Z" << endl;
 				out << "DTSTART:" << ds1 << "T000001Z" << endl;
@@ -300,21 +343,26 @@ void Graph::save(string filename, bool isTemplate)
 
 	//make a templates folder if one doesn't exist
 	if ( lstat("./templates", &info) == -1 )
+	{	
 		mkdir("./templates", S_IRWXU);
+	}
 
 	//treat files differently based on whether it's going to saved as a template or not
 	if (!isTemplate)
 	{
 		int p = filename.find(".xml");
 		if (p == string::npos || filename.length() < 4 || filename.substr(filename.size() - 4, 4).compare(".xml") != 0 )
+		{
 			filename += ".xml";
-
+		}
 	}
 	else
 	{
 		int p = filename.find(".bgt");
 		if (p == string::npos || filename.length() < 4 || filename.substr(filename.size() - 4, 4).compare(".bgt") != 0 )
+		{
 			filename += ".bgt";
+		}
 		chdir("./templates");
 	}
 
@@ -403,7 +451,9 @@ void Graph::save(string filename, bool isTemplate)
 	saveFile.close();
 
 	if (isTemplate)
+	{
 		chdir("..");
+	}
 }
 void Graph::load(string filename, bool isTemplate)
 {
@@ -434,14 +484,19 @@ void Graph::load(string filename, bool isTemplate)
 		if ( !source.is_open() )
 		{
 			string file_ending = "";
-			if (filename.size() > 5)
+			if (filename.size() > 5){
 				file_ending = filename.substr(filename.size() - 4, 4);
+			}
 
 			if (filename.size() < 5 || file_ending.compare(".bgt") != 0)
+			{
 				filename += ".bgt";
+			}
 
 			if (filename.size() < 12 || filename.substr(0, 12).compare("./templates/") != 0)
+			{
 				filename = "./templates/" + filename;
+			}
 
 			source.open( filename.c_str() );
 			if ( !source.is_open() )
