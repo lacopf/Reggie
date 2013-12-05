@@ -17,18 +17,15 @@ class Button
 			column = j;
 			name = id;
 		}
-		int getRow()//get row coordinate
-		{
-			return row;
-		}
-		int getCol()//get name coordinate
-		{
-			return column;
-		}
-		string getName()//get name
-		{
-			return name;
-		}
+		
+		//get row coordinate
+		inline int getRow(){return row;}
+		
+		//get name coordinate
+		inline int getCol(){return column;}
+		
+		//get name
+		inline string getName(){return name;}
 };
 
 #endif
