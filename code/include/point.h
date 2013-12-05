@@ -9,30 +9,27 @@ class Point
 		bool down;//if it was down click
 
 	public:
-		inline Point()//default constructor
+		Point()//default constructor
 		{
 			x = -1;
 			y = -1;
 			down = false;
 		}
-		inline Point(double i, double j, bool press)//constructor
+		Point(double i, double j, bool press)//constructor
 		{
 			x = i;
 			y = j;
 			down = press;
 		}
-		inline int getX()//get x coordinate
-		{
-			return x;
-		}
-		inline int getY()//get y coordinate
-		{
-			return y;
-		}
-		inline bool getDown()//get down and boogie
-		{
-			return down;
-		}
+		
+		//get x coordinate
+		inline int getX(){return x;}
+		
+		//get y coordinate
+		inline int getY(){return y;}
+		
+		//get down and boogie
+		inline bool getDown(){return down;}
 
 		inline void move(int newX, int newY)//lets you move a node after you've already placed it
 		{
