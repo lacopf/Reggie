@@ -118,7 +118,8 @@ string Node::printTags()
 	{
 		s += tags[i] + ",";
 	}
-	if(s.size() != 0){
+	if(s.size() != 0)
+	{
 		s.resize(s.size() - 1);
 	}
 	return s; 
@@ -207,56 +208,72 @@ void Node::draw(bool picked)
 			istream_iterator<string>(),
 			back_inserter<vector<string> >(tokens));	
 	vector<string>::iterator tokit = tokens.begin();
-	for(int i = 0; i < 4; i++){
+	for(int i = 0; i < 4; i++)
+	{
 		//insert tokens into tempstring until the tempstring goes oversize
-		while(tmpstr.size() <= 9 && tokit != tokens.end()){
-			if(tmpstr.size() == 0){
+		while(tmpstr.size() <= 9 && tokit != tokens.end())
+		{
+			if(tmpstr.size() == 0)
+			{
 				tmpstr = *tokit++;
 			}
-			else{
+			else
+			{
 				tmpstr = tmpstr + " " + *tokit++;
 			}
 		}
 		//peel off word that went out of bounds or split long word over multiple lines
 		if(tmpstr.size() > 9){
-			if(tmpstr.rfind(" ") != string::npos){
+			if(tmpstr.rfind(" ") != string::npos)
+			{
 				css[i+1] = tmpstr.substr(tmpstr.rfind(" ")+1, string::npos);
 				tmpstr = tmpstr.substr(0, tmpstr.rfind(" ")+1);
 			}
-			else{
+			else
+			{
 				css[i+1] = tmpstr.substr(9, string::npos);
 				tmpstr = tmpstr.substr(0, 9);
 			}
 		}
-		if(css[i] == ""){
+		if(css[i] == "")
+		{
 			css[i] = tmpstr;
 		}
-		else{
+		else
+		{
 			css[i] += " " + tmpstr;
 		}
-		if(tokit == tokens.end()){
+		if(tokit == tokens.end())
+		{
 			break;
 		}
 		tmpstr = "";
 	}
 	//second pass: move any tokens that go out of bounds to the next render line
-	for(int i = 0; i < 4; i++){
-		if((int)css[i].size() > 9){
-			if(css[i].rfind(" ", 9) == string::npos){
+	for(int i = 0; i < 4; i++)
+	{
+		if((int)css[i].size() > 9)
+		{
+			if(css[i].rfind(" ", 9) == string::npos)
+			{
 				css[i+1] = css[i].substr(9, string::npos) + css[i+1];
 				css[i] = css[i].substr(0, 9);
 			}
-			else{
+			else
+			{
 				css[i+1] = css[i].substr(css[i].rfind(" ", 9)+1, string::npos) + css[i+1];
 				css[i] = css[i].substr(0, css[i].rfind(" ", 9));
 			}
 		}
 	}
 	//loop through render array, decrementing rasterpos as lines are completed
-	for(int i = 0; i < min(4, (int)css.size()); i++){
-		if(css[i] != ""){
+	for(int i = 0; i < min(4, (int)css.size()); i++)
+	{
+		if(css[i] != "")
+		{
 			glRasterPos2i(point.getX() - RADIUS + 10, point.getY() + 17 - i*15);
-			for(cs = css[i].c_str(); *cs != '\0'; cs++){
+			for(cs = css[i].c_str(); *cs != '\0'; cs++)
+			{
 				glutBitmapCharacter(GLUT_BITMAP_9_BY_15, *cs);
 			}
 		}	
