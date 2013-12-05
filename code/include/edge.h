@@ -1,6 +1,5 @@
 #ifndef _EDGE
 #define _EDGE
-
 #include <vector>
 
 #ifdef __APPLE__
@@ -21,18 +20,18 @@ class Edge
 		int index;
 		int nodeA, nodeB;
 		string relation;
-	  
+
 	public:
 		Edge();
 		Edge(int edgeIndex, string rel, int n1, int n2);
-	  
+
 		inline string getRelation() {return relation;}
 		inline int getNodeA() {return nodeA;}
 		inline int getNodeB() {return nodeB;}
 		inline int getIndex() {return index;}
 		inline void setIndex(int ind){index = ind;}
 };
-
+//Basic Edge Constructor
 Edge::Edge()
 {
 	index = -1;
@@ -40,6 +39,7 @@ Edge::Edge()
 	nodeB = -1;
 	relation = "";
 }
+//Edge Constructor for dynamic edge creation
 Edge::Edge(int edgeIndex, string rel, int n1, int n2)
 {
 	index = edgeIndex;

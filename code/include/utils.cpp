@@ -97,45 +97,45 @@ int pickEdge(int x, int y)
 	{
 		nodeACoords = (*nodes)[((*edges)[i])->getNodeA()].getPoint();
 		nodeBCoords = (*nodes)[((*edges)[i])->getNodeB()].getPoint();
-		
+
 		//sum of triangles method
 		double startX = nodeACoords.getX();
 		double startY = nodeACoords.getY();
-		
+
 		double endX = nodeBCoords.getX();
 		double endY = nodeBCoords.getY();
-		
+
 		double diffX = endX - startX;
 		double diffY = endY - startY;
 		double length = sqrt(diffX*diffX + diffY*diffY);
-		
+
 		double startLeftX = startX - diffY/length*3*3.14159265359/2;
 		double startLeftY = startY + diffX/length*3*3.14159265359/2;
-		
+
 		double startRightX = startX + diffY/length*3*3.14159265359/2;
 		double startRightY = startY - diffX/length*3*3.14159265359/2;
-		
+
 		double endLeftX = endX - diffY/length*3*3.14159265359/2;
 		double endLeftY = endY + diffX/length*3*3.14159265359/2;
-		
+
 		double endRightX = endX + diffY/length*3*3.14159265359/2;
 		double endRightY = endY - diffX/length*3*3.14159265359/2;
-				
+
 		double tri1 = triArea(x,y,startLeftX,startLeftY,startRightX,startRightY);
 		double tri2 = triArea(x,y,startRightX,startRightY,endRightX,endRightY);
 		double tri3 = triArea(x,y,endRightX,endRightY,endLeftX,endLeftY);
 		double tri4 = triArea(x,y,endLeftX,endLeftY,startLeftX,startLeftY);
-		
+
 		double bigTri1 = triArea(startLeftX,startLeftY,startRightX,startRightY,endRightX,endRightY);
 		double bigTri2 = triArea(endRightX,endRightY,endLeftX,endLeftY,startLeftX,startLeftY);
-		
+
 		if(tri1 + tri2 + tri3 + tri4 <= bigTri1 + bigTri2 + 2)
 		{
 			return i;
 		}
-		
-		
-		
+
+
+
 	}	
 	return -1;
 }
@@ -538,7 +538,7 @@ void mouseControl(int button, int state, int x, int y)
 			Point currentPoint = Point(x, HEIGHT - y, false);
 			points.push_back(currentPoint);
 			vector<Edge*>* edges = graph.getEdges();
-			
+
 			//check if we picked a node
 			pn = pickNode(currentPoint.getX(), currentPoint.getY());
 			pe = pickEdge(currentPoint.getX(), currentPoint.getY());
@@ -561,14 +561,14 @@ void mouseControl(int button, int state, int x, int y)
 				inputFunc = 1;
 				firstNode = -1;
 			}
-			
+
 		}
 		else if (state == GLUT_UP && (button == GLUT_LEFT_BUTTON || button == GLUT_RIGHT_BUTTON))
 		{
 			Point currentPoint = Point(x, HEIGHT - y, true);
 			points.push_back(currentPoint);	
 			pn = pickNode(currentPoint.getX(), currentPoint.getY());
-		
+
 			if(button == GLUT_LEFT_BUTTON)
 			{
 				if(pn != -1 && firstNode != -1 && pn != firstNode && !(*nodes)[firstNode].edgeExists(pn))
@@ -581,7 +581,7 @@ void mouseControl(int button, int state, int x, int y)
 				{
 					(*graph.getNodes())[firstNode].move(x, HEIGHT - y);
 				}
-				
+
 				//edge/node delete button
 				if(pn != -1)
 				{
@@ -600,7 +600,7 @@ void mouseControl(int button, int state, int x, int y)
 					}
 					demButtons.push_back(Button(4, 1, "Delete Edge"));
 				}
-			
+
 				if(pe == -1 && pn == -1)
 				{
 					while(demButtons.size() > 6)
@@ -622,6 +622,7 @@ void mouseControl(int button, int state, int x, int y)
 	}	
 }
 
+//Holds opengl functions that would generally be found in main
 void opengl_init(int argc, char *argv[])
 {
 	glutInit(&argc, argv);
@@ -641,7 +642,7 @@ void opengl_init(int argc, char *argv[])
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	MESSAGE = "Left click in empty space to create a   node. Left click and drag from one node to another to create an edge between    them.";
 	MODE = "MESSAGE";
-	
+
 	//buttons declaration
 	demButtons.push_back(Button(1,1,"Load File"));
 	demButtons.push_back(Button(1,2,"Save File"));

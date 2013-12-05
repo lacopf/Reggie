@@ -31,12 +31,13 @@ class Node
 		vector<Edge*> in_edges;
 		vector<Edge*> out_edges;
 		Point point;
-		
+
 
 	public:
 		Node();
 		Node(string info, int ind, vector<string> new_tags, int x, int y);
-		
+
+		//Node holds vectors of in and outgoing edges
 		inline int getIndex() {return index;}
 		inline string getInformation() {return information;}
 		inline vector<Edge*> getInEdges(){return in_edges;}
@@ -44,7 +45,7 @@ class Node
 		inline vector<string> getTags() {return tags;}
 		void setTags(vector<string> t) {tags = t;}
 
-	 	void setInformation(string inf) {information = inf;}
+		void setInformation(string inf) {information = inf;}
 		void inline addInEdge(Edge* edg) {in_edges.push_back(edg);}
 		void inline addOutEdge(Edge* edg) {out_edges.push_back(edg);}
 		void removeInEdge(Edge* edg);
@@ -56,13 +57,13 @@ class Node
 		inline void setIndex(int ind){index = ind;}
 
 		bool hasTag(string tag);
-		
+
 		void draw(bool picked);
 		Point getPoint()
 		{
 			return point;
 		}
-		
+
 		void move(int newX, int newY)
 		{
 			point.move(newX, newY);
@@ -109,6 +110,7 @@ bool Node::hasTag(string tag)
 	return false;
 }
 
+//Prints Node Tags
 string Node::printTags()
 {
 	string s = "";
@@ -134,10 +136,10 @@ void Node::removeInEdge(Edge* edg)
 			return;			
 		}		
 	}
-	
+
 }
 
-	
+
 //removes an edge going into a node
 void Node::removeOutEdge(Edge* edg)
 {
@@ -151,7 +153,7 @@ void Node::removeOutEdge(Edge* edg)
 		}		
 
 	}
-	
+
 }
 //returns whether a node has a given outgoing edge
 bool Node::edgeExists(int edg)
@@ -177,11 +179,11 @@ void Node::draw(bool picked)
 		glColor3f(37.0/255.0, 213.0/255.0, 0.0/255.0);
 	}
 	glBegin(GL_TRIANGLE_FAN);
-		for (int i=0; i < 360; i++)
-		{
-			float degInRad = i*M_PI/180;
-			glVertex2f(cos(degInRad)*RADIUS+point.getX(),sin(degInRad)*RADIUS+point.getY());
-		}
+	for (int i=0; i < 360; i++)
+	{
+		float degInRad = i*M_PI/180;
+		glVertex2f(cos(degInRad)*RADIUS+point.getX(),sin(degInRad)*RADIUS+point.getY());
+	}
 	glEnd();
 	if(picked)
 	{
@@ -202,8 +204,8 @@ void Node::draw(bool picked)
 	//tokenize input string
 	vector<string> tokens;
 	copy(istream_iterator<string>(iss), 
-		istream_iterator<string>(),
-		back_inserter<vector<string> >(tokens));	
+			istream_iterator<string>(),
+			back_inserter<vector<string> >(tokens));	
 	vector<string>::iterator tokit = tokens.begin();
 	for(int i = 0; i < 4; i++){
 		//insert tokens into tempstring until the tempstring goes oversize
@@ -219,11 +221,11 @@ void Node::draw(bool picked)
 		if(tmpstr.size() > 9){
 			if(tmpstr.rfind(" ") != string::npos){
 				css[i+1] = tmpstr.substr(tmpstr.rfind(" ")+1, string::npos);
-		     		tmpstr = tmpstr.substr(0, tmpstr.rfind(" ")+1);
+				tmpstr = tmpstr.substr(0, tmpstr.rfind(" ")+1);
 			}
 			else{
 				css[i+1] = tmpstr.substr(9, string::npos);
-		     		tmpstr = tmpstr.substr(0, 9);
+				tmpstr = tmpstr.substr(0, 9);
 			}
 		}
 		if(css[i] == ""){

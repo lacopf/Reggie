@@ -113,31 +113,33 @@ void Graph::removeNode(int index)
 //prints all in and out edges for each node in the graph
 void Graph::printGraph()
 {
-        for(int i=0; i < nodes.size(); i++)
-        {
-				//print index, info and tags
-                cout << i << ": " << nodes[i].getInformation() << endl;
-				vector<string> temptags =  nodes[i].getTags();
-				cout << "tags: " << temptags[0];
-				for (int tgs = 1; tgs < temptags.size(); tgs++)
-					cout << ", " << temptags[tgs];
-				cout << endl;
+	for(int i=0; i < nodes.size(); i++)
+	{
+		//print index, info and tags
+		cout << i << ": " << nodes[i].getInformation() << endl;
+		vector<string> temptags =  nodes[i].getTags();
+		cout << "tags: " << temptags[0];
+		for (int tgs = 1; tgs < temptags.size(); tgs++)
+		{
+			cout << ", " << temptags[tgs];
+		}
+		cout << endl;
 
-                cout << " in edges: ";
-                const vector<Edge*>& in_edges = nodes[i].getInEdges();
-                for(int j=0; j<in_edges.size(); j++)
-                {
-                        cout << (in_edges[j]->getNodeA)()<< " ";
-                }
-                cout << endl;
-                cout << " out edges: ";
-                const vector<Edge*>& out_edges = nodes[i].getOutEdges();
-                for(int j=0; j<out_edges.size(); j++)
-                {
-                        cout << (out_edges[j]->getNodeB)()<< " ";
-                }
-                cout << endl << endl;
-        }
+		cout << " in edges: ";
+		const vector<Edge*>& in_edges = nodes[i].getInEdges();
+		for(int j=0; j<in_edges.size(); j++)
+		{
+			cout << (in_edges[j]->getNodeA)()<< " ";
+		}
+		cout << endl;
+		cout << " out edges: ";
+		const vector<Edge*>& out_edges = nodes[i].getOutEdges();
+		for(int j=0; j<out_edges.size(); j++)
+		{
+			cout << (out_edges[j]->getNodeB)()<< " ";
+		}
+		cout << endl << endl;
+	}
 }
 
 //Saves topologically sorted graph in a text file
@@ -215,14 +217,14 @@ void Graph::exportCalendar(){
 				MESSAGE = "Invalid date: please enter a date of form MM/YYYY";
 				return;
 			}
- 
-		break;
+
+			break;
 		}
 	}
-	
+
 	//If graph does not contain a month node
 	if(!month1 and !month2){MESSAGE = "Error: please load calendar template before exporting calendar"; return;}
-	
+
 	//holds date as a string
 	string ds = ""; 
 	ds += date.substr(3,date.size());
@@ -235,7 +237,7 @@ void Graph::exportCalendar(){
 
 	//if this bool is false at end of computation, graph is not of calendar form
 	bool found_date = false;
-	
+
 	//saves if using template1
 	if(month1){
 		//runs through all date nodes and adds their corresponding event-nodes to ical file
@@ -315,7 +317,7 @@ void Graph::save(string filename, bool isTemplate)
 			filename += ".bgt";
 		chdir("./templates");
 	}
-	
+
 	if (isTemplate && lstat(filename.c_str(), &info) != -1 )
 	{
 		MESSAGE = "You can't save over existing template files";
@@ -407,12 +409,12 @@ void Graph::load(string filename, bool isTemplate)
 {
 	//assume the filename has the proper extension
 	ifstream source;
-	
+
 	//file being loaded is a savefile
 	if ( !isTemplate )
 	{
 		source.open( filename.c_str() );
-		
+
 		if ( !source.is_open() )
 		{
 			filename = filename + ".xml";
@@ -428,7 +430,7 @@ void Graph::load(string filename, bool isTemplate)
 	else
 	{
 		source.open( filename.c_str() );
-		
+
 		if ( !source.is_open() )
 		{
 			string file_ending = "";
@@ -447,7 +449,7 @@ void Graph::load(string filename, bool isTemplate)
 				MESSAGE = "Invalid file name";
 				return;
 			}
-			
+
 		}
 	}
 
@@ -479,7 +481,7 @@ void Graph::load(string filename, bool isTemplate)
 		MESSAGE = "Not a valid file to load from\n";
 		return;
 	}	
-	
+
 	getline(source, line, '\n');
 	while ( line.find("/nodeList") == string::npos )
 	{
@@ -537,7 +539,7 @@ void Graph::load(string filename, bool isTemplate)
 		getline(source, line, '\n');
 		parse_index = line.find("<point>");
 		endIndex = line.find("</point>");
-		
+
 		//not a valid file
 		if (parse_index == string::npos || endIndex == string::npos)
 		{
@@ -551,7 +553,7 @@ void Graph::load(string filename, bool isTemplate)
 			x = atoi( buf );
 			buf = (line.substr(findComma + 1, endIndex - findComma - 1)).c_str();
 			y = atoi( buf );
-			
+
 		}
 
 
@@ -599,11 +601,11 @@ void Graph::load(string filename, bool isTemplate)
 				nedges.push_back( atoi(singleEdge) );
 				singleEdge = strtok(NULL, ",");
 			}
-			
+
 			//get the line with the out edges
 			getline(source, line, '\n');
 		}
-	
+
 		parse_index = line.find("<outedges>");
 		endIndex = line.find("</outedges>");
 
@@ -632,7 +634,7 @@ void Graph::load(string filename, bool isTemplate)
 		loadedNodes.push_back(tempNode);
 		nodeInEdges.push_back(nedges);
 		nodeOutEdges.push_back(oedges);
-		
+
 	}
 
 	getline(source, line, '\n');
@@ -648,7 +650,7 @@ void Graph::load(string filename, bool isTemplate)
 		getline(source, line, '\n');
 		if (line.find("<index>") == string::npos)
 			getline(source, line, '\n');			
-		
+
 		int parse_index = line.find("<index>");
 		int endIndex = line.find("</index>");
 		if (parse_index == string::npos)
@@ -705,12 +707,12 @@ void Graph::load(string filename, bool isTemplate)
 		//add read in info to list of read in edges
 		Edge tempEdge(edgeIndex, relation, nA, nB);
 		loadedEdges.push_back(tempEdge);
-		
+
 	}
 
 	//close the input file
 	source.close();
-	
+
 	//clear the current graph object and load in the new vector of nodes and edges
 	nodes.clear();
 	edges.clear();
@@ -744,10 +746,11 @@ void Graph::load(string filename, bool isTemplate)
 				}
 		}
 	}
-	
+
 	MESSAGE = "File was successfully loaded!";
 
 }
+//Handles the Graph Drawing
 void Graph::draw()
 {
 	glEnable( GL_LINE_SMOOTH );
@@ -756,7 +759,7 @@ void Graph::draw()
 	//edges
 	for(int i = 0; i < edges.size(); i++)
 	{
-		
+
 		glLineWidth(3*3.14159265359);
 		if(pe == i)
 		{
@@ -766,38 +769,38 @@ void Graph::draw()
 		{
 			glColor3f(16.0 / 255.0, 73.0 / 255.0, 169.0 / 255.0);
 		}
-		
+
 		float startX = nodes[edges[i]->getNodeA()].getPoint().getX();
 		float startY = nodes[edges[i]->getNodeA()].getPoint().getY();
-		
+
 		float endX = nodes[edges[i]->getNodeB()].getPoint().getX();
 		float endY = nodes[edges[i]->getNodeB()].getPoint().getY();
-		
+
 		float diffX = endX - startX;
 		float diffY = endY - startY;
 		float length = sqrt(diffX*diffX + diffY*diffY);
-		
+
 		float pointX = endX - diffX/length*RADIUS;
 		float pointY = endY - diffY/length*RADIUS;
-		
+
 		float centX = pointX - diffX/length*RADIUS/3;
 		float centY = pointY - diffY/length*RADIUS/3;
-		
+
 		float leftX = centX - diffY/length*RADIUS/3;
 		float leftY = centY + diffX/length*RADIUS/3;
-		
+
 		float rightX = centX + diffY/length*RADIUS/3;
 		float rightY = centY - diffX/length*RADIUS/3;
-		
+
 		glBegin(GL_LINES);
-			glVertex2f(startX, startY);
-			glVertex2f(centX, centY);
+		glVertex2f(startX, startY);
+		glVertex2f(centX, centY);
 		glEnd();
-		
+
 		glBegin(GL_TRIANGLES);
-			glVertex2f(leftX,leftY);
-			glVertex2f(pointX, pointY);
-			glVertex2f(rightX,rightY);
+		glVertex2f(leftX,leftY);
+		glVertex2f(pointX, pointY);
+		glVertex2f(rightX,rightY);
 		glEnd();
 	}
 	//nodes
@@ -812,7 +815,7 @@ void Graph::draw()
 			nodes[i].draw(false);
 		}
 	}
-	
+
 }
 
 #endif

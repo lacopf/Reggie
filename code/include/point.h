@@ -7,7 +7,7 @@ class Point
 		int x;//x coordinate of the click
 		int y;//y coordinate of the click
 		bool down;//if it was down click
-	  
+
 	public:
 		Point()//default constructor
 		{
@@ -33,7 +33,7 @@ class Point
 		{
 			return down;
 		}
-		
+
 		void move(int newX, int newY)//lets you move a node after you've already placed it
 		{
 			x = newX;

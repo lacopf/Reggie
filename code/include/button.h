@@ -9,7 +9,7 @@ class Button
 		int row;
 		int column;
 		string name;
-	  
+
 	public:
 		Button(int i, int j, string id)//constructor
 		{

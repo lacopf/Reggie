@@ -13,10 +13,16 @@
 
 using namespace std;
 
+//Node radius
 int RADIUS = 50;
+//Tracks current project state
 string MODE;
+//Holds text messages
 string MESSAGE;
+//Stores filenames for saving/loading
 string FILENAME;
+//integer indices pointing to most
+//recently picked node and edge
 int pn = -1;
 int pe = -1;
 
