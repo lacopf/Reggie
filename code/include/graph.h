@@ -153,7 +153,7 @@ void Graph::saveSortedGraph()
 	ofstream out("sorted.txt");
 	for(int i=0; i<sorted.size(); i++)
 	{
-		out << nodes[i].getInformation() << endl;
+		out << nodes[sorted[i]].getInformation() << endl;
 	}
 	MESSAGE =  "The graph has been successfully sorted! The sorted list of nodes has been       exported to sorted.txt.";
 }
